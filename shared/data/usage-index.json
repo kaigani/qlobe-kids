@@ -9,7 +9,7 @@
     "games/<id>/config.js",
     "games/<id>/js/**/*.js"
   ],
-  "generated": "2026-09-18T02:44:03.048Z",
+  "generated": "2026-09-18T04:25:27.059Z",
   "engines": {
     "coach-timer": {
       "count": 10,
@@ -52,13 +52,6 @@
         "scissor-trail-safari"
       ]
     },
-    "match-pairs": {
-      "count": 2,
-      "games": [
-        "community-helper-cards",
-        "then-now-sort"
-      ]
-    },
     "sequence-order": {
       "count": 1,
       "games": [
@@ -81,6 +74,12 @@
       "count": 1,
       "games": [
         "picture-narration"
+      ]
+    },
+    "match-pairs": {
+      "count": 1,
+      "games": [
+        "then-now-sort"
       ]
     },
     "puppet-theater": {
@@ -625,22 +624,36 @@
       "packs": []
     },
     "community-helper-cards": {
-      "engine": "match-pairs",
-      "status": "in-design",
+      "engine": null,
+      "status": "beta",
       "category": "culture-geography",
       "characters": [],
       "modules": [
-        "shared/js/analytics.js",
-        "shared/js/engines/match-pairs.js",
+        "shared/js/audio-unlock.js",
+        "shared/js/bgm.js",
+        "shared/js/celebrate.js",
+        "shared/js/debug-harness.js",
+        "shared/js/hud.js",
+        "shared/js/journal.js",
+        "shared/js/screens.js",
         "shared/js/sfx.js",
-        "shared/js/speech.js"
+        "shared/js/stage/drag-to-slot-dom.js",
+        "shared/js/tap.js",
+        "shared/js/timers.js",
+        "shared/js/voice-clips.js"
       ],
       "css": [
         "shared/css/base.css",
-        "shared/css/engine-base.css",
+        "shared/css/hud.css",
         "shared/css/screens.css"
       ],
-      "assets": [],
+      "assets": [
+        "games/community-helper-cards/assets/art",
+        "games/community-helper-cards/assets/art/theater.webp",
+        "games/community-helper-cards/assets/art/title.webp",
+        "games/community-helper-cards/assets/audio",
+        "shared/assets/music/whimsical-toy-workshop.mp3"
+      ],
       "packs": []
     },
     "cooking-craze": {
@@ -3624,7 +3637,6 @@
         "cleanup-timer-quest",
         "color-gradient-cards",
         "color-mixing-lab",
-        "community-helper-cards",
         "cooking-craze",
         "counting-treasure-cups",
         "emotion-voice-game",
@@ -3729,6 +3741,7 @@
         "cleanup-timer-quest",
         "color-gradient-cards",
         "color-mixing-lab",
+        "community-helper-cards",
         "cooking-craze",
         "counting-treasure-cups",
         "emotion-voice-game",
@@ -3804,6 +3817,7 @@
         "board-game-reset",
         "chalkboard-big-strokes",
         "cleanup-timer-quest",
+        "community-helper-cards",
         "family-story-interview",
         "family-timeline",
         "garden-graphers",
@@ -3854,6 +3868,7 @@
         "cleanup-timer-quest",
         "color-gradient-cards",
         "color-mixing-lab",
+        "community-helper-cards",
         "cooking-craze",
         "counting-treasure-cups",
         "emotion-voice-game",
@@ -3930,6 +3945,7 @@
         "cleanup-timer-quest",
         "color-gradient-cards",
         "color-mixing-lab",
+        "community-helper-cards",
         "cooking-craze",
         "counting-treasure-cups",
         "emotion-voice-game",
@@ -4037,7 +4053,6 @@
         "waiting-muscle-game"
       ],
       "shared/js/engines/match-pairs.js": [
-        "community-helper-cards",
         "then-now-sort"
       ],
       "shared/js/engines/observe-journal.js": [
@@ -4084,6 +4099,7 @@
         "cleanup-timer-quest",
         "color-gradient-cards",
         "color-mixing-lab",
+        "community-helper-cards",
         "cooking-craze",
         "counting-treasure-cups",
         "family-timeline",
@@ -4164,7 +4180,8 @@
         "world-music-dance"
       ],
       "shared/js/journal.js": [
-        "bug-hotel-observer"
+        "bug-hotel-observer",
+        "community-helper-cards"
       ],
       "shared/js/magnifier-lens.js": [
         "bug-hotel-observer",
@@ -4370,6 +4387,7 @@
         "cleanup-timer-quest",
         "color-gradient-cards",
         "color-mixing-lab",
+        "community-helper-cards",
         "cooking-craze",
         "emotion-voice-game",
         "freeze-focus-dance",
@@ -4532,7 +4550,6 @@
         "chocolate-chip-count",
         "clay-creature-studio",
         "color-mixing-lab",
-        "community-helper-cards",
         "counting-treasure-cups",
         "feelings-charades",
         "flashlight-cave",
@@ -4603,6 +4620,7 @@
         "cleanup-timer-quest",
         "color-gradient-cards",
         "color-mixing-lab",
+        "community-helper-cards",
         "cooking-craze",
         "counting-treasure-cups",
         "garden-graphers",
@@ -4702,6 +4720,7 @@
         "clay-creature-studio",
         "cleanup-timer-quest",
         "color-gradient-cards",
+        "community-helper-cards",
         "cooking-craze",
         "counting-treasure-cups",
         "emotion-voice-game",
@@ -4780,6 +4799,7 @@
         "cleanup-timer-quest",
         "color-gradient-cards",
         "color-mixing-lab",
+        "community-helper-cards",
         "cooking-craze",
         "family-story-interview",
         "family-timeline",
@@ -4848,6 +4868,7 @@
         "cleanup-timer-quest",
         "color-gradient-cards",
         "color-mixing-lab",
+        "community-helper-cards",
         "cooking-craze",
         "counting-treasure-cups",
         "emotion-voice-game",
@@ -5054,7 +5075,6 @@
         "balance-beam-trail",
         "blend-train",
         "calm-corner-cards",
-        "community-helper-cards",
         "grace-courtesy-theater",
         "instrument-detective",
         "letter-road-driving",
@@ -5093,6 +5113,7 @@
         "cleanup-timer-quest",
         "color-gradient-cards",
         "color-mixing-lab",
+        "community-helper-cards",
         "cooking-craze",
         "emotion-voice-game",
         "family-timeline",
@@ -5538,6 +5559,18 @@
       ],
       "games/chocolate-chip-count/assets/title.webp": [
         "chocolate-chip-count"
+      ],
+      "games/community-helper-cards/assets/art": [
+        "community-helper-cards"
+      ],
+      "games/community-helper-cards/assets/art/theater.webp": [
+        "community-helper-cards"
+      ],
+      "games/community-helper-cards/assets/art/title.webp": [
+        "community-helper-cards"
+      ],
+      "games/community-helper-cards/assets/audio": [
+        "community-helper-cards"
       ],
       "games/cooking-craze/assets/ui/action-button-v2.webp": [
         "cooking-craze"
@@ -6525,6 +6558,7 @@
         "sound-hopscotch"
       ],
       "shared/assets/music/whimsical-toy-workshop.mp3": [
+        "community-helper-cards",
         "magnet-explorer",
         "number-sense-kitchen",
         "pattern-train",

@@ -3,31 +3,55 @@
   "title": "Community Helper Cards",
   "category": "culture-geography",
   "path": "games/community-helper-cards/",
-  "icon": "🚒",
+  "icon": "🧑‍🚒",
   "entry": "index.html",
-  "age": { "min": 5, "max": 6 },
-  "status": "in-design",
+  "age": { "min": 3, "max": 6 },
+  "status": "beta",
   "accent": "#d95f43",
-  "shareTitle": "Community Helper Cards 🚒 — Matching Helpers and Tools",
-  "description": "Pair community helpers with the tools, vehicles, and buddies they work with, hearing a spoken sentence for each match. A warm vocabulary game for ages 5–6.",
+  "shareTitle": "Community Helper Cards — So Many Heroes to Discover",
+  "description": "Choose a friendly community helper, drag two felt tools into place, hear how that helper cares for the neighborhood, and collect an embroidered Hero Badge.",
   "learningGoals": [
-    "Name familiar community helpers",
-    "Connect helpers with tools and vehicles",
-    "Build who-helps-how vocabulary through spoken pair sentences"
+    "Name four familiar community helpers",
+    "Associate each helper with tools they use",
+    "Describe one way each helper supports the community"
   ],
-  "interactionModel": "match-pairs tap cards that connect a helper with what they use or help",
-  "feedbackModel": "Correct pairs get pop and sparkle SFX plus a spoken helper sentence; misses wiggle gently with a spoken nudge and retry.",
+  "interactionModel": "Choose one helper, then drag or tap each correct tool from a three-object felt tray onto the helper before opening a narrated Hero Spotlight.",
+  "feedbackModel": "Correct tools snap into place with a soft fabric-like pop, narration, stars, and an earned badge; other tools return gently with a spoken retry.",
   "uses": [
-    "shared/js/engines/match-pairs.js",
-    "shared/js/speech.js",
-    "shared/js/sfx.js"
+    "games/community-helper-cards/assets/art/",
+    "games/community-helper-cards/assets/audio/",
+    "shared/assets/music/whimsical-toy-workshop.mp3",
+    "shared/fonts/fredoka-latin-600-normal.woff2",
+    "shared/js/audio-unlock.js",
+    "shared/js/bgm.js",
+    "shared/js/celebrate.js",
+    "shared/js/debug-harness.js",
+    "shared/js/hud.js",
+    "shared/js/journal.js",
+    "shared/js/screens.js",
+    "shared/js/sfx.js",
+    "shared/js/stage/drag-to-slot-dom.js",
+    "shared/js/tap.js",
+    "shared/js/timers.js",
+    "shared/js/voice-clips.js"
   ],
   "modes": [
-    { "id": "helpers", "title": "Who Uses What?", "skill": "community helper tools and roles" },
-    { "id": "places", "title": "Where Do They Work?", "skill": "helper work contexts and vehicles" }
+    {
+      "id": "helper-cards",
+      "title": "Meet the Helpers",
+      "skill": "match community helpers with tools and describe how they help"
+    }
   ],
+  "persistence": "Earned helper badge ids only are stored through shared/js/journal.js under qlobe:journal:community-helper-cards:v1; storage failure falls back to the current session.",
+  "assets": {
+    "source": "generated/local",
+    "runtimeNetwork": false,
+    "art": "GPT Image 2 felt masters plus local Krea 2 hub tile",
+    "voice": "Local Qwen voice-cloned teacher narration verified with Whisper",
+    "music": "Shared recorded whimsical toy workshop track"
+  },
   "license": { "code": "MIT", "assets": "CC-BY-4.0" },
-  "credits": "Kaigani; emoji placeholder art only (see ASSETS.md). Built with Codex for QLOBE Kids.",
+  "credits": "Cozy felt production art made with GPT Image 2 and a local Krea 2 hub workflow; teacher narration made with local Qwen voice clone and verified with Whisper. Built with Codex for QLOBE Kids.",
   "characters": [],
-  "conceptVideo": null
+  "conceptVideo": "01-game-concepts/community-helper-cards/"
 }

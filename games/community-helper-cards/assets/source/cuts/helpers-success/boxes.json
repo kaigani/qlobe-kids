@@ -1,0 +1,142 @@
+{
+  "source": "games/community-helper-cards/assets/source/gpt-image-2/helpers-success-sheet.png",
+  "sourceSha256": "e8603db1d46e4f162b8c720a785be37353040c53b0ead802ad375ae183b39cae",
+  "sourceSize": [
+    2048,
+    768
+  ],
+  "detection": "alpha",
+  "sampledBackgroundRgb": null,
+  "padding": 12,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "firefighter-success",
+      "file": "firefighter-success.png",
+      "componentArea": 231933,
+      "foregroundBbox": [
+        48,
+        12,
+        539,
+        747
+      ],
+      "cropBbox": [
+        36,
+        0,
+        551,
+        759
+      ],
+      "cropXywh": [
+        36,
+        0,
+        515,
+        759
+      ],
+      "normalizedCropBbox": [
+        0.017578,
+        0.0,
+        0.269043,
+        0.988281
+      ]
+    },
+    {
+      "index": 2,
+      "name": "doctor-success",
+      "file": "doctor-success.png",
+      "componentArea": 197322,
+      "foregroundBbox": [
+        600,
+        11,
+        984,
+        747
+      ],
+      "cropBbox": [
+        588,
+        0,
+        996,
+        759
+      ],
+      "cropXywh": [
+        588,
+        0,
+        408,
+        759
+      ],
+      "normalizedCropBbox": [
+        0.287109,
+        0.0,
+        0.486328,
+        0.988281
+      ]
+    },
+    {
+      "index": 3,
+      "name": "teacher-success",
+      "file": "teacher-success.png",
+      "componentArea": 191461,
+      "foregroundBbox": [
+        1089,
+        11,
+        1483,
+        747
+      ],
+      "cropBbox": [
+        1077,
+        0,
+        1495,
+        759
+      ],
+      "cropXywh": [
+        1077,
+        0,
+        418,
+        759
+      ],
+      "normalizedCropBbox": [
+        0.525879,
+        0.0,
+        0.72998,
+        0.988281
+      ]
+    },
+    {
+      "index": 4,
+      "name": "mail-carrier-success",
+      "file": "mail-carrier-success.png",
+      "componentArea": 212662,
+      "foregroundBbox": [
+        1555,
+        9,
+        2027,
+        749
+      ],
+      "cropBbox": [
+        1543,
+        0,
+        2039,
+        761
+      ],
+      "cropXywh": [
+        1543,
+        0,
+        496,
+        761
+      ],
+      "normalizedCropBbox": [
+        0.753418,
+        0.0,
+        0.995605,
+        0.990885
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 2,
+    "minArea": 786,
+    "order": "reading"
+  }
+}

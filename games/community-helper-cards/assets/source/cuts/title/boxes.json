@@ -1,0 +1,52 @@
+{
+  "source": "games/community-helper-cards/assets/source/gpt-image-2/title-master.png",
+  "sourceSha256": "24a3f2b19020ab4577b910a1cd140ee19722cb5c8d7f476e676463eb85d97fd6",
+  "sourceSize": [
+    1774,
+    887
+  ],
+  "detection": "alpha",
+  "sampledBackgroundRgb": null,
+  "padding": 12,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "title",
+      "file": "title.png",
+      "componentArea": 971051,
+      "foregroundBbox": [
+        5,
+        8,
+        1769,
+        859
+      ],
+      "cropBbox": [
+        0,
+        0,
+        1774,
+        871
+      ],
+      "cropXywh": [
+        0,
+        0,
+        1774,
+        871
+      ],
+      "normalizedCropBbox": [
+        0.0,
+        0.0,
+        1.0,
+        0.981962
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 2,
+    "minArea": 787,
+    "order": "reading"
+  }
+}

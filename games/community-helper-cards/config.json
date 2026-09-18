@@ -1,0 +1,142 @@
+{
+  "id": "community-helper-cards",
+  "title": "Community Helper Cards",
+  "tagline": "So many heroes to discover!",
+  "age": { "min": 3, "max": 6 },
+  "assets": {
+    "theater": "assets/art/theater.webp",
+    "title": "assets/art/title.webp",
+    "badge": "assets/art/badge.webp",
+    "album": "assets/art/album.webp",
+    "star": "assets/art/star.webp",
+    "promptPanel": "assets/art/prompt-panel.webp",
+    "actionButton": "assets/art/action-button.webp",
+    "toolCard": "assets/art/tool-card.webp",
+    "toolTray": "assets/art/tool-tray.webp"
+  },
+  "voice": {
+    "manifest": "assets/audio/manifest.json",
+    "lines": "assets/audio/lines.json"
+  },
+  "music": {
+    "src": "../../shared/assets/music/whimsical-toy-workshop.mp3",
+    "key": "community-helper-theater",
+    "volume": 0.12
+  },
+  "tools": [
+    { "id": "hose", "name": "hose", "art": "assets/art/hose.webp" },
+    { "id": "helmet", "name": "helmet", "art": "assets/art/helmet.webp" },
+    {
+      "id": "stethoscope",
+      "name": "stethoscope",
+      "art": "assets/art/stethoscope.webp"
+    },
+    {
+      "id": "first-aid-kit",
+      "name": "first-aid kit",
+      "art": "assets/art/first-aid-kit.webp"
+    },
+    { "id": "book", "name": "book", "art": "assets/art/book.webp" },
+    { "id": "pencils", "name": "pencils", "art": "assets/art/pencils.webp" },
+    { "id": "mailbag", "name": "mailbag", "art": "assets/art/mailbag.webp" },
+    { "id": "letters", "name": "letters", "art": "assets/art/letters.webp" }
+  ],
+  "helpers": [
+    {
+      "id": "firefighter",
+      "name": "Firefighter",
+      "art": "assets/art/firefighter.webp",
+      "successArt": "assets/art/firefighter-success.webp",
+      "badgeArt": "assets/art/badge-firefighter.webp",
+      "card": "assets/art/card-red.webp",
+      "introKey": "firefighter-intro",
+      "bioKey": "firefighter-bio",
+      "rounds": [
+        {
+          "tool": "hose",
+          "promptKey": "firefighter-hose-prompt",
+          "successKey": "firefighter-hose-success",
+          "choices": ["hose", "stethoscope", "book"]
+        },
+        {
+          "tool": "helmet",
+          "promptKey": "firefighter-helmet-prompt",
+          "successKey": "firefighter-helmet-success",
+          "choices": ["helmet", "first-aid-kit", "mailbag"]
+        }
+      ]
+    },
+    {
+      "id": "doctor",
+      "name": "Doctor",
+      "art": "assets/art/doctor.webp",
+      "successArt": "assets/art/doctor-success.webp",
+      "badgeArt": "assets/art/badge-doctor.webp",
+      "card": "assets/art/card-teal.webp",
+      "introKey": "doctor-intro",
+      "bioKey": "doctor-bio",
+      "rounds": [
+        {
+          "tool": "stethoscope",
+          "promptKey": "doctor-stethoscope-prompt",
+          "successKey": "doctor-stethoscope-success",
+          "choices": ["stethoscope", "hose", "pencils"]
+        },
+        {
+          "tool": "first-aid-kit",
+          "promptKey": "doctor-first-aid-prompt",
+          "successKey": "doctor-first-aid-success",
+          "choices": ["first-aid-kit", "helmet", "letters"]
+        }
+      ]
+    },
+    {
+      "id": "teacher",
+      "name": "Teacher",
+      "art": "assets/art/teacher.webp",
+      "successArt": "assets/art/teacher-success.webp",
+      "badgeArt": "assets/art/badge-teacher.webp",
+      "card": "assets/art/card-plum.webp",
+      "introKey": "teacher-intro",
+      "bioKey": "teacher-bio",
+      "rounds": [
+        {
+          "tool": "book",
+          "promptKey": "teacher-book-prompt",
+          "successKey": "teacher-book-success",
+          "choices": ["book", "mailbag", "stethoscope"]
+        },
+        {
+          "tool": "pencils",
+          "promptKey": "teacher-pencils-prompt",
+          "successKey": "teacher-pencils-success",
+          "choices": ["pencils", "helmet", "letters"]
+        }
+      ]
+    },
+    {
+      "id": "mail-carrier",
+      "name": "Mail Carrier",
+      "art": "assets/art/mail-carrier.webp",
+      "successArt": "assets/art/mail-carrier-success.webp",
+      "badgeArt": "assets/art/badge-mail-carrier.webp",
+      "card": "assets/art/card-blue.webp",
+      "introKey": "mail-carrier-intro",
+      "bioKey": "mail-carrier-bio",
+      "rounds": [
+        {
+          "tool": "mailbag",
+          "promptKey": "mail-carrier-mailbag-prompt",
+          "successKey": "mail-carrier-mailbag-success",
+          "choices": ["mailbag", "first-aid-kit", "book"]
+        },
+        {
+          "tool": "letters",
+          "promptKey": "mail-carrier-letters-prompt",
+          "successKey": "mail-carrier-letters-success",
+          "choices": ["letters", "hose", "pencils"]
+        }
+      ]
+    }
+  ]
+}

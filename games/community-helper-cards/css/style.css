@@ -1,0 +1,316 @@
+:root {
+  --qk-bg: #153755;
+}
+body {
+  font-family: Fredoka, sans-serif;
+  color: #fff;
+}
+.chc {
+  height: 100%;
+  overflow: hidden;
+}
+.chc-screen {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  overflow: auto;
+  padding: 12px;
+  isolation: isolate;
+}
+.chc-theater {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -1;
+}
+.chc-content {
+  width: min(1000px, 100%);
+  display: grid;
+  place-items: center;
+  gap: 16px;
+  text-align: center;
+}
+.chc-title {
+  width: min(720px, 85vw);
+  max-height: 40vh;
+  object-fit: contain;
+}
+.chc-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 18px;
+}
+.chc-art-button,
+.chc-tool,
+.chc-helper,
+.chc-prompt {
+  border: 0;
+  background: transparent center/100% 100% no-repeat;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+.chc-art-button {
+  min-width: 180px;
+  min-height: 100px;
+  font-size: 25px;
+}
+.chc-hud {
+  position: absolute;
+  left: 14px;
+  top: 14px;
+  z-index: 5;
+}
+.chc-hud.right {
+  left: auto;
+  right: 14px;
+}
+.chc-helper-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(180px, 1fr));
+  gap: 18px;
+}
+.chc-helper {
+  min-height: 180px;
+  position: relative;
+}
+.chc-helper img {
+  height: 135px;
+  max-width: 80%;
+  object-fit: contain;
+}
+.chc-helper span {
+  display: block;
+  font-size: 22px;
+}
+.chc-helper.is-earned:after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 62px;
+  height: 62px;
+  background: var(--badge) center/contain no-repeat;
+}
+.chc-prompt {
+  min-height: 100px;
+  width: min(760px, 100%);
+  padding: 20px 14%;
+  font-size: 27px;
+  color: #fff4cf;
+  text-shadow: 0 2px 2px #102c47;
+}
+.chc-stage {
+  position: relative;
+  min-height: 220px;
+  width: min(620px, 100%);
+  display: grid;
+  place-items: center;
+}
+.chc-helper-hero {
+  max-height: 40vh;
+  max-width: 85%;
+  object-fit: contain;
+}
+.chc-slot {
+  position: absolute;
+  right: 8%;
+  bottom: 4%;
+  width: 126px;
+  height: 126px;
+  display: grid;
+  place-items: center;
+}
+.chc-slot img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.chc-tray {
+  width: min(850px, 100%);
+  min-height: 150px;
+  padding: 18px 7%;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+  background-position: center;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+}
+.chc-tool {
+  min-width: 96px;
+  min-height: 110px;
+  touch-action: none;
+}
+.chc-tool img {
+  height: 88px;
+  max-width: 100%;
+  object-fit: contain;
+}
+.chc-tool.is-wrong {
+  animation: w 0.4s;
+  filter: drop-shadow(0 0 12px #ffd166);
+}
+.dragging {
+  position: fixed !important;
+  pointer-events: none;
+  width: 110px !important;
+  height: 110px !important;
+  transform: translate(-50%, -50%);
+}
+.chc-success {
+  max-height: 43vh;
+  max-width: 75vw;
+  object-fit: contain;
+}
+.chc-badge {
+  width: 130px;
+  max-height: 130px;
+  object-fit: contain;
+}
+.chc-copy {
+  font-size: 24px;
+  max-width: 760px;
+  margin: 0;
+}
+.chc-copy,
+.chc-heading {
+  text-shadow:
+    0 2px 3px #102c47,
+    0 0 6px #102c47;
+}
+.chc-album-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  width: min(820px, 100%);
+}
+.chc-album-item {
+  min-height: 120px;
+  display: grid;
+  place-items: center;
+  opacity: 0.35;
+  background: center/contain no-repeat;
+}
+.chc-album-item.is-earned {
+  opacity: 1;
+}
+.chc-album-item img {
+  max-height: 96px;
+  max-width: 100%;
+  object-fit: contain;
+}
+@keyframes w {
+  25% {
+    transform: rotate(-5deg);
+  }
+  75% {
+    transform: rotate(5deg);
+  }
+}
+@media (min-width: 900px) {
+  .chc-helper-grid {
+    grid-template-columns: repeat(4, minmax(180px, 1fr));
+  }
+}
+@media (max-height: 500px) {
+  .chc-screen {
+    padding: 5px;
+  }
+  .chc-content {
+    min-height: 100%;
+    gap: 5px;
+  }
+  .chc-title {
+    max-height: 24vh;
+  }
+  .chc-art-button {
+    min-width: 150px;
+    min-height: 96px;
+    font-size: 18px;
+  }
+  .chc-helper-grid {
+    grid-template-columns: repeat(4, minmax(135px, 1fr));
+    gap: 8px;
+  }
+  .chc-helper {
+    min-height: 104px;
+  }
+  .chc-helper img {
+    height: 70px;
+  }
+  .chc-helper span {
+    font-size: 15px;
+  }
+  .chc-prompt {
+    min-height: 96px;
+    padding: 8px 12%;
+    font-size: 16px;
+  }
+  .chc-stage {
+    min-height: 115px;
+  }
+  .chc-helper-hero {
+    max-height: 29vh;
+  }
+  .chc-slot {
+    width: 96px;
+    height: 96px;
+  }
+  .chc-tray {
+    min-height: 96px;
+    padding: 4px 8px;
+  }
+  .chc-tool {
+    min-height: 96px;
+  }
+  .chc-tool img {
+    height: 58px;
+  }
+  .chc-reward .chc-content {
+    grid-template-columns: minmax(150px, 0.75fr) minmax(260px, 1.25fr);
+    align-content: center;
+    column-gap: 12px;
+  }
+  .chc-reward .chc-success {
+    grid-column: 1;
+    grid-row: 1 / span 4;
+    max-height: 74vh;
+    max-width: 100%;
+  }
+  .chc-reward .chc-badge,
+  .chc-reward .chc-copy,
+  .chc-reward .chc-art-button {
+    grid-column: 2;
+  }
+  .chc-reward .chc-badge {
+    width: 72px;
+    max-height: 72px;
+  }
+  .chc-reward .chc-art-button {
+    width: min(270px, 100%);
+  }
+  .chc-copy {
+    font-size: 15px;
+    line-height: 1.15;
+  }
+  .chc-album-item {
+    min-height: 60px;
+  }
+  .chc-album-item img {
+    max-height: 50px;
+  }
+  .chc-end .chc-actions {
+    flex-wrap: nowrap;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+}

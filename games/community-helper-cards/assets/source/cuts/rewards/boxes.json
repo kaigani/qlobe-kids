@@ -1,0 +1,292 @@
+{
+  "source": "games/community-helper-cards/assets/source/gpt-image-2/rewards-sheet.png",
+  "sourceSha256": "21bc06e1201ab5a13b7b87b095b20d1cbbd64da335872b91238da5841552f015",
+  "sourceSize": [
+    2043,
+    770
+  ],
+  "detection": "alpha",
+  "sampledBackgroundRgb": null,
+  "padding": 12,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "badge",
+      "file": "badge.png",
+      "componentArea": 159459,
+      "foregroundBbox": [
+        35,
+        146,
+        478,
+        643
+      ],
+      "cropBbox": [
+        23,
+        134,
+        490,
+        655
+      ],
+      "cropXywh": [
+        23,
+        134,
+        467,
+        521
+      ],
+      "normalizedCropBbox": [
+        0.011258,
+        0.174026,
+        0.239843,
+        0.850649
+      ]
+    },
+    {
+      "index": 2,
+      "name": "album",
+      "file": "album.png",
+      "componentArea": 190437,
+      "foregroundBbox": [
+        534,
+        183,
+        988,
+        628
+      ],
+      "cropBbox": [
+        522,
+        171,
+        1000,
+        640
+      ],
+      "cropXywh": [
+        522,
+        171,
+        478,
+        469
+      ],
+      "normalizedCropBbox": [
+        0.255507,
+        0.222078,
+        0.489476,
+        0.831169
+      ]
+    },
+    {
+      "index": 3,
+      "name": "star",
+      "file": "star.png",
+      "componentArea": 93878,
+      "foregroundBbox": [
+        1030,
+        224,
+        1444,
+        613
+      ],
+      "cropBbox": [
+        1018,
+        212,
+        1456,
+        625
+      ],
+      "cropXywh": [
+        1018,
+        212,
+        438,
+        413
+      ],
+      "normalizedCropBbox": [
+        0.498287,
+        0.275325,
+        0.712677,
+        0.811688
+      ]
+    },
+    {
+      "index": 4,
+      "name": "reward-4",
+      "file": "reward-4.png",
+      "componentArea": 15265,
+      "foregroundBbox": [
+        1515,
+        250,
+        1647,
+        480
+      ],
+      "cropBbox": [
+        1503,
+        238,
+        1659,
+        492
+      ],
+      "cropXywh": [
+        1503,
+        238,
+        156,
+        254
+      ],
+      "normalizedCropBbox": [
+        0.735683,
+        0.309091,
+        0.812041,
+        0.638961
+      ]
+    },
+    {
+      "index": 5,
+      "name": "reward-5",
+      "file": "reward-5.png",
+      "componentArea": 9984,
+      "foregroundBbox": [
+        1586,
+        455,
+        1705,
+        626
+      ],
+      "cropBbox": [
+        1574,
+        443,
+        1717,
+        638
+      ],
+      "cropXywh": [
+        1574,
+        443,
+        143,
+        195
+      ],
+      "normalizedCropBbox": [
+        0.770436,
+        0.575325,
+        0.840431,
+        0.828571
+      ]
+    },
+    {
+      "index": 6,
+      "name": "reward-6",
+      "file": "reward-6.png",
+      "componentArea": 13649,
+      "foregroundBbox": [
+        1661,
+        309,
+        1788,
+        534
+      ],
+      "cropBbox": [
+        1649,
+        297,
+        1800,
+        546
+      ],
+      "cropXywh": [
+        1649,
+        297,
+        151,
+        249
+      ],
+      "normalizedCropBbox": [
+        0.807146,
+        0.385714,
+        0.881057,
+        0.709091
+      ]
+    },
+    {
+      "index": 7,
+      "name": "reward-7",
+      "file": "reward-7.png",
+      "componentArea": 2999,
+      "foregroundBbox": [
+        1830,
+        479,
+        1913,
+        567
+      ],
+      "cropBbox": [
+        1818,
+        467,
+        1925,
+        579
+      ],
+      "cropXywh": [
+        1818,
+        467,
+        107,
+        112
+      ],
+      "normalizedCropBbox": [
+        0.889868,
+        0.606494,
+        0.942242,
+        0.751948
+      ]
+    },
+    {
+      "index": 8,
+      "name": "reward-8",
+      "file": "reward-8.png",
+      "componentArea": 8651,
+      "foregroundBbox": [
+        1843,
+        331,
+        1997,
+        491
+      ],
+      "cropBbox": [
+        1831,
+        319,
+        2009,
+        503
+      ],
+      "cropXywh": [
+        1831,
+        319,
+        178,
+        184
+      ],
+      "normalizedCropBbox": [
+        0.896231,
+        0.414286,
+        0.983358,
+        0.653247
+      ]
+    },
+    {
+      "index": 9,
+      "name": "reward-9",
+      "file": "reward-9.png",
+      "componentArea": 2430,
+      "foregroundBbox": [
+        1937,
+        456,
+        2011,
+        535
+      ],
+      "cropBbox": [
+        1925,
+        444,
+        2023,
+        547
+      ],
+      "cropXywh": [
+        1925,
+        444,
+        98,
+        103
+      ],
+      "normalizedCropBbox": [
+        0.942242,
+        0.576623,
+        0.99021,
+        0.71039
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 0,
+    "minArea": 787,
+    "order": "reading"
+  }
+}

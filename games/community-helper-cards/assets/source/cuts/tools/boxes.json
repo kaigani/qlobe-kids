@@ -1,0 +1,262 @@
+{
+  "source": "games/community-helper-cards/assets/source/gpt-image-2/tools-sheet.png",
+  "sourceSha256": "69a7459acf0880359859e12ce8c5df7bd186b43cd005f2002a201dfcf6f87d55",
+  "sourceSize": [
+    1774,
+    887
+  ],
+  "detection": "alpha",
+  "sampledBackgroundRgb": null,
+  "padding": 12,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "hose",
+      "file": "hose.png",
+      "componentArea": 107811,
+      "foregroundBbox": [
+        48,
+        81,
+        446,
+        436
+      ],
+      "cropBbox": [
+        36,
+        69,
+        458,
+        448
+      ],
+      "cropXywh": [
+        36,
+        69,
+        422,
+        379
+      ],
+      "normalizedCropBbox": [
+        0.020293,
+        0.07779,
+        0.258174,
+        0.505073
+      ]
+    },
+    {
+      "index": 2,
+      "name": "helmet",
+      "file": "helmet.png",
+      "componentArea": 90907,
+      "foregroundBbox": [
+        461,
+        94,
+        913,
+        403
+      ],
+      "cropBbox": [
+        449,
+        82,
+        925,
+        415
+      ],
+      "cropXywh": [
+        449,
+        82,
+        476,
+        333
+      ],
+      "normalizedCropBbox": [
+        0.2531,
+        0.092446,
+        0.521421,
+        0.467869
+      ]
+    },
+    {
+      "index": 3,
+      "name": "stethoscope",
+      "file": "stethoscope.png",
+      "componentArea": 51439,
+      "foregroundBbox": [
+        922,
+        35,
+        1293,
+        419
+      ],
+      "cropBbox": [
+        910,
+        23,
+        1305,
+        431
+      ],
+      "cropXywh": [
+        910,
+        23,
+        395,
+        408
+      ],
+      "normalizedCropBbox": [
+        0.512965,
+        0.02593,
+        0.735626,
+        0.485908
+      ]
+    },
+    {
+      "index": 4,
+      "name": "first-aid-kit",
+      "file": "first-aid-kit.png",
+      "componentArea": 100287,
+      "foregroundBbox": [
+        1343,
+        85,
+        1731,
+        417
+      ],
+      "cropBbox": [
+        1331,
+        73,
+        1743,
+        429
+      ],
+      "cropXywh": [
+        1331,
+        73,
+        412,
+        356
+      ],
+      "normalizedCropBbox": [
+        0.750282,
+        0.0823,
+        0.982525,
+        0.483653
+      ]
+    },
+    {
+      "index": 5,
+      "name": "book",
+      "file": "book.png",
+      "componentArea": 126771,
+      "foregroundBbox": [
+        34,
+        513,
+        489,
+        832
+      ],
+      "cropBbox": [
+        22,
+        501,
+        501,
+        844
+      ],
+      "cropXywh": [
+        22,
+        501,
+        479,
+        343
+      ],
+      "normalizedCropBbox": [
+        0.012401,
+        0.564825,
+        0.282413,
+        0.951522
+      ]
+    },
+    {
+      "index": 6,
+      "name": "pencils",
+      "file": "pencils.png",
+      "componentArea": 79833,
+      "foregroundBbox": [
+        561,
+        444,
+        831,
+        836
+      ],
+      "cropBbox": [
+        549,
+        432,
+        843,
+        848
+      ],
+      "cropXywh": [
+        549,
+        432,
+        294,
+        416
+      ],
+      "normalizedCropBbox": [
+        0.30947,
+        0.487035,
+        0.475197,
+        0.956032
+      ]
+    },
+    {
+      "index": 7,
+      "name": "mailbag",
+      "file": "mailbag.png",
+      "componentArea": 129488,
+      "foregroundBbox": [
+        906,
+        479,
+        1330,
+        828
+      ],
+      "cropBbox": [
+        894,
+        467,
+        1342,
+        840
+      ],
+      "cropXywh": [
+        894,
+        467,
+        448,
+        373
+      ],
+      "normalizedCropBbox": [
+        0.503946,
+        0.526494,
+        0.756483,
+        0.947012
+      ]
+    },
+    {
+      "index": 8,
+      "name": "letters",
+      "file": "letters.png",
+      "componentArea": 85739,
+      "foregroundBbox": [
+        1359,
+        512,
+        1746,
+        826
+      ],
+      "cropBbox": [
+        1347,
+        500,
+        1758,
+        838
+      ],
+      "cropXywh": [
+        1347,
+        500,
+        411,
+        338
+      ],
+      "normalizedCropBbox": [
+        0.759301,
+        0.563698,
+        0.990981,
+        0.944758
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 2,
+    "minArea": 787,
+    "order": "reading"
+  }
+}

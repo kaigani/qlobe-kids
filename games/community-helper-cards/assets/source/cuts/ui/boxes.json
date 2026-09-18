@@ -1,0 +1,262 @@
+{
+  "source": "games/community-helper-cards/assets/source/gpt-image-2/ui-sheet.png",
+  "sourceSha256": "0fb497a015afebfb3299aa599fbc44c75f011eb9872b38a095d8184bd59a846b",
+  "sourceSize": [
+    1448,
+    1086
+  ],
+  "detection": "alpha",
+  "sampledBackgroundRgb": null,
+  "padding": 12,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "card-red",
+      "file": "card-red.png",
+      "componentArea": 157879,
+      "foregroundBbox": [
+        21,
+        81,
+        359,
+        561
+      ],
+      "cropBbox": [
+        9,
+        69,
+        371,
+        573
+      ],
+      "cropXywh": [
+        9,
+        69,
+        362,
+        504
+      ],
+      "normalizedCropBbox": [
+        0.006215,
+        0.063536,
+        0.256215,
+        0.527624
+      ]
+    },
+    {
+      "index": 2,
+      "name": "card-teal",
+      "file": "card-teal.png",
+      "componentArea": 159391,
+      "foregroundBbox": [
+        375,
+        79,
+        716,
+        560
+      ],
+      "cropBbox": [
+        363,
+        67,
+        728,
+        572
+      ],
+      "cropXywh": [
+        363,
+        67,
+        365,
+        505
+      ],
+      "normalizedCropBbox": [
+        0.250691,
+        0.061694,
+        0.502762,
+        0.526703
+      ]
+    },
+    {
+      "index": 3,
+      "name": "card-plum",
+      "file": "card-plum.png",
+      "componentArea": 159573,
+      "foregroundBbox": [
+        733,
+        79,
+        1072,
+        560
+      ],
+      "cropBbox": [
+        721,
+        67,
+        1084,
+        572
+      ],
+      "cropXywh": [
+        721,
+        67,
+        363,
+        505
+      ],
+      "normalizedCropBbox": [
+        0.497928,
+        0.061694,
+        0.748619,
+        0.526703
+      ]
+    },
+    {
+      "index": 4,
+      "name": "card-blue",
+      "file": "card-blue.png",
+      "componentArea": 159114,
+      "foregroundBbox": [
+        1089,
+        79,
+        1428,
+        560
+      ],
+      "cropBbox": [
+        1077,
+        67,
+        1440,
+        572
+      ],
+      "cropXywh": [
+        1077,
+        67,
+        363,
+        505
+      ],
+      "normalizedCropBbox": [
+        0.743785,
+        0.061694,
+        0.994475,
+        0.526703
+      ]
+    },
+    {
+      "index": 5,
+      "name": "tool-card",
+      "file": "tool-card.png",
+      "componentArea": 108682,
+      "foregroundBbox": [
+        22,
+        597,
+        360,
+        929
+      ],
+      "cropBbox": [
+        10,
+        585,
+        372,
+        941
+      ],
+      "cropXywh": [
+        10,
+        585,
+        362,
+        356
+      ],
+      "normalizedCropBbox": [
+        0.006906,
+        0.538674,
+        0.256906,
+        0.866483
+      ]
+    },
+    {
+      "index": 6,
+      "name": "prompt-panel",
+      "file": "prompt-panel.png",
+      "componentArea": 107887,
+      "foregroundBbox": [
+        376,
+        600,
+        943,
+        799
+      ],
+      "cropBbox": [
+        364,
+        588,
+        955,
+        811
+      ],
+      "cropXywh": [
+        364,
+        588,
+        591,
+        223
+      ],
+      "normalizedCropBbox": [
+        0.251381,
+        0.541436,
+        0.65953,
+        0.746777
+      ]
+    },
+    {
+      "index": 7,
+      "name": "action-button",
+      "file": "action-button.png",
+      "componentArea": 79413,
+      "foregroundBbox": [
+        961,
+        610,
+        1425,
+        793
+      ],
+      "cropBbox": [
+        949,
+        598,
+        1437,
+        805
+      ],
+      "cropXywh": [
+        949,
+        598,
+        488,
+        207
+      ],
+      "normalizedCropBbox": [
+        0.655387,
+        0.550645,
+        0.992403,
+        0.741252
+      ]
+    },
+    {
+      "index": 8,
+      "name": "tool-tray",
+      "file": "tool-tray.png",
+      "componentArea": 171014,
+      "foregroundBbox": [
+        529,
+        819,
+        1295,
+        1049
+      ],
+      "cropBbox": [
+        517,
+        807,
+        1307,
+        1061
+      ],
+      "cropXywh": [
+        517,
+        807,
+        790,
+        254
+      ],
+      "normalizedCropBbox": [
+        0.357044,
+        0.743094,
+        0.902624,
+        0.97698
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 2,
+    "minArea": 786,
+    "order": "reading"
+  }
+}
