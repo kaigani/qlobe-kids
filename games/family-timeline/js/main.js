@@ -76,6 +76,9 @@ const splashArtUrls = [
   config.art.ui.startPlate,
   config.art.ui.globePlate,
   config.art.ui.bookIcon,
+  '../../shared/assets/ui/btn-home.png',
+  '../../shared/assets/ui/btn-back.png',
+  '../../shared/assets/ui/btn-sound.png',
 ];
 const timelineArtUrls = [
   ...Object.values(config.art.pockets),

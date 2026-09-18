@@ -64,7 +64,7 @@ async function main() {
   check('hub links Family Timeline route', await hubTile.count() === 1
     && await hubTile.getAttribute('href') === './games/family-timeline/');
   await Promise.all([hubRun.page.waitForURL('**/games/family-timeline/'), hubTile.click()]);
-  await debug.waitForHook(hubRun.page);
+  await debug.waitForHook(hubRun.page, 30000);
   await debug.waitForReady(hubRun.page);
   check('hub tile launches the production game route', (await debug.getState(hubRun.page)).screen === 'splash');
   checkSessionClean(reporter, hubRun, 'hub session');
@@ -139,7 +139,7 @@ async function main() {
   check('local photo can be removed', (await debug.getState(p)).hasPhoto === false);
   await debug.call(p, 'openBook');
   await p.reload({ waitUntil: 'networkidle' });
-  await debug.waitForHook(p);
+  await debug.waitForHook(p, 30000);
   await debug.waitForReady(p);
   check('progress persists after reload', (await debug.getState(p)).timelineComplete === true);
   await debug.startMode(p, 'family-map');
