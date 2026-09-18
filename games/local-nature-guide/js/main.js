@@ -38,6 +38,9 @@ let birdNodes = [];
 let traceObserver = null;
 
 const assetUrls = [
+  '../../shared/assets/ui/btn-home.png',
+  '../../shared/assets/ui/btn-back.png',
+  '../../shared/assets/ui/btn-sound.png',
   config.assets.title,
   config.assets.prompt,
   config.assets.button,
