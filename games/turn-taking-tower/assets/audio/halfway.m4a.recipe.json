@@ -1,0 +1,22 @@
+{
+  "recipeVersion": "qlobe-recipe-v1",
+  "workflow": "qwen3-tts-voiceclone",
+  "file": "halfway.m4a",
+  "text": "Look! Our tower is halfway up.",
+  "textHash": "ccddc14ec8dee65f",
+  "seed": 7,
+  "encoding": {
+    "codec": "aac",
+    "container": "m4a",
+    "sampleRate": 24000,
+    "channels": 1,
+    "bitrate": 96000
+  },
+  "whisper": {
+    "language": "en",
+    "transcript": "Look, our tower is halfway up.",
+    "score": 1.0,
+    "coverage": 1.0
+  },
+  "teacherReference": "shared/assets/refs/voice-teacher.wav"
+}

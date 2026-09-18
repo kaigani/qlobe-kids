@@ -1,0 +1,22 @@
+{
+  "recipeVersion": "qlobe-recipe-v1",
+  "workflow": "qwen3-tts-voiceclone",
+  "file": "choose-mode.m4a",
+  "text": "Choose a buddy, or build with someone beside you.",
+  "textHash": "42114bcb2c1d0d29",
+  "seed": 7,
+  "encoding": {
+    "codec": "aac",
+    "container": "m4a",
+    "sampleRate": 24000,
+    "channels": 1,
+    "bitrate": 96000
+  },
+  "whisper": {
+    "language": "en",
+    "transcript": "Choose a buddy or build with someone beside you.",
+    "score": 1.0,
+    "coverage": 1.0
+  },
+  "teacherReference": "shared/assets/refs/voice-teacher.wav"
+}

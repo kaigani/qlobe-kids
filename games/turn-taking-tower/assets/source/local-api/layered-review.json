@@ -1,0 +1,12 @@
+{
+  "recipeVersion": "qlobe-recipe-v1",
+  "workflow": "qwen-image-layered",
+  "generated": "2026-09-18",
+  "inputs": ["sign-plaque", "player-card", "button-green", "button-blue"],
+  "review": {
+    "accepted": false,
+    "reason": "Visual alpha inspection showed dark rectangular background mattes in the candidate layers even where numeric extraction completed. None of these outputs entered runtime assets.",
+    "replacement": "GPT Image 2 transparent-background edit plus tools/cut-asset-sheet.py exact-count cuts"
+  },
+  "privacy": "The LAN endpoint and host are intentionally omitted."
+}

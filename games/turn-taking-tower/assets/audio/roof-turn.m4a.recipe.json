@@ -1,0 +1,22 @@
+{
+  "recipeVersion": "qlobe-recipe-v1",
+  "workflow": "qwen3-tts-voiceclone",
+  "file": "roof-turn.m4a",
+  "text": "The roof goes on top!",
+  "textHash": "a4c1c7ce72f30788",
+  "seed": 7,
+  "encoding": {
+    "codec": "aac",
+    "container": "m4a",
+    "sampleRate": 24000,
+    "channels": 1,
+    "bitrate": 96000
+  },
+  "whisper": {
+    "language": "en",
+    "transcript": "The roof goes on top.",
+    "score": 1.0,
+    "coverage": 1.0
+  },
+  "teacherReference": "shared/assets/refs/voice-teacher.wav"
+}

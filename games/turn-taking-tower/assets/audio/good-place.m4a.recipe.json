@@ -1,0 +1,22 @@
+{
+  "recipeVersion": "qlobe-recipe-v1",
+  "workflow": "qwen3-tts-voiceclone",
+  "file": "good-place.m4a",
+  "text": "Great placing!",
+  "textHash": "2e900b2d381c9a65",
+  "seed": 8,
+  "encoding": {
+    "codec": "aac",
+    "container": "m4a",
+    "sampleRate": 24000,
+    "channels": 1,
+    "bitrate": 96000
+  },
+  "whisper": {
+    "language": "en",
+    "transcript": "Great placing.",
+    "score": 1.0,
+    "coverage": 1.0
+  },
+  "teacherReference": "shared/assets/refs/voice-teacher.wav"
+}

@@ -1,0 +1,22 @@
+{
+  "recipeVersion": "qlobe-recipe-v1",
+  "workflow": "qwen3-tts-voiceclone",
+  "file": "buddy-placed.m4a",
+  "text": "Pip added a block. Now it's your turn!",
+  "textHash": "cc7906334e8e1e78",
+  "seed": 10,
+  "encoding": {
+    "codec": "aac",
+    "container": "m4a",
+    "sampleRate": 24000,
+    "channels": 1,
+    "bitrate": 96000
+  },
+  "whisper": {
+    "language": "en",
+    "transcript": "Pip. Added a block. Now it's your turn.",
+    "score": 1.0,
+    "coverage": 1.0
+  },
+  "teacherReference": "shared/assets/refs/voice-teacher.wav"
+}

@@ -71,7 +71,7 @@ function refsFromText(text, fileRel, re) {
 const isModule = (r) => r.startsWith('shared/js/') || r.startsWith('shared/vendor/');
 const isCss = (r) => r.startsWith('shared/css/');
 const isPack = (r) => /(?:pack\.json|scene-pack\.json|music-sync\.json|story-pack\.json|poses\.json|manifest\.json)$/.test(r);
-const isAsset = (r) => r.startsWith('shared/assets/') || r.startsWith('shared/characters/') || r.startsWith('shared/data/') || /^games\/[^/]+\/assets\//.test(r);
+const isAsset = (r) => r.startsWith('shared/assets/') || r.startsWith('shared/characters/') || r.startsWith('shared/data/') || /^games\/[^/]+\/assets(?:\/|$)/.test(r);
 
 // Every config-driven engine game gets these two sheets injected at runtime by
 // shared/js/engines/engine-styles.js (`new URL(...)`, not a static import/href

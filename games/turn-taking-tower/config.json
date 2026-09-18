@@ -1,0 +1,75 @@
+{
+  "id": "turn-taking-tower",
+  "title": "Turn-Taking Tower",
+  "displayTitle": "Build Together",
+  "artDirection": "Toy / warm wooden playroom",
+  "assets": {
+    "background": "./assets/scenes/playroom.webp",
+    "characters": {
+      "friend-blue": "./assets/characters/friend-blue.webp",
+      "friend-yellow": "./assets/characters/friend-yellow.webp",
+      "friend-blue-cheer": "./assets/characters/friend-blue-cheer.webp",
+      "friend-yellow-cheer": "./assets/characters/friend-yellow-cheer.webp"
+    },
+    "ui": {
+      "sign-plaque": "./assets/ui/sign-plaque.webp",
+      "player-card": "./assets/ui/player-card.webp",
+      "button-green": "./assets/ui/button-green.webp",
+      "button-blue": "./assets/ui/button-blue.webp"
+    },
+    "blocks": {
+      "turn-token": "./assets/blocks/turn-token.webp",
+      "tower-base": "./assets/blocks/tower-base.webp",
+      "arch": "./assets/blocks/block-arch.webp",
+      "green-long": "./assets/blocks/block-green-long.webp",
+      "yellow-square": "./assets/blocks/block-yellow-square.webp",
+      "blue-long": "./assets/blocks/block-blue-long.webp",
+      "red-square": "./assets/blocks/block-red-square.webp",
+      "yellow-long": "./assets/blocks/block-yellow-long.webp",
+      "green-square": "./assets/blocks/block-green-square.webp",
+      "red-long": "./assets/blocks/block-red-long.webp",
+      "blue-square": "./assets/blocks/block-blue-square.webp",
+      "roof": "./assets/blocks/block-roof.webp"
+    }
+  },
+  "music": {
+    "track": "../../shared/assets/music/whimsical-toy-workshop.mp3",
+    "volume": 0.14
+  },
+  "modes": [
+    { "id": "buddy", "title": "Buddy Build", "kicker": "Build with Pip", "skill": "wait and take turns with a friendly builder", "partner": "ai" },
+    { "id": "two-builders", "title": "Two Builders", "kicker": "Pass and play", "skill": "pass-and-play turn taking", "partner": "human" }
+  ],
+  "tower": [
+    { "id": "place-01", "asset": "arch", "color": "blue", "shape": "arch", "x": 50, "y": 80, "w": 38, "owner": 1 },
+    { "id": "place-02", "asset": "green-long", "color": "green", "shape": "long", "x": 44, "y": 69, "w": 30, "owner": 2 },
+    { "id": "place-03", "asset": "yellow-square", "color": "yellow", "shape": "square", "x": 66, "y": 69, "w": 16, "owner": 1 },
+    { "id": "place-04", "asset": "blue-long", "color": "blue", "shape": "long", "x": 56, "y": 58, "w": 30, "owner": 2 },
+    { "id": "place-05", "asset": "red-square", "color": "red", "shape": "square", "x": 34, "y": 58, "w": 16, "owner": 1 },
+    { "id": "place-06", "asset": "yellow-long", "color": "yellow", "shape": "long", "x": 44, "y": 47, "w": 30, "owner": 2 },
+    { "id": "place-07", "asset": "green-square", "color": "green", "shape": "square", "x": 66, "y": 47, "w": 16, "owner": 1 },
+    { "id": "place-08", "asset": "red-long", "color": "red", "shape": "long", "x": 56, "y": 36, "w": 30, "owner": 2 },
+    { "id": "place-09", "asset": "blue-square", "color": "blue", "shape": "square", "x": 34, "y": 36, "w": 16, "owner": 1 },
+    { "id": "place-10", "asset": "roof", "color": "yellow", "shape": "roof", "x": 50, "y": 22, "w": 31, "owner": 2 }
+  ],
+  "voice": {
+    "welcome": "Let's build a tower together!",
+    "choose-mode": "Choose a buddy, or build with someone beside you.",
+    "buddy-intro": "Pip will take every other turn. You build, then wait for Pip.",
+    "two-intro": "Two builders! Pass the blocks and take turns.",
+    "your-turn": "Your turn! Place one block.",
+    "buddy-turn": "Pip's turn. Watch Pip build.",
+    "player-one-turn": "Player 1, your turn.",
+    "player-two-turn": "Player 2, your turn.",
+    "place-block": "Find the glowing spot.",
+    "good-place": "Great placing!",
+    "wait-nudge": "Wait gently. Your turn is coming.",
+    "wrong-shape": "That block can wait. Try the glowing one.",
+    "buddy-placed": "Pip added a block. Now it's your turn!",
+    "halfway": "Look! Our tower is halfway up.",
+    "roof-turn": "The roof goes on top!",
+    "together-cheer": "We built it together! Great taking turns!",
+    "play-again": "Ready to build another tower?",
+    "idle": "The glowing block is ready for you."
+  }
+}

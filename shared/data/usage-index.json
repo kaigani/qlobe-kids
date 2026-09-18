@@ -9,7 +9,7 @@
     "games/<id>/config.js",
     "games/<id>/js/**/*.js"
   ],
-  "generated": "2026-09-18T21:44:03.825Z",
+  "generated": "2026-09-18T23:13:54.363Z",
   "engines": {
     "coach-timer": {
       "count": 5,
@@ -30,18 +30,17 @@
         "problem-solving-puppets"
       ]
     },
-    "build-assemble": {
-      "count": 2,
-      "games": [
-        "blend-train",
-        "turn-taking-tower"
-      ]
-    },
     "trace-path": {
       "count": 2,
       "games": [
         "letter-road-driving",
         "scissor-trail-safari"
+      ]
+    },
+    "build-assemble": {
+      "count": 1,
+      "games": [
+        "blend-train"
       ]
     },
     "sequence-order": {
@@ -348,6 +347,7 @@
         "shared/css/screens.css"
       ],
       "assets": [
+        "games/board-game-reset/assets",
         "shared/assets/music"
       ],
       "packs": []
@@ -445,10 +445,12 @@
         "shared/css/screens.css"
       ],
       "assets": [
+        "games/calm-corner-cards/assets",
         "games/calm-corner-cards/assets/backgrounds/calm-room.webp",
         "games/calm-corner-cards/assets/characters/sunny-hug.webp",
         "games/calm-corner-cards/assets/ui/button-plum.webp",
         "games/calm-corner-cards/assets/ui/button-teal.webp",
+        "games/calm-corner-cards/assets/ui/card-cream.webp",
         "games/calm-corner-cards/assets/ui/moon-patch.webp",
         "games/calm-corner-cards/assets/ui/plaque-lavender.webp",
         "games/calm-corner-cards/assets/ui/title.webp",
@@ -582,6 +584,7 @@
         "shared/css/screens.css"
       ],
       "assets": [
+        "games/cleanup-timer-quest/assets",
         "shared/assets/music"
       ],
       "packs": []
@@ -1486,6 +1489,7 @@
         "shared/css/screens.css"
       ],
       "assets": [
+        "games/magnet-explorer/assets",
         "shared/assets/music/whimsical-toy-workshop.mp3"
       ],
       "packs": []
@@ -1699,6 +1703,7 @@
         "shared/css/screens.css"
       ],
       "assets": [
+        "games/name-puzzle/assets",
         "games/name-puzzle/assets/characters/belle.webp",
         "games/name-puzzle/assets/ui/name-board.webp",
         "games/name-puzzle/assets/ui/pager-next.webp",
@@ -2893,6 +2898,7 @@
         "shared/css/screens.css"
       ],
       "assets": [
+        "games/smell-jars/assets",
         "shared/assets/music/whimsical-toy-workshop.mp3"
       ],
       "packs": []
@@ -3445,6 +3451,7 @@
         "shared/css/screens.css"
       ],
       "assets": [
+        "games/texture-trail/assets",
         "shared/assets/music/quirky-forest-adventure.mp3"
       ],
       "packs": []
@@ -3621,29 +3628,35 @@
       "packs": []
     },
     "turn-taking-tower": {
-      "engine": "build-assemble",
-      "status": "in-design",
+      "engine": null,
+      "status": "beta",
       "category": "social-emotional",
-      "characters": [
-        "leo",
-        "maya",
-        "nia",
-        "ravi",
-        "sam"
-      ],
+      "characters": [],
       "modules": [
         "shared/js/analytics.js",
-        "shared/js/engines/build-assemble.js",
+        "shared/js/audio-unlock.js",
+        "shared/js/bgm.js",
+        "shared/js/celebrate.js",
+        "shared/js/debug-harness.js",
+        "shared/js/hud.js",
+        "shared/js/idle-nudge.js",
+        "shared/js/narrator.js",
+        "shared/js/preload.js",
+        "shared/js/rng.js",
+        "shared/js/screens.js",
         "shared/js/sfx.js",
-        "shared/js/speech.js"
+        "shared/js/stage/drag-to-slot-dom.js",
+        "shared/js/tap.js",
+        "shared/js/timers.js",
+        "shared/js/voice-clips.js"
       ],
       "css": [
         "shared/css/base.css",
-        "shared/css/engine-base.css",
+        "shared/css/hud.css",
         "shared/css/screens.css"
       ],
       "assets": [
-        "shared/assets/ui"
+        "games/turn-taking-tower/assets"
       ],
       "packs": []
     },
@@ -3957,6 +3970,7 @@
         "tiny-reader-theater",
         "tiny-sentence-workshop",
         "trail-counting-walk",
+        "turn-taking-tower",
         "tweezer-rescue",
         "weather-scientist",
         "world-music-dance"
@@ -4002,6 +4016,7 @@
         "texture-trail",
         "tiny-sentence-workshop",
         "trail-counting-walk",
+        "turn-taking-tower",
         "tweezer-rescue"
       ],
       "shared/js/camera-motion.js": [
@@ -4064,6 +4079,7 @@
         "teen-bead-builder",
         "tiny-reader-theater",
         "trail-counting-walk",
+        "turn-taking-tower",
         "tweezer-rescue",
         "weather-scientist"
       ],
@@ -4180,6 +4196,7 @@
         "tiny-reader-theater",
         "tiny-sentence-workshop",
         "trail-counting-walk",
+        "turn-taking-tower",
         "tweezer-rescue",
         "weather-scientist",
         "world-music-dance"
@@ -4197,8 +4214,7 @@
         "world-music-dance"
       ],
       "shared/js/engines/build-assemble.js": [
-        "blend-train",
-        "turn-taking-tower"
+        "blend-train"
       ],
       "shared/js/engines/choose-one.js": [
         "grace-courtesy-theater",
@@ -4295,7 +4311,8 @@
         "table-setting-mission",
         "texture-trail",
         "tiny-reader-theater",
-        "trail-counting-walk"
+        "trail-counting-walk",
+        "turn-taking-tower"
       ],
       "shared/js/idle-nudge.js": [
         "balance-beam-trail",
@@ -4351,6 +4368,7 @@
         "tiny-reader-theater",
         "tiny-sentence-workshop",
         "trail-counting-walk",
+        "turn-taking-tower",
         "tweezer-rescue",
         "weather-scientist",
         "world-music-dance"
@@ -4437,6 +4455,7 @@
         "texture-trail",
         "throwing-target-garden",
         "trail-counting-walk",
+        "turn-taking-tower",
         "tweezer-rescue",
         "weather-scientist"
       ],
@@ -4499,6 +4518,7 @@
         "throwing-target-garden",
         "tiny-sentence-workshop",
         "trail-counting-walk",
+        "turn-taking-tower",
         "tweezer-rescue"
       ],
       "shared/js/puzzle-cutter.js": [
@@ -4571,6 +4591,7 @@
         "tiny-reader-theater",
         "tiny-sentence-workshop",
         "trail-counting-walk",
+        "turn-taking-tower",
         "tweezer-rescue",
         "world-music-dance"
       ],
@@ -4629,6 +4650,7 @@
         "tiny-reader-theater",
         "tiny-sentence-workshop",
         "trail-counting-walk",
+        "turn-taking-tower",
         "tweezer-rescue"
       ],
       "shared/js/sfx.js": [
@@ -4794,7 +4816,6 @@
         "tangram-tales",
         "teen-bead-builder",
         "then-now-sort",
-        "turn-taking-tower",
         "waiting-muscle-game",
         "weather-scientist",
         "world-music-dance"
@@ -4841,7 +4862,8 @@
         "table-setting-mission",
         "tangram-tales",
         "teen-bead-builder",
-        "tiny-sentence-workshop"
+        "tiny-sentence-workshop",
+        "turn-taking-tower"
       ],
       "shared/js/stage/drag-to-slot.js": [
         "blend-train",
@@ -4986,6 +5008,7 @@
         "tiny-reader-theater",
         "tiny-sentence-workshop",
         "trail-counting-walk",
+        "turn-taking-tower",
         "tweezer-rescue",
         "weather-scientist",
         "world-music-dance"
@@ -5062,6 +5085,7 @@
         "tiny-reader-theater",
         "tiny-sentence-workshop",
         "trail-counting-walk",
+        "turn-taking-tower",
         "tweezer-rescue",
         "weather-scientist",
         "world-music-dance"
@@ -5158,6 +5182,7 @@
         "tiny-reader-theater",
         "tiny-sentence-workshop",
         "trail-counting-walk",
+        "turn-taking-tower",
         "tweezer-rescue",
         "weather-scientist",
         "world-music-dance"
@@ -5309,7 +5334,6 @@
         "story-sequence",
         "story-stones",
         "then-now-sort",
-        "turn-taking-tower",
         "waiting-muscle-game"
       ],
       "shared/css/hud.css": [
@@ -5378,6 +5402,7 @@
         "throwing-target-garden",
         "tiny-reader-theater",
         "trail-counting-walk",
+        "turn-taking-tower",
         "weather-scientist"
       ],
       "shared/css/screens.css": [
@@ -5569,8 +5594,7 @@
         "grace-courtesy-theater",
         "lunchbox-pack",
         "problem-solving-puppets",
-        "question-ball",
-        "turn-taking-tower"
+        "question-ball"
       ],
       "Leo": [
         "post-office-letters",
@@ -5591,8 +5615,7 @@
         "pouring-station",
         "problem-solving-puppets",
         "question-ball",
-        "snack-chef",
-        "turn-taking-tower"
+        "snack-chef"
       ],
       "Maya": [
         "post-office-letters",
@@ -5609,8 +5632,7 @@
         "feelings-charades",
         "grace-courtesy-theater",
         "lunchbox-pack",
-        "problem-solving-puppets",
-        "turn-taking-tower"
+        "problem-solving-puppets"
       ],
       "Nia": [
         "post-office-letters",
@@ -5679,8 +5701,7 @@
         "feelings-charades",
         "grace-courtesy-theater",
         "number-sense-kitchen",
-        "problem-solving-puppets",
-        "turn-taking-tower"
+        "problem-solving-puppets"
       ],
       "Ravi": [
         "post-office-letters"
@@ -5689,8 +5710,7 @@
         "feelings-charades",
         "grace-courtesy-theater",
         "lunchbox-pack",
-        "problem-solving-puppets",
-        "turn-taking-tower"
+        "problem-solving-puppets"
       ],
       "Sam": [
         "post-office-letters"
@@ -5789,6 +5809,9 @@
       "games/block-tower-measure/assets/audio": [
         "block-tower-measure"
       ],
+      "games/board-game-reset/assets": [
+        "board-game-reset"
+      ],
       "games/button-zipper-lab/assets/boards/zipper.webp": [
         "button-zipper-lab"
       ],
@@ -5804,6 +5827,9 @@
       "games/button-zipper-lab/assets/ui/zipper-pull.webp": [
         "button-zipper-lab"
       ],
+      "games/calm-corner-cards/assets": [
+        "calm-corner-cards"
+      ],
       "games/calm-corner-cards/assets/backgrounds/calm-room.webp": [
         "calm-corner-cards"
       ],
@@ -5814,6 +5840,9 @@
         "calm-corner-cards"
       ],
       "games/calm-corner-cards/assets/ui/button-teal.webp": [
+        "calm-corner-cards"
+      ],
+      "games/calm-corner-cards/assets/ui/card-cream.webp": [
         "calm-corner-cards"
       ],
       "games/calm-corner-cards/assets/ui/moon-patch.webp": [
@@ -5854,6 +5883,9 @@
       ],
       "games/chocolate-chip-count/assets/title.webp": [
         "chocolate-chip-count"
+      ],
+      "games/cleanup-timer-quest/assets": [
+        "cleanup-timer-quest"
       ],
       "games/community-helper-cards/assets/art": [
         "community-helper-cards"
@@ -6128,6 +6160,9 @@
       "games/lunchbox-pack/assets/lunchbox-open.png": [
         "lunchbox-pack"
       ],
+      "games/magnet-explorer/assets": [
+        "magnet-explorer"
+      ],
       "games/mountain-seasons-wheel/assets/backgrounds/splash.webp": [
         "mountain-seasons-wheel"
       ],
@@ -6175,6 +6210,9 @@
       ],
       "games/mountain-seasons-wheel/assets/ui/wheel.webp": [
         "mountain-seasons-wheel"
+      ],
+      "games/name-puzzle/assets": [
+        "name-puzzle"
       ],
       "games/name-puzzle/assets/characters/belle.webp": [
         "name-puzzle"
@@ -6686,6 +6724,9 @@
       "games/silly-swap-words/assets/words/mug.webp": [
         "silly-swap-words"
       ],
+      "games/smell-jars/assets": [
+        "smell-jars"
+      ],
       "games/snack-addition-stories/assets/backdrop.webp": [
         "snack-addition-stories"
       ],
@@ -6851,6 +6892,9 @@
       "games/teen-bead-builder/assets/manipulatives/tray.webp": [
         "teen-bead-builder"
       ],
+      "games/texture-trail/assets": [
+        "texture-trail"
+      ],
       "games/tiny-reader-theater/assets/ui/title-lockup.webp": [
         "tiny-reader-theater"
       ],
@@ -6886,6 +6930,9 @@
       ],
       "games/trail-counting-walk/assets/art/world-select.webp": [
         "trail-counting-walk"
+      ],
+      "games/turn-taking-tower/assets": [
+        "turn-taking-tower"
       ],
       "shared/assets/audio": [
         "picture-word-match",
@@ -7031,7 +7078,6 @@
         "sticker-line-challenge",
         "tangram-tales",
         "teen-bead-builder",
-        "turn-taking-tower",
         "weather-scientist"
       ],
       "shared/assets/ui/btn-back.png": [
@@ -7082,8 +7128,7 @@
         "grace-courtesy-theater",
         "lunchbox-pack",
         "problem-solving-puppets",
-        "question-ball",
-        "turn-taking-tower"
+        "question-ball"
       ],
       "shared/characters/Leo": [
         "post-office-letters",
@@ -7101,8 +7146,7 @@
         "pouring-station",
         "problem-solving-puppets",
         "question-ball",
-        "snack-chef",
-        "turn-taking-tower"
+        "snack-chef"
       ],
       "shared/characters/Maya": [
         "post-office-letters",
@@ -7118,8 +7162,7 @@
         "feelings-charades",
         "grace-courtesy-theater",
         "lunchbox-pack",
-        "problem-solving-puppets",
-        "turn-taking-tower"
+        "problem-solving-puppets"
       ],
       "shared/characters/Nia": [
         "post-office-letters",
@@ -7151,8 +7194,7 @@
         "feelings-charades",
         "grace-courtesy-theater",
         "number-sense-kitchen",
-        "problem-solving-puppets",
-        "turn-taking-tower"
+        "problem-solving-puppets"
       ],
       "shared/characters/Ravi": [
         "post-office-letters"
@@ -7164,8 +7206,7 @@
         "feelings-charades",
         "grace-courtesy-theater",
         "lunchbox-pack",
-        "problem-solving-puppets",
-        "turn-taking-tower"
+        "problem-solving-puppets"
       ],
       "shared/characters/Sam": [
         "post-office-letters"

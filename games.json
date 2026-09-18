@@ -3586,21 +3586,21 @@
       "path": "games/turn-taking-tower/",
       "icon": "assets/hub/tiles/turn-taking-tower.jpg",
       "age": {
-        "min": 5,
-        "max": 6
+        "min": 2,
+        "max": 5
       },
-      "status": "in-design",
-      "accent": "#8fd3c7",
+      "status": "beta",
+      "accent": "#f6b94b",
       "modes": [
         {
-          "id": "together",
-          "title": "Our Tower",
-          "skill": "turn-taking rhythm with one friend"
+          "id": "buddy",
+          "title": "Buddy Build",
+          "skill": "wait and take turns with a friendly builder"
         },
         {
-          "id": "tall",
-          "title": "Super Tower",
-          "skill": "turn-taking rhythm with two friends"
+          "id": "two-builders",
+          "title": "Two Builders",
+          "skill": "pass-and-play turn taking"
         }
       ],
       "summary": "Build a tower one block per turn."

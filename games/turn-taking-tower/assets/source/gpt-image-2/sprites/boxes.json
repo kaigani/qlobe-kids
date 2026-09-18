@@ -1,0 +1,502 @@
+{
+  "source": "games/turn-taking-tower/assets/source/gpt-image-2/sprites-charcoal.png",
+  "sourceSha256": "e92783f0ca3f32084f87f26c7421f32d41f1175c5c9fc70ac91c0f83c814fe2a",
+  "sourceSize": [
+    1254,
+    1254
+  ],
+  "detection": "alpha",
+  "sampledBackgroundRgb": null,
+  "padding": 12,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "friend-blue",
+      "file": "friend-blue.png",
+      "componentArea": 44529,
+      "foregroundBbox": [
+        76,
+        105,
+        279,
+        373
+      ],
+      "cropBbox": [
+        64,
+        93,
+        291,
+        385
+      ],
+      "cropXywh": [
+        64,
+        93,
+        227,
+        292
+      ],
+      "normalizedCropBbox": [
+        0.051037,
+        0.074163,
+        0.232057,
+        0.307018
+      ]
+    },
+    {
+      "index": 2,
+      "name": "friend-yellow",
+      "file": "friend-yellow.png",
+      "componentArea": 41108,
+      "foregroundBbox": [
+        385,
+        100,
+        560,
+        376
+      ],
+      "cropBbox": [
+        373,
+        88,
+        572,
+        388
+      ],
+      "cropXywh": [
+        373,
+        88,
+        199,
+        300
+      ],
+      "normalizedCropBbox": [
+        0.297448,
+        0.070175,
+        0.45614,
+        0.30941
+      ]
+    },
+    {
+      "index": 3,
+      "name": "friend-blue-cheer",
+      "file": "friend-blue-cheer.png",
+      "componentArea": 50748,
+      "foregroundBbox": [
+        627,
+        102,
+        917,
+        376
+      ],
+      "cropBbox": [
+        615,
+        90,
+        929,
+        388
+      ],
+      "cropXywh": [
+        615,
+        90,
+        314,
+        298
+      ],
+      "normalizedCropBbox": [
+        0.490431,
+        0.07177,
+        0.740829,
+        0.30941
+      ]
+    },
+    {
+      "index": 4,
+      "name": "friend-yellow-cheer",
+      "file": "friend-yellow-cheer.png",
+      "componentArea": 48372,
+      "foregroundBbox": [
+        942,
+        96,
+        1214,
+        376
+      ],
+      "cropBbox": [
+        930,
+        84,
+        1226,
+        388
+      ],
+      "cropXywh": [
+        930,
+        84,
+        296,
+        304
+      ],
+      "normalizedCropBbox": [
+        0.741627,
+        0.066986,
+        0.977671,
+        0.30941
+      ]
+    },
+    {
+      "index": 5,
+      "name": "block-blue-long",
+      "file": "block-blue-long.png",
+      "componentArea": 29527,
+      "foregroundBbox": [
+        43,
+        465,
+        319,
+        598
+      ],
+      "cropBbox": [
+        31,
+        453,
+        331,
+        610
+      ],
+      "cropXywh": [
+        31,
+        453,
+        300,
+        157
+      ],
+      "normalizedCropBbox": [
+        0.024721,
+        0.361244,
+        0.263955,
+        0.486443
+      ]
+    },
+    {
+      "index": 6,
+      "name": "block-yellow-long",
+      "file": "block-yellow-long.png",
+      "componentArea": 28379,
+      "foregroundBbox": [
+        351,
+        462,
+        610,
+        595
+      ],
+      "cropBbox": [
+        339,
+        450,
+        622,
+        607
+      ],
+      "cropXywh": [
+        339,
+        450,
+        283,
+        157
+      ],
+      "normalizedCropBbox": [
+        0.270335,
+        0.358852,
+        0.496013,
+        0.484051
+      ]
+    },
+    {
+      "index": 7,
+      "name": "block-red-long",
+      "file": "block-red-long.png",
+      "componentArea": 29126,
+      "foregroundBbox": [
+        647,
+        461,
+        912,
+        596
+      ],
+      "cropBbox": [
+        635,
+        449,
+        924,
+        608
+      ],
+      "cropXywh": [
+        635,
+        449,
+        289,
+        159
+      ],
+      "normalizedCropBbox": [
+        0.50638,
+        0.358054,
+        0.736842,
+        0.484848
+      ]
+    },
+    {
+      "index": 8,
+      "name": "block-green-long",
+      "file": "block-green-long.png",
+      "componentArea": 29724,
+      "foregroundBbox": [
+        950,
+        460,
+        1219,
+        595
+      ],
+      "cropBbox": [
+        938,
+        448,
+        1231,
+        607
+      ],
+      "cropXywh": [
+        938,
+        448,
+        293,
+        159
+      ],
+      "normalizedCropBbox": [
+        0.748006,
+        0.357257,
+        0.981659,
+        0.484051
+      ]
+    },
+    {
+      "index": 9,
+      "name": "block-blue-square",
+      "file": "block-blue-square.png",
+      "componentArea": 30166,
+      "foregroundBbox": [
+        83,
+        668,
+        270,
+        858
+      ],
+      "cropBbox": [
+        71,
+        656,
+        282,
+        870
+      ],
+      "cropXywh": [
+        71,
+        656,
+        211,
+        214
+      ],
+      "normalizedCropBbox": [
+        0.056619,
+        0.523126,
+        0.22488,
+        0.69378
+      ]
+    },
+    {
+      "index": 10,
+      "name": "block-yellow-square",
+      "file": "block-yellow-square.png",
+      "componentArea": 27734,
+      "foregroundBbox": [
+        390,
+        671,
+        564,
+        854
+      ],
+      "cropBbox": [
+        378,
+        659,
+        576,
+        866
+      ],
+      "cropXywh": [
+        378,
+        659,
+        198,
+        207
+      ],
+      "normalizedCropBbox": [
+        0.301435,
+        0.525518,
+        0.45933,
+        0.69059
+      ]
+    },
+    {
+      "index": 11,
+      "name": "block-red-square",
+      "file": "block-red-square.png",
+      "componentArea": 28256,
+      "foregroundBbox": [
+        691,
+        670,
+        868,
+        855
+      ],
+      "cropBbox": [
+        679,
+        658,
+        880,
+        867
+      ],
+      "cropXywh": [
+        679,
+        658,
+        201,
+        209
+      ],
+      "normalizedCropBbox": [
+        0.541467,
+        0.524721,
+        0.701754,
+        0.691388
+      ]
+    },
+    {
+      "index": 12,
+      "name": "block-green-square",
+      "file": "block-green-square.png",
+      "componentArea": 28423,
+      "foregroundBbox": [
+        991,
+        670,
+        1171,
+        855
+      ],
+      "cropBbox": [
+        979,
+        658,
+        1183,
+        867
+      ],
+      "cropXywh": [
+        979,
+        658,
+        204,
+        209
+      ],
+      "normalizedCropBbox": [
+        0.780702,
+        0.524721,
+        0.943381,
+        0.691388
+      ]
+    },
+    {
+      "index": 13,
+      "name": "block-arch",
+      "file": "block-arch.png",
+      "componentArea": 39253,
+      "foregroundBbox": [
+        31,
+        942,
+        334,
+        1118
+      ],
+      "cropBbox": [
+        19,
+        930,
+        346,
+        1130
+      ],
+      "cropXywh": [
+        19,
+        930,
+        327,
+        200
+      ],
+      "normalizedCropBbox": [
+        0.015152,
+        0.741627,
+        0.275917,
+        0.901116
+      ]
+    },
+    {
+      "index": 14,
+      "name": "block-roof",
+      "file": "block-roof.png",
+      "componentArea": 23508,
+      "foregroundBbox": [
+        365,
+        951,
+        610,
+        1106
+      ],
+      "cropBbox": [
+        353,
+        939,
+        622,
+        1118
+      ],
+      "cropXywh": [
+        353,
+        939,
+        269,
+        179
+      ],
+      "normalizedCropBbox": [
+        0.281499,
+        0.748804,
+        0.496013,
+        0.891547
+      ]
+    },
+    {
+      "index": 15,
+      "name": "turn-token",
+      "file": "turn-token.png",
+      "componentArea": 35938,
+      "foregroundBbox": [
+        652,
+        925,
+        866,
+        1138
+      ],
+      "cropBbox": [
+        640,
+        913,
+        878,
+        1150
+      ],
+      "cropXywh": [
+        640,
+        913,
+        238,
+        237
+      ],
+      "normalizedCropBbox": [
+        0.510367,
+        0.72807,
+        0.700159,
+        0.917065
+      ]
+    },
+    {
+      "index": 16,
+      "name": "tower-base",
+      "file": "tower-base.png",
+      "componentArea": 36662,
+      "foregroundBbox": [
+        901,
+        972,
+        1225,
+        1118
+      ],
+      "cropBbox": [
+        889,
+        960,
+        1237,
+        1130
+      ],
+      "cropXywh": [
+        889,
+        960,
+        348,
+        170
+      ],
+      "normalizedCropBbox": [
+        0.708931,
+        0.76555,
+        0.986443,
+        0.901116
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 2,
+    "minArea": 786,
+    "order": "reading"
+  }
+}

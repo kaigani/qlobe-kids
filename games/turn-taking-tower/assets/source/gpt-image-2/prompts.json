@@ -1,0 +1,33 @@
+{
+  "model": "gpt-image-2",
+  "generated": "2026-09-18",
+  "conceptReferences": [
+    "01-game-concepts/turn-taking-tower/output/ui-mockups/00-overview.png",
+    "01-game-concepts/turn-taking-tower/output/ui-mockups/01-player-select.png",
+    "01-game-concepts/turn-taking-tower/output/ui-mockups/02-take-turn-building.png",
+    "01-game-concepts/turn-taking-tower/output/ui-mockups/03-tower-together.png"
+  ],
+  "assets": [
+    {
+      "file": "playroom-empty.png",
+      "kind": "new image with concept references",
+      "prompt": "Create a clean empty 4:3 warm wooden playroom background plate matching the supplied Turn-Taking Tower mockups: softly blurred toy shelves at the far left and right, creamy sunlit wall, large clear center, honey-colored tabletop across the lower half, cheerful premium preschool 3D-toy photography, no characters, no loose blocks, no signs, no words, no UI, no border."
+    },
+    {
+      "file": "sprites-charcoal.png",
+      "kind": "exact-count asset sheet",
+      "prompt": "Create one separated 4-by-4 asset sheet on a flat dark charcoal background with exactly sixteen complete wooden-toy objects in this exact row-major order: blue square-headed friend idle, yellow round-headed friend idle, blue friend cheering, yellow friend cheering; blue, yellow, red, and green long rectangular blocks; blue, yellow, red, and green square blocks; blue arch, yellow triangular roof, round blue star turn token, low wooden tower base. Match the concept's friendly 3D toy style, warm studio light and visible wood grain. Every object isolated, centered in its cell, fully inside frame, no text, no labels, no shadows connecting cells, no extra objects."
+    },
+    {
+      "file": "ui-charcoal.png",
+      "kind": "exact-count UI sheet",
+      "prompt": "Create one separated 2-by-2 asset sheet on flat dark charcoal with exactly four blank preschool wooden UI props: wide pale wood sign plaque with two round pegs, tall cream inset player card frame, wide green wooden pill button, wide blue wooden pill button. Match the Turn-Taking Tower toy mockups, complete objects with generous separation, straight-on camera, no words, no icons, no labels, no extra objects."
+    },
+    {
+      "file": "ui-transparent-attempt.png",
+      "kind": "transparent-background edit",
+      "source": "ui-charcoal.png",
+      "prompt": "Preserve the four wooden UI objects exactly, remove the charcoal ground completely, return true alpha transparency everywhere outside each object, keep a separated 2-by-2 arrangement, no dark matte, no shadow rectangle, no new objects, no words."
+    }
+  ]
+}

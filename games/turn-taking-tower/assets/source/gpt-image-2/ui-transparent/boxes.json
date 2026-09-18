@@ -1,0 +1,142 @@
+{
+  "source": "games/turn-taking-tower/assets/source/gpt-image-2/ui-transparent-attempt.png",
+  "sourceSha256": "0ea0c8090e82b6c12191e2da5f3c0d30155c9358084aba805624024ff72c1228",
+  "sourceSize": [
+    2048,
+    768
+  ],
+  "detection": "alpha",
+  "sampledBackgroundRgb": null,
+  "padding": 12,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "sign-plaque",
+      "file": "sign-plaque.png",
+      "componentArea": 123411,
+      "foregroundBbox": [
+        33,
+        277,
+        727,
+        463
+      ],
+      "cropBbox": [
+        21,
+        265,
+        739,
+        475
+      ],
+      "cropXywh": [
+        21,
+        265,
+        718,
+        210
+      ],
+      "normalizedCropBbox": [
+        0.010254,
+        0.345052,
+        0.36084,
+        0.61849
+      ]
+    },
+    {
+      "index": 2,
+      "name": "player-card",
+      "file": "player-card.png",
+      "componentArea": 103967,
+      "foregroundBbox": [
+        756,
+        192,
+        1046,
+        557
+      ],
+      "cropBbox": [
+        744,
+        180,
+        1058,
+        569
+      ],
+      "cropXywh": [
+        744,
+        180,
+        314,
+        389
+      ],
+      "normalizedCropBbox": [
+        0.363281,
+        0.234375,
+        0.516602,
+        0.740885
+      ]
+    },
+    {
+      "index": 3,
+      "name": "button-green",
+      "file": "button-green.png",
+      "componentArea": 79661,
+      "foregroundBbox": [
+        1074,
+        282,
+        1544,
+        465
+      ],
+      "cropBbox": [
+        1062,
+        270,
+        1556,
+        477
+      ],
+      "cropXywh": [
+        1062,
+        270,
+        494,
+        207
+      ],
+      "normalizedCropBbox": [
+        0.518555,
+        0.351562,
+        0.759766,
+        0.621094
+      ]
+    },
+    {
+      "index": 4,
+      "name": "button-blue",
+      "file": "button-blue.png",
+      "componentArea": 76384,
+      "foregroundBbox": [
+        1569,
+        282,
+        2019,
+        465
+      ],
+      "cropBbox": [
+        1557,
+        270,
+        2031,
+        477
+      ],
+      "cropXywh": [
+        1557,
+        270,
+        474,
+        207
+      ],
+      "normalizedCropBbox": [
+        0.760254,
+        0.351562,
+        0.991699,
+        0.621094
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 2,
+    "minArea": 786,
+    "order": "reading"
+  }
+}
