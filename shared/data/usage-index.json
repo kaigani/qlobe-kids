@@ -9,18 +9,8 @@
     "games/<id>/config.js",
     "games/<id>/js/**/*.js"
   ],
-  "generated": "2026-09-18T20:05:44.727Z",
+  "generated": "2026-09-18T21:44:03.825Z",
   "engines": {
-    "choose-one": {
-      "count": 5,
-      "games": [
-        "calm-corner-cards",
-        "grace-courtesy-theater",
-        "mystery-letter-bag",
-        "plan-do-review",
-        "problem-solving-puppets"
-      ]
-    },
     "coach-timer": {
       "count": 5,
       "games": [
@@ -29,6 +19,15 @@
         "neighborhood-map-walk",
         "shelf-reset-game",
         "waiting-muscle-game"
+      ]
+    },
+    "choose-one": {
+      "count": 4,
+      "games": [
+        "grace-courtesy-theater",
+        "mystery-letter-bag",
+        "plan-do-review",
+        "problem-solving-puppets"
       ]
     },
     "build-assemble": {
@@ -421,27 +420,40 @@
       "packs": []
     },
     "calm-corner-cards": {
-      "engine": "choose-one",
-      "status": "in-design",
+      "engine": null,
+      "status": "beta",
       "category": "social-emotional",
-      "characters": [
-        "leo",
-        "maya",
-        "nia",
-        "ravi"
-      ],
+      "characters": [],
       "modules": [
         "shared/js/analytics.js",
-        "shared/js/engines/choose-one.js",
+        "shared/js/audio-unlock.js",
+        "shared/js/bgm.js",
+        "shared/js/debug-harness.js",
+        "shared/js/hud.js",
+        "shared/js/idle-nudge.js",
+        "shared/js/narrator.js",
+        "shared/js/preload.js",
+        "shared/js/screens.js",
         "shared/js/sfx.js",
-        "shared/js/speech.js"
+        "shared/js/tap.js",
+        "shared/js/timers.js",
+        "shared/js/voice-clips.js"
       ],
       "css": [
         "shared/css/base.css",
-        "shared/css/engine-base.css",
+        "shared/css/hud.css",
         "shared/css/screens.css"
       ],
-      "assets": [],
+      "assets": [
+        "games/calm-corner-cards/assets/backgrounds/calm-room.webp",
+        "games/calm-corner-cards/assets/characters/sunny-hug.webp",
+        "games/calm-corner-cards/assets/ui/button-plum.webp",
+        "games/calm-corner-cards/assets/ui/button-teal.webp",
+        "games/calm-corner-cards/assets/ui/moon-patch.webp",
+        "games/calm-corner-cards/assets/ui/plaque-lavender.webp",
+        "games/calm-corner-cards/assets/ui/title.webp",
+        "shared/assets/music/cozy-starlight-lullaby.mp3"
+      ],
       "packs": []
     },
     "chalkboard-big-strokes": {
@@ -3866,6 +3878,7 @@
         "board-game-reset",
         "bug-hotel-observer",
         "button-zipper-lab",
+        "calm-corner-cards",
         "chalkboard-big-strokes",
         "chocolate-chip-count",
         "clay-creature-studio",
@@ -3952,6 +3965,7 @@
         "bean-sprout-watch",
         "beat-the-bugs",
         "board-game-reset",
+        "calm-corner-cards",
         "chalkboard-big-strokes",
         "cleanup-timer-quest",
         "community-helper-cards",
@@ -4087,6 +4101,7 @@
         "block-tower-measure",
         "board-game-reset",
         "button-zipper-lab",
+        "calm-corner-cards",
         "chalkboard-big-strokes",
         "chocolate-chip-count",
         "clay-creature-studio",
@@ -4186,7 +4201,6 @@
         "turn-taking-tower"
       ],
       "shared/js/engines/choose-one.js": [
-        "calm-corner-cards",
         "grace-courtesy-theater",
         "mystery-letter-bag",
         "plan-do-review",
@@ -4242,6 +4256,7 @@
         "block-tower-measure",
         "board-game-reset",
         "button-zipper-lab",
+        "calm-corner-cards",
         "chocolate-chip-count",
         "cleanup-timer-quest",
         "color-gradient-cards",
@@ -4289,6 +4304,7 @@
         "block-tower-measure",
         "board-game-reset",
         "button-zipper-lab",
+        "calm-corner-cards",
         "cleanup-timer-quest",
         "color-gradient-cards",
         "color-mixing-lab",
@@ -4387,6 +4403,7 @@
         "beat-the-bugs",
         "big-paper-murals",
         "board-game-reset",
+        "calm-corner-cards",
         "chalkboard-big-strokes",
         "cleanup-timer-quest",
         "color-gradient-cards",
@@ -4430,6 +4447,7 @@
         "block-tower-measure",
         "board-game-reset",
         "button-zipper-lab",
+        "calm-corner-cards",
         "chocolate-chip-count",
         "clay-creature-studio",
         "cleanup-timer-quest",
@@ -4562,6 +4580,7 @@
         "block-tower-measure",
         "board-game-reset",
         "button-zipper-lab",
+        "calm-corner-cards",
         "chocolate-chip-count",
         "cleanup-timer-quest",
         "color-gradient-cards",
@@ -4730,7 +4749,6 @@
         "big-paper-murals",
         "blend-train",
         "bug-hotel-observer",
-        "calm-corner-cards",
         "chocolate-chip-count",
         "clay-creature-studio",
         "color-mixing-lab",
@@ -4895,6 +4913,7 @@
         "board-game-reset",
         "bug-hotel-observer",
         "button-zipper-lab",
+        "calm-corner-cards",
         "chocolate-chip-count",
         "clay-creature-studio",
         "cleanup-timer-quest",
@@ -4980,6 +4999,7 @@
         "board-game-reset",
         "bug-hotel-observer",
         "button-zipper-lab",
+        "calm-corner-cards",
         "chalkboard-big-strokes",
         "chocolate-chip-count",
         "cleanup-timer-quest",
@@ -5056,6 +5076,7 @@
         "board-game-reset",
         "bug-hotel-observer",
         "button-zipper-lab",
+        "calm-corner-cards",
         "chalkboard-big-strokes",
         "chocolate-chip-count",
         "cleanup-timer-quest",
@@ -5272,7 +5293,6 @@
       "shared/css/engine-base.css": [
         "animal-walk-cards",
         "blend-train",
-        "calm-corner-cards",
         "grace-courtesy-theater",
         "letter-road-driving",
         "melting-race",
@@ -5301,6 +5321,7 @@
         "block-tower-measure",
         "board-game-reset",
         "button-zipper-lab",
+        "calm-corner-cards",
         "chalkboard-big-strokes",
         "chocolate-chip-count",
         "cleanup-timer-quest",
@@ -5544,7 +5565,6 @@
         "rhythm-copycat"
       ],
       "leo": [
-        "calm-corner-cards",
         "feelings-charades",
         "grace-courtesy-theater",
         "lunchbox-pack",
@@ -5564,7 +5584,6 @@
       ],
       "maya": [
         "beat-the-bugs",
-        "calm-corner-cards",
         "feelings-charades",
         "grace-courtesy-theater",
         "lunchbox-pack",
@@ -5586,7 +5605,6 @@
         "scissor-trail-safari"
       ],
       "nia": [
-        "calm-corner-cards",
         "family-timeline",
         "feelings-charades",
         "grace-courtesy-theater",
@@ -5657,7 +5675,6 @@
         "tiny-reader-theater"
       ],
       "ravi": [
-        "calm-corner-cards",
         "chocolate-chip-count",
         "feelings-charades",
         "grace-courtesy-theater",
@@ -5786,6 +5803,27 @@
       ],
       "games/button-zipper-lab/assets/ui/zipper-pull.webp": [
         "button-zipper-lab"
+      ],
+      "games/calm-corner-cards/assets/backgrounds/calm-room.webp": [
+        "calm-corner-cards"
+      ],
+      "games/calm-corner-cards/assets/characters/sunny-hug.webp": [
+        "calm-corner-cards"
+      ],
+      "games/calm-corner-cards/assets/ui/button-plum.webp": [
+        "calm-corner-cards"
+      ],
+      "games/calm-corner-cards/assets/ui/button-teal.webp": [
+        "calm-corner-cards"
+      ],
+      "games/calm-corner-cards/assets/ui/moon-patch.webp": [
+        "calm-corner-cards"
+      ],
+      "games/calm-corner-cards/assets/ui/plaque-lavender.webp": [
+        "calm-corner-cards"
+      ],
+      "games/calm-corner-cards/assets/ui/title.webp": [
+        "calm-corner-cards"
       ],
       "games/chalkboard-big-strokes/assets/art": [
         "chalkboard-big-strokes"
@@ -6904,6 +6942,7 @@
         "mountain-seasons-wheel"
       ],
       "shared/assets/music/cozy-starlight-lullaby.mp3": [
+        "calm-corner-cards",
         "momma-bear-storybook"
       ],
       "shared/assets/music/gentle-country-morning.mp3": [
@@ -7039,7 +7078,6 @@
         "tiny-reader-theater"
       ],
       "shared/characters/leo": [
-        "calm-corner-cards",
         "feelings-charades",
         "grace-courtesy-theater",
         "lunchbox-pack",
@@ -7056,7 +7094,6 @@
       ],
       "shared/characters/maya": [
         "beat-the-bugs",
-        "calm-corner-cards",
         "feelings-charades",
         "grace-courtesy-theater",
         "lunchbox-pack",
@@ -7077,7 +7114,6 @@
         "snack-chef"
       ],
       "shared/characters/nia": [
-        "calm-corner-cards",
         "family-timeline",
         "feelings-charades",
         "grace-courtesy-theater",
@@ -7111,7 +7147,6 @@
         "tiny-reader-theater"
       ],
       "shared/characters/ravi": [
-        "calm-corner-cards",
         "chocolate-chip-count",
         "feelings-charades",
         "grace-courtesy-theater",

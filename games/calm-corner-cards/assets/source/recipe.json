@@ -1,0 +1,62 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "asset": "calm-corner-cards-production-family",
+  "steps": [
+    {
+      "workflow": "gpt-image-2",
+      "role": "calm-room master, Sunny and prop sheet, felt UI sheet, exact title lockup, and transparent stitched breathing rings",
+      "seed": null
+    },
+    {
+      "tool": "tools/cut-asset-sheet.py",
+      "expectedCounts": {
+        "sprites": 12,
+        "ui-source": 9,
+        "ui-layered": 9
+      }
+    },
+    {
+      "workflow": "qwen-image-layered",
+      "role": "three-layer separation of the accepted UI sheet; layer_2 retained for alpha finalization",
+      "seed": 42
+    },
+    {
+      "tool": "tools/pipeline/cutout_finalize.py",
+      "role": "alpha-floor and magenta fringe QA for nine UI carriers",
+      "alphaFloor": 4
+    },
+    {
+      "workflow": "krea2-turbo-t2i",
+      "role": "separate platform hub tile in QLOBE toy-table grammar",
+      "seed": 42
+    },
+    {
+      "workflow": "qwen3-tts-voiceclone",
+      "role": "twenty teacher-voice lines from approved project reference",
+      "seeds": [7, 8, 9]
+    },
+    {
+      "workflow": "whisper-stt",
+      "role": "fail-closed transcript verification at similarity >= 0.90"
+    }
+  ],
+  "qa": {
+    "status": "accepted-after-runtime-and-adversarial-art-review",
+    "cutCounts": {
+      "sprites": 12,
+      "ui-source": 9,
+      "ui-layered": 9
+    },
+    "voice": {
+      "accepted": 20,
+      "total": 20,
+      "minimumSimilarity": 0.971
+    },
+    "viewports": [
+      "1180x820",
+      "820x1180",
+      "1180x520"
+    ]
+  }
+}

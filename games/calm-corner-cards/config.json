@@ -1,0 +1,77 @@
+{
+  "id": "calm-corner-cards",
+  "title": "Calm Corner Cards",
+  "artDirection": "Puppet / Cozy felt fabric",
+  "assets": {
+    "background": "./assets/backgrounds/calm-room.webp",
+    "title": "./assets/ui/title.webp",
+    "plaque": "./assets/ui/plaque-lavender.webp",
+    "sunny": "./assets/characters/sunny-neutral.webp",
+    "sunnyRest": "./assets/characters/sunny-hug.webp",
+    "breathingRings": "./assets/props/breathing-rings.webp"
+  },
+  "music": {
+    "track": "../../shared/assets/music/cozy-starlight-lullaby.mp3",
+    "volume": 0.12
+  },
+  "modes": [
+    {
+      "id": "breathe",
+      "title": "Breathe",
+      "skill": "slow child-paced breathing",
+      "card": "./assets/ui/card-mint.webp",
+      "icon": "./assets/props/breathe-cloud.webp",
+      "accent": "#c7e3db",
+      "completion": "breathe-complete"
+    },
+    {
+      "id": "squeeze",
+      "title": "Squeeze",
+      "skill": "press-and-release muscle relaxation",
+      "card": "./assets/ui/card-coral.webp",
+      "icon": "./assets/props/squeeze-heart.webp",
+      "accent": "#efad9f",
+      "completion": "squeeze-complete"
+    },
+    {
+      "id": "draw",
+      "title": "Draw",
+      "skill": "open-ended calming expression",
+      "card": "./assets/ui/card-lavender.webp",
+      "icon": "./assets/props/draw-crayon.webp",
+      "accent": "#c8b4db",
+      "completion": "draw-complete"
+    },
+    {
+      "id": "rest",
+      "title": "Rest",
+      "skill": "quiet sensory settling",
+      "card": "./assets/ui/card-cream.webp",
+      "icon": "./assets/props/rest-star.webp",
+      "accent": "#f4dfb5",
+      "completion": "rest-complete"
+    }
+  ],
+  "voice": {
+    "welcome": "Welcome to your calm corner. Pick what your body needs.",
+    "cards": "Pick any cozy card.",
+    "breathe-intro": "Breathe with Sunny. Tap Sunny's glowing belly when you're ready.",
+    "breathe-in": "Smell the flower. Breathe in slowly.",
+    "breathe-out": "Blow the cloud. Breathe out slowly.",
+    "breathe-nudge": "Tap Sunny's belly for a slow breath.",
+    "breathe-complete": "Three soft breaths. Your body found a slower rhythm.",
+    "squeeze-intro": "Press and hold the squishy ball. Let go when your hands are ready.",
+    "squeeze-release": "Squeeze... and soften.",
+    "squeeze-halfway": "One more cozy squeeze.",
+    "squeeze-nudge": "Press the squishy ball and let go.",
+    "squeeze-complete": "Your wiggles have room to settle.",
+    "draw-intro": "Draw a happy place. Pick a cozy color, then let your finger wander.",
+    "draw-nudge": "Touch a patch, then draw anywhere on the soft blanket.",
+    "draw-complete": "You made a place that feels like you.",
+    "rest-intro": "Tap the sleepy stars. Make the room as quiet as you like.",
+    "rest-star": "A little softer.",
+    "rest-nudge": "Tap a star, or rest with Sunny.",
+    "rest-complete": "You can rest here whenever you need.",
+    "again": "Let's make another calm moment."
+  }
+}

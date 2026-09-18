@@ -1,56 +1,121 @@
-# Game Design Document - Calm Corner Cards
+# Calm Corner Cards — Production Game Design
 
-## Game title
-Calm Corner Cards 🧘
+## Product promise
 
-## Category
-`social-emotional`
+Calm Corner Cards is a score-free, timer-free regulation space for children ages 2–6, with the platform listing focused on ages 5–6. Sunny, a small handmade felt friend, offers four equally valid ways to settle: breathe, squeeze, draw, or rest. There are no wrong choices, streaks, penalties, or demands to finish.
 
-## Age target
-5-6 (platform default).
+The production game replaces the old generic choose-one prototype. It is a custom four-activity module built around the concept brief and mockups in `01-game-concepts/calm-corner-cards/`.
 
-## Concept video
-_None yet._
+## Art world
 
-## Learning goals
-1. Recognize calm-down tools for big feelings.
-2. Practice slow breath, self-hug squeeze, counting, and quiet drawing as regulation strategies.
-3. Experience calm choices as supportive tools rather than right-or-wrong tests.
+**Canonical direction:** Puppet / Cozy felt fabric.
 
-## Mini-games / modes
+The whole game reads as a miniature bedtime nook assembled by hand: a moonlit lavender room, stitched floor mat, warm lamp glow, rounded wool cards, and dimensional felt appliqués. Sunny and every primary control are authored raster art. HTML text remains live for legibility and accessibility; CSS is limited to layout, focus, state, and motion rather than drawing the visual world. The breathing focal rings are a transparent raster embroidery asset.
 
-### Mode 1 - Pick a Calm Tool
-- **Skill:** Choosing self-regulation tools.
-- **Core loop (30-90s):** A cast member has an overwhelmed moment. The child taps a calm tool card, and the voice guides a short body-settling practice.
-- **Rounds:** 4.
+Motion stays slow and breathable. Breathing expands and settles Sunny, the squeeze toy compresses under the hand, stars dim softly, and rewards arrive as quiet glows rather than confetti.
 
-### Mode 2 - Balloon Breathing
-- **Skill:** Slow paced breathing.
-- **Core loop (30-90s):** The voice guides one balloon breath. The child chooses the next balloon size/color to keep the breathing practice playful.
-- **Rounds:** 3.
+## Experience map
 
-## Shared assets used
-- `shared/js/engines/choose-one.js` - choose-one interaction loop, splash, HUD, all-correct answer support through config data, celebration, and debug hook.
-- `shared/js/speech.js` - Web Speech voice for all beta lines.
-- `shared/js/sfx.js` - synthesized pop, sparkle, boing, tick, and tada effects.
-- `shared/fonts/fredoka-latin-600-normal.woff2` - display font.
-- `shared/characters/` - Maya, Leo, Nia, and Ravi placeholder cast portraits.
+1. **Card shelf** — The room opens with Sunny and four large felt cards. A recorded welcome asks the child to pick what their body needs.
+2. **Activity** — One card becomes a focused tactile scene. Back always returns to the shelf; Sound repeats the current direction.
+3. **Calm reflection** — A generated felt end panel names the activity without scoring it and offers “Again” or “Cards.”
 
-## New assets needed
-- Calm-corner scene art for overwhelmed moments and tool practice.
-- Production calm tool cards for balloon breaths, self-hug squeeze, count to five, and quiet drawing.
-- Recorded guided-breathing lines with slow, spacious pacing.
+The first meaningful gesture unlocks recorded narration and starts the low-volume shared lullaby. Music ducks under every spoken line.
 
-## Interaction model
-Tap one large tool or balloon card after a spoken scenario. In the tools mode, every offered tool is marked correct so the engine accepts all choices gently.
+## Activity loops
 
-## Feedback model
-- **Success:** pop/sparkle SFX, card bounce, and a short guided calming line.
-- **Retry:** not used in the tools mode because all calm tools are accepted. The engine nudge remains configured for future off-target variants.
-- **Celebration:** end-of-mode tada, confetti-style burst, spoken cheer, and play-again button.
+### Breathe
 
-## Difficulty progression
-The tools mode offers four concrete regulation choices. Balloon Breathing keeps the loop short with three follow-along rounds.
+- Tap Sunny’s belly to begin one complete breath.
+- Sunny slowly grows for a 2.85-second inhale while an authored golden stitched-ring overlay expands, a flower cue appears, and “Smell the flower” narration plays.
+- Sunny settles for a 3.35-second exhale beside a cloud cue and “Blow the cloud” narration.
+- A live “Breath 1 of 3” cue and three large stitched stars make pacing explicit. The child decides when to begin the next breath.
+- Three breaths complete the card. Navigating away cancels every pending phase safely.
 
-## Replay variation
-Round order and answer order shuffle each play. Review automation can seed the engine with `window.QLOBE_DEBUG.seed(n)`.
+The rhythm is deliberately child-paced between breaths. It never grades breathing or requires microphone input.
+
+### Squeeze
+
+- Press and hold the striped felt squeeze ball; it visibly compresses.
+- Release whenever the child’s hand is ready.
+- A soft star spark and spoken “Squeeze and soften” acknowledge the release.
+- Three press-and-release cycles complete the card.
+
+Pointer capture, pointer cancellation, focus loss, keyboard press/release, and assistive click paths all return the toy to a safe neutral state.
+
+### Draw
+
+- Pick one of four authored patches: sunny yellow, rainbow coral, cloud blue, or star purple.
+- Draw freely on a cream felt blanket with a finger, stylus, mouse, or trackpad.
+- Undo restores the previous stroke, Clear starts a fresh blanket, and Done is available at any time.
+- Done copies the child’s real canvas marks onto a cream felt keepsake card for the reflection screen; the picture is praised before it is discarded.
+- There is no drawing recognition or required picture.
+
+Only the child’s transient mark is canvas-rendered. The palette, blanket setting, controls, and surrounding art are raster assets from the game’s felt family.
+
+### Rest
+
+- Sunny rests with a sleepy star under the moonlit room ambience.
+- Five tactile felt stars can be dimmed or brightened in any order.
+- “All done” remains available immediately; the activity is intentionally open-ended.
+- The first softened star receives a quiet recorded acknowledgment.
+
+## Feedback and tone
+
+- **Voice:** warm, unhurried teacher voice clips. Web Speech is fallback only.
+- **Music:** `cozy-starlight-lullaby.mp3` at 12% volume, ducked under narration.
+- **SFX:** tiny shared taps, pops, sparkles, and whooshes; never loud or startling.
+- **Completion:** descriptive, not evaluative. Examples include “Three soft breaths” and “Your happy place.”
+- **Idle support:** after 12 seconds of inactivity, the current recorded direction repeats and the primary object gives one subtle brightness pulse.
+
+## Interaction and accessibility contract
+
+- All primary child controls are at least 96×96 CSS pixels in supported layouts.
+- Large hit areas use native buttons, visible focus, accessible names, and `aria-pressed` for toggle state.
+- Drawing supports pointer/touch plus a keyboard or switch path: arrow keys move an authored star cursor and Space or Enter places a colored mark.
+- The game supports landscape, portrait, wide-short screens, safe areas, and reduced motion.
+- Kiosk guards suppress accidental selection and context menus while preserving controls and drawing.
+- Home on the card shelf returns to the QLOBE catalog. Back during play or reflection returns to the four cards.
+- No personal data, microphone, camera, network model call, or persistent child drawing is used.
+
+## Narration script
+
+`assets/audio/lines.json` is the canonical 20-line script. It contains the shelf welcome, each activity introduction, action prompts, idle nudges, completion reflections, and replay line. `assets/audio/manifest.json` publishes only the accepted clips, and `assets/audio/qa.json` records the Whisper comparison for every line.
+
+## Shared module integration
+
+- `audio-unlock.js` — first-gesture media unlock and kiosk guards
+- `bgm.js` — looped lullaby, volume, mute, and narration ducking
+- `debug-harness.js` — QLOBE_DEBUG v1 automation surface
+- `hud.js` — platform Home, Back, and Sound controls
+- `idle-nudge.js` — gentle inactivity prompt
+- `narrator.js` + `voice-clips.js` — recorded-primary narration with fallback
+- `preload.js` — raster decode before reveal
+- `screens.js` — shelf/play/end lifecycle
+- `sfx.js`, `tap.js`, `timers.js` — consistent input, feedback, and teardown-safe timing
+
+## Automation contract
+
+`window.QLOBE_DEBUG` exposes standard readiness, mode listing, mode start, state, tap, round completion, home, mute, seed, and audio-log methods. Calm-specific helpers can complete breathing, apply one squeeze, finish a drawing, or toggle a rest star. `getState()` reports screen, mode, step, phase, completion, input readiness, drawing stroke count, dimmed stars, mute, timers, and music state.
+
+## Replay and progression
+
+There is no escalating difficulty. Replay value comes from choosing a different body tool, controlling the pace, drawing a different place, and arranging starlight differently. The game’s job is repeatable regulation, not mastery pressure.
+
+## Departures from the prototype
+
+- Replaced the generic choose-one engine and emoji placeholders with a custom tactile four-card room.
+- Replaced scenario quizzes and balloon-size choices with the concept brief’s four direct regulation activities.
+- Replaced browser speech with 20 recorded voice-clone clips that passed Whisper QA.
+- Replaced shared character portraits with Sunny, a game-specific felt mascot.
+- Added a real drawing surface, press-and-release mechanics, open-ended rest play, lifecycle-safe cancellation, production responsive layouts, and a generated hub tile.
+
+## Release gate
+
+- All four activities complete with real pointer input.
+- Back navigation leaves no timers, held pointers, or narration behind.
+- Every image decodes; no remote runtime request occurs.
+- Voice manifest and transcript QA contain exactly the canonical 20 keys.
+- Primary targets pass 96px sizing in desktop, portrait, and compact landscape.
+- Chrome screenshots pass visual review in shelf, active activity, reflection, portrait, compact, and reduced-motion states.
+- Registry, usage index, validator, source checks, and production smoke all pass.

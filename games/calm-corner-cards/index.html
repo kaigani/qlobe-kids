@@ -5,43 +5,95 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="mobile-web-app-capable" content="yes" />
-  <meta name="theme-color" content="#bee3f5" />
-  <title>Calm Corner Cards 🎈 — Calm Tools and Breathing</title>
-  <meta name="description" content="Choose a calm-down tool for a big feeling, then practice slow balloon breathing together. A self-regulation game for ages 5–6 where every choice is accepted, not graded." />
+  <meta name="theme-color" content="#241b42" />
+  <title>Calm Corner Cards — QLOBE Kids</title>
+  <meta name="description" content="Breathe, squeeze, draw, or rest with Sunny in a cozy felt calm corner." />
 
-  <!-- Open Graph (Facebook, iMessage, Slack, WhatsApp, LinkedIn…) -->
   <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="Calm Corner Cards" />
-  <meta property="og:title" content="Calm Corner Cards 🎈 — Calm Tools and Breathing" />
-  <meta property="og:description" content="Choose a calm-down tool for a big feeling, then practice slow balloon breathing together. A self-regulation game for ages 5–6 where every choice is accepted, not graded." />
+  <meta property="og:site_name" content="QLOBE Kids" />
+  <meta property="og:title" content="Calm Corner Cards" />
+  <meta property="og:description" content="Four gentle, hands-on calm tools in a cozy felt bedtime nook." />
   <meta property="og:url" content="https://qlo.be/games/calm-corner-cards/" />
   <meta property="og:image" content="https://qlo.be/games/calm-corner-cards/assets/og-image.jpg" />
   <meta property="og:image:type" content="image/jpeg" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
-  <meta property="og:image:alt" content="Calm Corner Cards title screen with Pick a Calm Tool and Balloon Breathing modes and a meditating figure icon on a pale blue background." />
-
-  <!-- Twitter / X card -->
+  <meta property="og:image:alt" content="Sunny the plush calm-corner guide beside four stitched felt activity cards." />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Calm Corner Cards 🎈 — Calm Tools and Breathing" />
-  <meta name="twitter:description" content="Choose a calm-down tool for a big feeling, then practice slow balloon breathing together. A self-regulation game for ages 5–6 where every choice is accepted, not graded." />
+  <meta name="twitter:title" content="Calm Corner Cards" />
+  <meta name="twitter:description" content="Breathe, squeeze, draw, or rest with Sunny." />
   <meta name="twitter:image" content="https://qlo.be/games/calm-corner-cards/assets/og-image.jpg" />
 
   <link rel="icon" type="image/png" href="../../assets/favicon.png" />
   <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png" />
   <link rel="stylesheet" href="../../shared/css/base.css" />
-  <style>
-    :root { --qk-bg: #bee3f5; }
-    body { font-family: 'Fredoka', 'Arial Rounded MT Bold', sans-serif; }
-  </style>
+  <link rel="stylesheet" href="../../shared/css/screens.css" />
+  <link rel="stylesheet" href="../../shared/css/hud.css" />
+  <link rel="stylesheet" href="./css/style.css?v=20260918a" />
   <script src="../../shared/js/analytics.js"></script>
 </head>
 <body>
-  <div id="game"></div>
-  <script type="module">
-    import config from './config.js';
-    import { createGame } from '../../shared/js/engines/choose-one.js';
-    createGame(config, document.getElementById('game'));
-  </script>
+  <main id="game" class="calm-app" aria-busy="true">
+    <div id="loading" class="loading-card" role="status" aria-live="polite">
+      <img src="./assets/ui/title.webp" alt="Calm Corner Cards" />
+      <span>Opening the cozy corner…</span>
+    </div>
+
+    <section id="screen-shelf" class="game-screen" data-qk-screen="shelf" aria-label="Choose a calm card" hidden>
+      <img class="ambient-bg" src="./assets/backgrounds/calm-room.webp" alt="" aria-hidden="true" />
+      <div class="artboard artboard-shelf">
+        <img class="scene-bg" src="./assets/backgrounds/calm-room.webp" alt="A cozy felt calm corner at night" />
+        <img class="title-lockup" src="./assets/ui/title.webp" alt="Calm Corner Cards" />
+        <p class="shelf-prompt">What does your body need?</p>
+        <div id="card-grid" class="card-grid" aria-label="Calm tools"></div>
+      </div>
+      <div id="shelf-hud" class="screen-hud"></div>
+    </section>
+
+    <section id="screen-play" class="game-screen" data-qk-screen="play" aria-label="Calm activity" hidden>
+      <img class="ambient-bg" src="./assets/backgrounds/calm-room.webp" alt="" aria-hidden="true" />
+      <div class="artboard artboard-play">
+        <img class="scene-bg" src="./assets/backgrounds/calm-room.webp" alt="" aria-hidden="true" />
+        <div class="prompt-plaque" aria-live="polite">
+          <img src="./assets/ui/plaque-lavender.webp" alt="" aria-hidden="true" />
+          <h1 id="play-prompt">Choose a calm card</h1>
+        </div>
+        <div id="activity-host" class="activity-host"></div>
+      </div>
+      <div id="play-hud" class="screen-hud"></div>
+    </section>
+
+    <section id="screen-end" class="game-screen" data-qk-screen="end" aria-label="Calm moment complete" hidden>
+      <img class="ambient-bg" src="./assets/backgrounds/calm-room.webp" alt="" aria-hidden="true" />
+      <div class="artboard artboard-end">
+        <img class="scene-bg" src="./assets/backgrounds/calm-room.webp" alt="" aria-hidden="true" />
+        <img class="end-moon" src="./assets/ui/moon-patch.webp" alt="" aria-hidden="true" />
+        <img class="end-sunny" src="./assets/characters/sunny-hug.webp" alt="Sunny resting peacefully" />
+        <div id="end-drawing-card" class="end-drawing-card" hidden>
+          <img src="./assets/ui/card-cream.webp" alt="" aria-hidden="true" />
+          <canvas id="end-drawing-preview" width="900" height="520" role="img" aria-label="Your happy place drawing"></canvas>
+        </div>
+        <div class="end-plaque">
+          <img src="./assets/ui/plaque-lavender.webp" alt="" aria-hidden="true" />
+          <div class="end-copy">
+            <h1 id="end-title">Feeling cozy</h1>
+            <p id="end-message">You made a calm moment.</p>
+          </div>
+        </div>
+        <div class="end-actions">
+          <button id="again-button" class="felt-action felt-action-plum" type="button" data-target="again">
+            <img src="./assets/ui/button-plum.webp" alt="" aria-hidden="true" />
+            <span>Again</span>
+          </button>
+          <button id="cards-button" class="felt-action felt-action-teal" type="button" data-target="cards">
+            <img src="./assets/ui/button-teal.webp" alt="" aria-hidden="true" />
+            <span>Cards</span>
+          </button>
+        </div>
+      </div>
+      <div id="end-hud" class="screen-hud"></div>
+    </section>
+  </main>
+  <script type="module" src="./js/main.js?v=20260918a"></script>
 </body>
 </html>

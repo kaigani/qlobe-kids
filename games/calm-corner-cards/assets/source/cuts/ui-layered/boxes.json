@@ -1,0 +1,292 @@
+{
+  "source": "games/calm-corner-cards/assets/source/local-api/ui-sheet-layer2.png",
+  "sourceSha256": "5e65b9cfd17cea84e97c1800aca438f31972bef15da1495c9e082b26bb97af8a",
+  "sourceSize": [
+    1024,
+    768
+  ],
+  "detection": "alpha",
+  "sampledBackgroundRgb": null,
+  "padding": 12,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "card-mint",
+      "file": "card-mint.png",
+      "componentArea": 56972,
+      "foregroundBbox": [
+        69,
+        18,
+        282,
+        295
+      ],
+      "cropBbox": [
+        57,
+        6,
+        294,
+        307
+      ],
+      "cropXywh": [
+        57,
+        6,
+        237,
+        301
+      ],
+      "normalizedCropBbox": [
+        0.055664,
+        0.007812,
+        0.287109,
+        0.39974
+      ]
+    },
+    {
+      "index": 2,
+      "name": "card-coral",
+      "file": "card-coral.png",
+      "componentArea": 56698,
+      "foregroundBbox": [
+        406,
+        17,
+        618,
+        295
+      ],
+      "cropBbox": [
+        394,
+        5,
+        630,
+        307
+      ],
+      "cropXywh": [
+        394,
+        5,
+        236,
+        302
+      ],
+      "normalizedCropBbox": [
+        0.384766,
+        0.00651,
+        0.615234,
+        0.39974
+      ]
+    },
+    {
+      "index": 3,
+      "name": "card-lavender",
+      "file": "card-lavender.png",
+      "componentArea": 56717,
+      "foregroundBbox": [
+        743,
+        18,
+        955,
+        294
+      ],
+      "cropBbox": [
+        731,
+        6,
+        967,
+        306
+      ],
+      "cropXywh": [
+        731,
+        6,
+        236,
+        300
+      ],
+      "normalizedCropBbox": [
+        0.713867,
+        0.007812,
+        0.944336,
+        0.398438
+      ]
+    },
+    {
+      "index": 4,
+      "name": "card-cream",
+      "file": "card-cream.png",
+      "componentArea": 51236,
+      "foregroundBbox": [
+        69,
+        308,
+        281,
+        559
+      ],
+      "cropBbox": [
+        57,
+        296,
+        293,
+        571
+      ],
+      "cropXywh": [
+        57,
+        296,
+        236,
+        275
+      ],
+      "normalizedCropBbox": [
+        0.055664,
+        0.385417,
+        0.286133,
+        0.74349
+      ]
+    },
+    {
+      "index": 5,
+      "name": "plaque-lavender",
+      "file": "plaque-lavender.png",
+      "componentArea": 54070,
+      "foregroundBbox": [
+        321,
+        340,
+        697,
+        520
+      ],
+      "cropBbox": [
+        309,
+        328,
+        709,
+        532
+      ],
+      "cropXywh": [
+        309,
+        328,
+        400,
+        204
+      ],
+      "normalizedCropBbox": [
+        0.301758,
+        0.427083,
+        0.692383,
+        0.692708
+      ]
+    },
+    {
+      "index": 6,
+      "name": "button-plum",
+      "file": "button-plum.png",
+      "componentArea": 34691,
+      "foregroundBbox": [
+        707,
+        369,
+        997,
+        502
+      ],
+      "cropBbox": [
+        695,
+        357,
+        1009,
+        514
+      ],
+      "cropXywh": [
+        695,
+        357,
+        314,
+        157
+      ],
+      "normalizedCropBbox": [
+        0.678711,
+        0.464844,
+        0.985352,
+        0.669271
+      ]
+    },
+    {
+      "index": 7,
+      "name": "button-teal",
+      "file": "button-teal.png",
+      "componentArea": 36056,
+      "foregroundBbox": [
+        38,
+        589,
+        349,
+        717
+      ],
+      "cropBbox": [
+        26,
+        577,
+        361,
+        729
+      ],
+      "cropXywh": [
+        26,
+        577,
+        335,
+        152
+      ],
+      "normalizedCropBbox": [
+        0.025391,
+        0.751302,
+        0.352539,
+        0.949219
+      ]
+    },
+    {
+      "index": 8,
+      "name": "moon-patch",
+      "file": "moon-patch.png",
+      "componentArea": 15181,
+      "foregroundBbox": [
+        449,
+        554,
+        597,
+        731
+      ],
+      "cropBbox": [
+        437,
+        542,
+        609,
+        743
+      ],
+      "cropXywh": [
+        437,
+        542,
+        172,
+        201
+      ],
+      "normalizedCropBbox": [
+        0.426758,
+        0.705729,
+        0.594727,
+        0.967448
+      ]
+    },
+    {
+      "index": 9,
+      "name": "progress-dots",
+      "file": "progress-dots.png",
+      "componentArea": 26939,
+      "foregroundBbox": [
+        704,
+        596,
+        979,
+        701
+      ],
+      "cropBbox": [
+        692,
+        584,
+        991,
+        713
+      ],
+      "cropXywh": [
+        692,
+        584,
+        299,
+        129
+      ],
+      "normalizedCropBbox": [
+        0.675781,
+        0.760417,
+        0.967773,
+        0.928385
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 0,
+    "minArea": 393,
+    "order": "reading"
+  }
+}

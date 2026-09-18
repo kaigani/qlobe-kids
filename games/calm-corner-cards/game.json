@@ -3,32 +3,48 @@
   "title": "Calm Corner Cards",
   "category": "social-emotional",
   "path": "games/calm-corner-cards/",
-  "icon": "🧘",
+  "icon": "🌙",
   "entry": "index.html",
   "age": { "min": 5, "max": 6 },
-  "status": "in-design",
-  "accent": "#2e9f76",
-  "shareTitle": "Calm Corner Cards 🎈 — Calm Tools and Breathing",
-  "description": "Choose a calm-down tool for a big feeling, then practice slow balloon breathing together. A self-regulation game for ages 5–6 where every choice is accepted, not graded.",
+  "status": "beta",
+  "accent": "#8d6ab5",
+  "shareTitle": "Calm Corner Cards — Breathe, Squeeze, Draw, or Rest",
+  "description": "Choose a gentle calm tool and play with breathing, squeezing, drawing, or quiet starlight in a cozy felt corner.",
+  "summary": "Breathe, squeeze, draw, or rest with Sunny in a cozy felt calm corner.",
   "learningGoals": [
-    "Identify calming strategies for big feelings",
-    "Practice slow breathing and body settling",
-    "Treat calm tools as helpful choices rather than right-or-wrong answers"
+    "Choose a self-regulation tool without a right-or-wrong judgment",
+    "Practice slow breathing and press-and-release muscle relaxation",
+    "Use drawing and quiet sensory play for open-ended emotional settling"
   ],
-  "interactionModel": "choose-one tap any calm tool or balloon card after a spoken scenario",
-  "feedbackModel": "Every tool card is accepted, sparkles, and plays a brief guided calming practice line.",
+  "interactionModel": "choose one of four large felt cards, then breathe, press and release, finger-draw, or gently dim tactile stars",
+  "feedbackModel": "slow recorded guidance, quiet lullaby, authored plush reactions, soft tactile sound, and accepting completion with no score or timer",
   "uses": [
-    "shared/js/engines/choose-one.js",
-    "shared/js/speech.js",
+    "shared/js/audio-unlock.js",
+    "shared/js/bgm.js",
+    "shared/js/debug-harness.js",
+    "shared/js/hud.js",
+    "shared/js/idle-nudge.js",
+    "shared/js/narrator.js",
+    "shared/js/preload.js",
+    "shared/js/screens.js",
     "shared/js/sfx.js",
-    "shared/characters/"
+    "shared/js/tap.js",
+    "shared/js/timers.js",
+    "shared/js/voice-clips.js",
+    "shared/css/base.css",
+    "shared/css/hud.css",
+    "shared/css/screens.css",
+    "shared/assets/music/cozy-starlight-lullaby.mp3",
+    "games/calm-corner-cards/assets/"
   ],
   "modes": [
-    { "id": "tools", "title": "Pick a Calm Tool", "skill": "choosing self-regulation tools" },
-    { "id": "breathe", "title": "Balloon Breathing", "skill": "slow paced breathing" }
+    { "id": "breathe", "title": "Breathe", "skill": "slow child-paced breathing" },
+    { "id": "squeeze", "title": "Squeeze", "skill": "press-and-release muscle relaxation" },
+    { "id": "draw", "title": "Draw", "skill": "open-ended calming expression" },
+    { "id": "rest", "title": "Rest", "skill": "quiet sensory settling" }
   ],
   "license": { "code": "MIT", "assets": "CC-BY-4.0" },
-  "credits": "Shared character portraits and emoji placeholder tool art. Built with Codex for QLOBE Kids.",
-  "characters": ["leo", "maya", "nia", "ravi"],
-  "conceptVideo": null
+  "credits": "Original cozy-felt raster art produced with GPT Image 2 and QLOBE's local authoring pipeline. Built with Codex for QLOBE Kids.",
+  "characters": [],
+  "conceptVideo": "../../../01-game-concepts/calm-corner-cards/dreamina-2026-07-31-2188-Tablet game demo for preschool age. Fast....mp4"
 }
