@@ -1,0 +1,296 @@
+{
+  "source": "games/animal-walk-cards/assets/source/gpt-image-2/poses-frog-bear-crab-master.png",
+  "sourceSha256": "bd4bd895e65c68961f87cdf26fa067f1e507a2a283d9a2a81e95a23d6b63e057",
+  "sourceSize": [
+    1262,
+    1246
+  ],
+  "detection": "background-threshold",
+  "sampledBackgroundRgb": [
+    249,
+    2,
+    251
+  ],
+  "padding": 6,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "frog-1",
+      "file": "frog-1.png",
+      "componentArea": 152754,
+      "foregroundBbox": [
+        16,
+        16,
+        416,
+        404
+      ],
+      "cropBbox": [
+        10,
+        10,
+        422,
+        410
+      ],
+      "cropXywh": [
+        10,
+        10,
+        412,
+        400
+      ],
+      "normalizedCropBbox": [
+        0.007924,
+        0.008026,
+        0.33439,
+        0.329053
+      ]
+    },
+    {
+      "index": 2,
+      "name": "frog-2",
+      "file": "frog-2.png",
+      "componentArea": 152417,
+      "foregroundBbox": [
+        433,
+        16,
+        830,
+        404
+      ],
+      "cropBbox": [
+        427,
+        10,
+        836,
+        410
+      ],
+      "cropXywh": [
+        427,
+        10,
+        409,
+        400
+      ],
+      "normalizedCropBbox": [
+        0.338352,
+        0.008026,
+        0.662441,
+        0.329053
+      ]
+    },
+    {
+      "index": 3,
+      "name": "frog-3",
+      "file": "frog-3.png",
+      "componentArea": 152108,
+      "foregroundBbox": [
+        847,
+        16,
+        1244,
+        406
+      ],
+      "cropBbox": [
+        841,
+        10,
+        1250,
+        412
+      ],
+      "cropXywh": [
+        841,
+        10,
+        409,
+        402
+      ],
+      "normalizedCropBbox": [
+        0.666403,
+        0.008026,
+        0.990491,
+        0.330658
+      ]
+    },
+    {
+      "index": 4,
+      "name": "bear-1",
+      "file": "bear-1.png",
+      "componentArea": 148709,
+      "foregroundBbox": [
+        19,
+        422,
+        415,
+        802
+      ],
+      "cropBbox": [
+        13,
+        416,
+        421,
+        808
+      ],
+      "cropXywh": [
+        13,
+        416,
+        408,
+        392
+      ],
+      "normalizedCropBbox": [
+        0.010301,
+        0.333868,
+        0.333597,
+        0.648475
+      ]
+    },
+    {
+      "index": 5,
+      "name": "bear-2",
+      "file": "bear-2.png",
+      "componentArea": 149029,
+      "foregroundBbox": [
+        433,
+        422,
+        830,
+        801
+      ],
+      "cropBbox": [
+        427,
+        416,
+        836,
+        807
+      ],
+      "cropXywh": [
+        427,
+        416,
+        409,
+        391
+      ],
+      "normalizedCropBbox": [
+        0.338352,
+        0.333868,
+        0.662441,
+        0.647673
+      ]
+    },
+    {
+      "index": 6,
+      "name": "bear-3",
+      "file": "bear-3.png",
+      "componentArea": 148691,
+      "foregroundBbox": [
+        848,
+        422,
+        1244,
+        801
+      ],
+      "cropBbox": [
+        842,
+        416,
+        1250,
+        807
+      ],
+      "cropXywh": [
+        842,
+        416,
+        408,
+        391
+      ],
+      "normalizedCropBbox": [
+        0.667195,
+        0.333868,
+        0.990491,
+        0.647673
+      ]
+    },
+    {
+      "index": 7,
+      "name": "crab-1",
+      "file": "crab-1.png",
+      "componentArea": 150773,
+      "foregroundBbox": [
+        19,
+        819,
+        415,
+        1204
+      ],
+      "cropBbox": [
+        13,
+        813,
+        421,
+        1210
+      ],
+      "cropXywh": [
+        13,
+        813,
+        408,
+        397
+      ],
+      "normalizedCropBbox": [
+        0.010301,
+        0.652488,
+        0.333597,
+        0.971108
+      ]
+    },
+    {
+      "index": 8,
+      "name": "crab-2",
+      "file": "crab-2.png",
+      "componentArea": 151051,
+      "foregroundBbox": [
+        433,
+        819,
+        830,
+        1204
+      ],
+      "cropBbox": [
+        427,
+        813,
+        836,
+        1210
+      ],
+      "cropXywh": [
+        427,
+        813,
+        409,
+        397
+      ],
+      "normalizedCropBbox": [
+        0.338352,
+        0.652488,
+        0.662441,
+        0.971108
+      ]
+    },
+    {
+      "index": 9,
+      "name": "crab-3",
+      "file": "crab-3.png",
+      "componentArea": 150650,
+      "foregroundBbox": [
+        848,
+        819,
+        1244,
+        1204
+      ],
+      "cropBbox": [
+        842,
+        813,
+        1250,
+        1210
+      ],
+      "cropXywh": [
+        842,
+        813,
+        408,
+        397
+      ],
+      "normalizedCropBbox": [
+        0.667195,
+        0.652488,
+        0.990491,
+        0.971108
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 2,
+    "minArea": 786,
+    "order": "reading"
+  }
+}

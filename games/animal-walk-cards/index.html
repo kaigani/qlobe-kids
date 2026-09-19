@@ -5,43 +5,178 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="mobile-web-app-capable" content="yes" />
-  <meta name="theme-color" content="#bee3f5" />
-  <title>Animal Walk Cards 🐾 — Animal Movement Play</title>
-  <meta name="description" content="Bear crawl, frog jump, crab walk, and flamingo balance through short animal rounds, then chain them all into a family parade. A playful gross-motor romp for ages 5–6." />
+  <meta name="theme-color" content="#79cdf4" />
+  <title>Animal Motion Cards — QLOBE Kids</title>
+  <meta name="description" content="Pick a toy animal card, learn its movement, and earn paw stamps in a playful family motion parade." />
 
-  <!-- Open Graph (Facebook, iMessage, Slack, WhatsApp, LinkedIn…) -->
   <meta property="og:type" content="website" />
-  <meta property="og:site_name" content="Animal Walk Cards" />
-  <meta property="og:title" content="Animal Walk Cards 🐾 — Animal Movement Play" />
-  <meta property="og:description" content="Bear crawl, frog jump, crab walk, and flamingo balance through short animal rounds, then chain them all into a family parade. A playful gross-motor romp for ages 5–6." />
+  <meta property="og:site_name" content="QLOBE Kids" />
+  <meta property="og:title" content="Animal Motion Cards" />
+  <meta property="og:description" content="Hop, crawl, waddle, and balance with six cheerful animal friends." />
   <meta property="og:url" content="https://qlo.be/games/animal-walk-cards/" />
   <meta property="og:image" content="https://qlo.be/games/animal-walk-cards/assets/og-image.jpg" />
   <meta property="og:image:type" content="image/jpeg" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
-  <meta property="og:image:alt" content="Animal Walk Cards title screen with Animal School and Animal Parade modes and a bear face icon on a pale blue background." />
-
-  <!-- Twitter / X card -->
+  <meta property="og:image:alt" content="Six toy animal motion cards in a sunny meadow." />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Animal Walk Cards 🐾 — Animal Movement Play" />
-  <meta name="twitter:description" content="Bear crawl, frog jump, crab walk, and flamingo balance through short animal rounds, then chain them all into a family parade. A playful gross-motor romp for ages 5–6." />
+  <meta name="twitter:title" content="Animal Motion Cards" />
+  <meta name="twitter:description" content="Hop, crawl, waddle, and balance with six cheerful animal friends." />
   <meta name="twitter:image" content="https://qlo.be/games/animal-walk-cards/assets/og-image.jpg" />
 
   <link rel="icon" type="image/png" href="../../assets/favicon.png" />
   <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png" />
   <link rel="stylesheet" href="../../shared/css/base.css" />
-  <style>
-    :root { --qk-bg: #bee3f5; }
-    body { font-family: 'Fredoka', 'Arial Rounded MT Bold', sans-serif; }
-  </style>
+  <link rel="stylesheet" href="../../shared/css/screens.css" />
+  <link rel="stylesheet" href="../../shared/css/hud.css" />
+  <link rel="stylesheet" href="./css/style.css?v=20260918a" />
   <script src="../../shared/js/analytics.js"></script>
 </head>
 <body>
-  <div id="game"></div>
-  <script type="module">
-    import config from './config.js';
-    import { createGame } from '../../shared/js/engines/coach-timer.js';
-    createGame(config, document.getElementById('game'));
-  </script>
+  <main id="game" class="motion-app" aria-busy="true">
+    <div id="loading" class="loading-screen" role="status" aria-live="polite">
+      <img src="./assets/art/title-lockup.webp" alt="Animal Motion Cards" />
+      <p>Opening the card box…</p>
+    </div>
+
+    <section id="screen-deck" class="motion-screen qk-screen" data-qk-screen="deck" aria-label="Animal Motion Cards" hidden>
+      <picture class="scene-picture" aria-hidden="true">
+        <source media="(orientation: portrait)" srcset="./assets/art/meadow-portrait.webp" />
+        <img class="scene-art" src="./assets/art/meadow-landscape.webp" alt="" />
+      </picture>
+      <div class="deck-content">
+        <img class="title-lockup" src="./assets/art/title-lockup.webp" alt="Animal Motion Cards" />
+        <p id="deck-prompt" class="deck-prompt">Pick an animal and move!</p>
+        <div id="animal-grid" class="animal-grid" aria-label="Animal motion cards"></div>
+        <button id="parade-button" class="parade-button" type="button" data-target="parade" aria-label="Start the Animal Parade" disabled>
+          <img src="./assets/art/parade-banner.webp" alt="" aria-hidden="true" />
+          <span id="parade-label">Earn 3 paw stamps</span>
+        </button>
+      </div>
+      <div id="deck-hud" class="screen-hud"></div>
+    </section>
+
+    <section id="screen-instruction" class="motion-screen qk-screen" data-qk-screen="instruction" aria-label="How to move" hidden>
+      <picture class="scene-picture" aria-hidden="true">
+        <source media="(orientation: portrait)" srcset="./assets/art/meadow-portrait.webp" />
+        <img class="scene-art" src="./assets/art/meadow-landscape.webp" alt="" />
+      </picture>
+      <div class="instruction-content">
+        <header class="instruction-heading">
+          <h1 id="instruction-title">Frog Hop</h1>
+          <p id="instruction-prompt">Squat low, then hop!</p>
+        </header>
+        <div id="pose-grid" class="pose-grid" aria-label="Three movement steps"></div>
+        <button id="start-moving" class="raster-action start-moving" type="button" data-target="start-moving">
+          <img src="./assets/art/action-button.webp" alt="" aria-hidden="true" />
+          <span>Start Moving</span>
+        </button>
+      </div>
+      <div id="instruction-hud" class="screen-hud"></div>
+    </section>
+
+    <section id="screen-active" class="motion-screen qk-screen" data-qk-screen="active" aria-label="Movement round" hidden>
+      <picture class="scene-picture" aria-hidden="true">
+        <source media="(orientation: portrait)" srcset="./assets/art/meadow-portrait.webp" />
+        <img class="scene-art" src="./assets/art/meadow-landscape.webp" alt="" />
+      </picture>
+      <div class="active-content">
+        <header class="active-heading">
+          <h1 id="active-title">Frog Hop</h1>
+          <p id="active-count" aria-live="polite">Move 1 of 3</p>
+        </header>
+        <div id="rep-progress" class="rep-progress" aria-hidden="true"></div>
+        <img id="active-pose" class="active-pose" src="./assets/art/pose-frog-1.webp" alt="Frog hop movement pose" />
+        <div class="active-actions">
+          <button id="moved-button" class="raster-action moved-button" type="button" data-target="moved">
+            <img src="./assets/art/action-button.webp" alt="" aria-hidden="true" />
+            <span>I Moved!</span>
+          </button>
+          <button id="pause-button" class="raster-action pause-button" type="button" data-target="pause" aria-pressed="false">
+            <img src="./assets/art/action-button.webp" alt="" aria-hidden="true" />
+            <span>Pause</span>
+          </button>
+        </div>
+      </div>
+      <div id="active-hud" class="screen-hud"></div>
+    </section>
+
+    <section id="screen-reward" class="motion-screen qk-screen" data-qk-screen="reward" aria-label="Paw stamp earned" hidden>
+      <picture class="scene-picture" aria-hidden="true">
+        <source media="(orientation: portrait)" srcset="./assets/art/meadow-portrait.webp" />
+        <img class="scene-art" src="./assets/art/meadow-landscape.webp" alt="" />
+      </picture>
+      <div class="reward-content">
+        <div class="reward-card-wrap">
+          <img id="reward-card" class="reward-card" src="./assets/art/card-frog.webp" alt="Completed animal card" />
+          <img class="reward-stamp" src="./assets/art/paw-stamp.webp" alt="Paw stamp earned" />
+        </div>
+        <div class="reward-copy">
+          <p class="reward-kicker">Paw Stamp!</p>
+          <h1 id="reward-title">Frog-tastic!</h1>
+          <p id="reward-note">Your frog card is stamped.</p>
+          <div class="reward-actions">
+            <button id="next-card-button" class="raster-action" type="button" data-target="next-card">
+              <img src="./assets/art/action-button.webp" alt="" aria-hidden="true" />
+              <span>Next Card</span>
+            </button>
+            <button id="deck-button" class="raster-action" type="button" data-target="deck">
+              <img src="./assets/art/action-button.webp" alt="" aria-hidden="true" />
+              <span>My Cards</span>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div id="reward-hud" class="screen-hud"></div>
+    </section>
+
+    <section id="screen-parade" class="motion-screen qk-screen" data-qk-screen="parade" aria-label="Animal Parade" hidden>
+      <picture class="scene-picture" aria-hidden="true">
+        <source media="(orientation: portrait)" srcset="./assets/art/meadow-portrait.webp" />
+        <img class="scene-art" src="./assets/art/meadow-landscape.webp" alt="" />
+      </picture>
+      <div class="parade-content">
+        <div class="parade-lockup" aria-label="Animal Parade">
+          <img class="parade-banner" src="./assets/art/parade-banner.webp" alt="" aria-hidden="true" />
+          <h1>Animal Parade</h1>
+        </div>
+        <p>Three friends. Three moves. One big parade!</p>
+        <div id="parade-lineup" class="parade-lineup" aria-label="Parade animal lineup"></div>
+        <button id="start-parade" class="raster-action start-parade" type="button" data-target="start-parade">
+          <img src="./assets/art/action-button.webp" alt="" aria-hidden="true" />
+          <span>Start Parade</span>
+        </button>
+      </div>
+      <div id="parade-hud" class="screen-hud"></div>
+    </section>
+
+    <section id="screen-finale" class="motion-screen qk-screen" data-qk-screen="finale" aria-label="Animal Parade complete" hidden>
+      <picture class="scene-picture" aria-hidden="true">
+        <source media="(orientation: portrait)" srcset="./assets/art/meadow-portrait.webp" />
+        <img class="scene-art" src="./assets/art/meadow-landscape.webp" alt="" />
+      </picture>
+      <div class="finale-content">
+        <div class="parade-lockup" aria-label="Animal Parade">
+          <img class="finale-banner" src="./assets/art/parade-banner.webp" alt="" aria-hidden="true" />
+          <p>Animal Parade</p>
+        </div>
+        <img class="finale-stamp" src="./assets/art/paw-stamp.webp" alt="Giant parade paw stamp" />
+        <h1>Wild &amp; Wonderful!</h1>
+        <div id="finale-lineup" class="finale-lineup" aria-label="Parade finishers"></div>
+        <div class="finale-actions">
+          <button id="parade-again" class="raster-action" type="button" data-target="parade-again">
+            <img src="./assets/art/action-button.webp" alt="" aria-hidden="true" />
+            <span>Parade Again</span>
+          </button>
+          <button id="finale-deck" class="raster-action" type="button" data-target="deck">
+            <img src="./assets/art/action-button.webp" alt="" aria-hidden="true" />
+            <span>My Cards</span>
+          </button>
+        </div>
+      </div>
+      <div id="finale-hud" class="screen-hud"></div>
+    </section>
+  </main>
+  <script type="module" src="./js/main.js?v=20260918a"></script>
 </body>
 </html>

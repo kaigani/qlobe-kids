@@ -1,0 +1,36 @@
+{
+  "format": "qlobe-local-image-recipe",
+  "formatVersion": 1,
+  "workflow": "krea2-turbo-t2i",
+  "endpoint": "authorized local workflow API (address intentionally omitted)",
+  "canvas": { "width": 768, "height": 640 },
+  "takes": [
+    {
+      "file": "krea2-hub-master.png",
+      "seed": 42,
+      "status": "rejected",
+      "reason": "animal faces flattened into vector-like graphic card art; material fidelity did not match the Toy world",
+      "prompt": "A playful tabletop animal movement game arranged as premium preschool toy objects: three chunky rounded animal cards fanned out on a pale wooden play table, showing a cheerful green frog, friendly cinnamon bear cub, and coral crab; a golden paw-print reward medallion beside them; tiny felt meadow leaves and smooth stepping stones framing the objects. Bright soft 3D cartoon toy style with rounded simplified forms, tactile plush felt and molded vinyl, saturated sky blue, leaf green, tangerine, coral and sunny yellow, smooth shading, soft highlights, toy-like premium finish, clear readable silhouettes, one recognizable game moment. No title, no UI, no text, no letters, no words, no numerals, no logos, no watermark."
+    },
+    {
+      "file": "krea2-hub-master-v2.png",
+      "seed": 84,
+      "status": "accepted-intermediate",
+      "prompt": "Macro product photograph of a premium preschool movement-card toy set on a pale maple play table. Three genuinely dimensional handmade toy figurines—a cheerful lime-green plush frog crouching to hop, a cinnamon-brown plush bear cub on all fours, and a coral-red molded-clay crab stepping sideways—stand beside three thick rounded cream game cards and one chunky golden paw-print medal. The cards are blank color fields with tactile stitched edges, no printed pictures and no text. Physically real objects with visible felt fibers, soft vinyl grain, stitched seams, thickness, contact shadows, rounded simplified forms, cheerful proportions. Bright warm studio daylight, shallow but readable depth of field, saturated sky blue, leaf green, tangerine, coral, turquoise and butter yellow. Premium toy catalog photography, one clear game moment, 6:5 composition, all three animals fully visible. NOT flat illustration, NOT vector, NOT graphic icons, NOT drawings. No title, no UI, no text, no letters, no words, no numerals, no logos, no watermark."
+    },
+    {
+      "file": "qwen-identity-hub-seed42.png",
+      "workflow": "qwen-image-edit",
+      "seed": 42,
+      "status": "accepted",
+      "runtime": "../../../../../../assets/hub/tiles/animal-walk-cards.jpg",
+      "inputs": [
+        "krea2-hub-master-v2.png",
+        "../../gpt-image-2/animal-card-sheet-master.png",
+        "../../gpt-image-2/meadow-landscape-master.png"
+      ],
+      "prompt": "Preserve the first reference composition, camera, 6-by-5 safe framing, warm product lighting, dimensional tabletop scene, three blank rounded cards, and golden paw medal. Replace only the three animal figurines so they are unmistakably the exact same characters from the second reference sheet: the lime-green frog with cream belly and orange accents, the cinnamon-brown bear cub with cream muzzle, and the coral-red crab with turquoise accents. Preserve their friendly face shapes, colors, materials, and proportions. Bring in the third reference meadow world through a soft sky-blue backdrop, rounded green felt grass, and smooth stepping stones while keeping a tactile premium preschool toy diorama. Show frog crouching to hop, bear safely on all fours, crab stepping sideways. All three fully visible, large, clear, joyful, and centered. No other animals. No words, letters, title, UI, logos, watermark, flat vector art, or printed character pictures on the cards."
+    }
+  ],
+  "postprocess": "center crop/resize to 640x533; JPEG quality 88 progressive via tools/build-assets.py"
+}

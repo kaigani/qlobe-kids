@@ -1,0 +1,202 @@
+{
+  "source": "games/animal-walk-cards/assets/source/gpt-image-2/animal-card-sheet-master.png",
+  "sourceSha256": "64b64f58dd9c0263aa95d7a05a6b171f25e8ab10017f5b79649fa8e77640fde3",
+  "sourceSize": [
+    1536,
+    1024
+  ],
+  "detection": "alpha",
+  "sampledBackgroundRgb": null,
+  "padding": 8,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "frog",
+      "file": "frog.png",
+      "componentArea": 226652,
+      "foregroundBbox": [
+        19,
+        18,
+        505,
+        490
+      ],
+      "cropBbox": [
+        11,
+        10,
+        513,
+        498
+      ],
+      "cropXywh": [
+        11,
+        10,
+        502,
+        488
+      ],
+      "normalizedCropBbox": [
+        0.007161,
+        0.009766,
+        0.333984,
+        0.486328
+      ]
+    },
+    {
+      "index": 2,
+      "name": "bear",
+      "file": "bear.png",
+      "componentArea": 226408,
+      "foregroundBbox": [
+        526,
+        18,
+        1011,
+        490
+      ],
+      "cropBbox": [
+        518,
+        10,
+        1019,
+        498
+      ],
+      "cropXywh": [
+        518,
+        10,
+        501,
+        488
+      ],
+      "normalizedCropBbox": [
+        0.33724,
+        0.009766,
+        0.663411,
+        0.486328
+      ]
+    },
+    {
+      "index": 3,
+      "name": "crab",
+      "file": "crab.png",
+      "componentArea": 226793,
+      "foregroundBbox": [
+        1032,
+        18,
+        1518,
+        490
+      ],
+      "cropBbox": [
+        1024,
+        10,
+        1526,
+        498
+      ],
+      "cropXywh": [
+        1024,
+        10,
+        502,
+        488
+      ],
+      "normalizedCropBbox": [
+        0.666667,
+        0.009766,
+        0.99349,
+        0.486328
+      ]
+    },
+    {
+      "index": 4,
+      "name": "bunny",
+      "file": "bunny.png",
+      "componentArea": 229882,
+      "foregroundBbox": [
+        19,
+        512,
+        507,
+        990
+      ],
+      "cropBbox": [
+        11,
+        504,
+        515,
+        998
+      ],
+      "cropXywh": [
+        11,
+        504,
+        504,
+        494
+      ],
+      "normalizedCropBbox": [
+        0.007161,
+        0.492188,
+        0.335286,
+        0.974609
+      ]
+    },
+    {
+      "index": 5,
+      "name": "penguin",
+      "file": "penguin.png",
+      "componentArea": 229670,
+      "foregroundBbox": [
+        526,
+        512,
+        1011,
+        990
+      ],
+      "cropBbox": [
+        518,
+        504,
+        1019,
+        998
+      ],
+      "cropXywh": [
+        518,
+        504,
+        501,
+        494
+      ],
+      "normalizedCropBbox": [
+        0.33724,
+        0.492188,
+        0.663411,
+        0.974609
+      ]
+    },
+    {
+      "index": 6,
+      "name": "flamingo",
+      "file": "flamingo.png",
+      "componentArea": 230009,
+      "foregroundBbox": [
+        1032,
+        512,
+        1518,
+        990
+      ],
+      "cropBbox": [
+        1024,
+        504,
+        1526,
+        998
+      ],
+      "cropXywh": [
+        1024,
+        504,
+        502,
+        494
+      ],
+      "normalizedCropBbox": [
+        0.666667,
+        0.492188,
+        0.99349,
+        0.974609
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 2,
+    "minArea": 786,
+    "order": "reading"
+  }
+}

@@ -1,0 +1,128 @@
+{
+  "format": "qlobe-voice-production-receipt",
+  "formatVersion": 1,
+  "game": "animal-walk-cards",
+  "createdAt": "2026-09-19T01:38:43.160940+00:00",
+  "workflow": "qwen3-tts-voiceclone -> AAC/M4A -> whisper-stt transcript QA",
+  "endpoint": "authorized local workflow API (address intentionally omitted)",
+  "reference": "shared/assets/refs/voice-teacher.wav",
+  "generation": {
+    "bear-intro": {
+      "seed": 7,
+      "status": "accepted-existing",
+      "duration": 4.7
+    },
+    "bunny-intro": {
+      "seed": 7,
+      "status": "accepted-existing",
+      "duration": 3.9
+    },
+    "choose-again": {
+      "seed": 7,
+      "status": "accepted-existing",
+      "duration": 2.525
+    },
+    "choose-animal": {
+      "seed": 7,
+      "status": "accepted-existing",
+      "duration": 1.277
+    },
+    "crab-intro": {
+      "seed": 7,
+      "status": "accepted-existing",
+      "duration": 5.4
+    },
+    "flamingo-intro": {
+      "seed": 7,
+      "status": "accepted-existing",
+      "duration": 4.2
+    },
+    "frog-intro": {
+      "seed": 7,
+      "status": "accepted-existing",
+      "duration": 3.2
+    },
+    "get-ready": {
+      "seed": 7,
+      "status": "accepted-existing",
+      "duration": 1.726
+    },
+    "parade-complete": {
+      "seed": 7,
+      "status": "accepted-existing",
+      "duration": 3.6
+    },
+    "parade-intro": {
+      "seed": 7,
+      "status": "accepted-existing",
+      "duration": 3.3
+    },
+    "parade-next": {
+      "seed": 7,
+      "status": "accepted-existing",
+      "duration": 2.759
+    },
+    "pause": {
+      "seed": 9,
+      "status": "encoded",
+      "duration": 3.3
+    },
+    "penguin-intro": {
+      "seed": 7,
+      "status": "accepted-existing",
+      "duration": 4.1
+    },
+    "rep-one": {
+      "seed": 7,
+      "status": "accepted-existing",
+      "duration": 0.937
+    },
+    "rep-three": {
+      "seed": 9,
+      "status": "encoded",
+      "duration": 0.748
+    },
+    "rep-two": {
+      "seed": 9,
+      "status": "encoded",
+      "duration": 0.899
+    },
+    "resume": {
+      "seed": 7,
+      "status": "accepted-existing",
+      "duration": 1.484
+    },
+    "reward": {
+      "seed": 7,
+      "status": "accepted-existing",
+      "duration": 3.2
+    },
+    "welcome": {
+      "seed": 7,
+      "status": "accepted-existing",
+      "duration": 4.3
+    }
+  },
+  "accepted": [
+    "welcome",
+    "choose-animal",
+    "frog-intro",
+    "bear-intro",
+    "crab-intro",
+    "bunny-intro",
+    "penguin-intro",
+    "flamingo-intro",
+    "get-ready",
+    "rep-one",
+    "rep-two",
+    "rep-three",
+    "reward",
+    "parade-intro",
+    "parade-next",
+    "parade-complete",
+    "pause",
+    "resume",
+    "choose-again"
+  ],
+  "fallback": []
+}

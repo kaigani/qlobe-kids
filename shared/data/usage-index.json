@@ -9,12 +9,11 @@
     "games/<id>/config.js",
     "games/<id>/js/**/*.js"
   ],
-  "generated": "2026-09-19T00:43:58.664Z",
+  "generated": "2026-09-19T01:55:20.652Z",
   "engines": {
     "coach-timer": {
-      "count": 5,
+      "count": 4,
       "games": [
-        "animal-walk-cards",
         "melting-race",
         "neighborhood-map-walk",
         "shelf-reset-game",
@@ -87,22 +86,39 @@
   },
   "forward": {
     "animal-walk-cards": {
-      "engine": "coach-timer",
+      "engine": null,
       "status": "beta",
       "category": "movement-outdoor",
       "characters": [],
       "modules": [
         "shared/js/analytics.js",
-        "shared/js/engines/coach-timer.js",
+        "shared/js/audio-unlock.js",
+        "shared/js/celebrate.js",
+        "shared/js/debug-harness.js",
+        "shared/js/hud.js",
+        "shared/js/narrator.js",
+        "shared/js/preload.js",
+        "shared/js/rng.js",
+        "shared/js/screens.js",
         "shared/js/sfx.js",
-        "shared/js/speech.js"
+        "shared/js/tap.js",
+        "shared/js/timers.js",
+        "shared/js/voice-clips.js"
       ],
       "css": [
         "shared/css/base.css",
-        "shared/css/engine-base.css",
+        "shared/css/hud.css",
         "shared/css/screens.css"
       ],
-      "assets": [],
+      "assets": [
+        "games/animal-walk-cards/assets/art/action-button.webp",
+        "games/animal-walk-cards/assets/art/card-frog.webp",
+        "games/animal-walk-cards/assets/art/meadow-landscape.webp",
+        "games/animal-walk-cards/assets/art/parade-banner.webp",
+        "games/animal-walk-cards/assets/art/paw-stamp.webp",
+        "games/animal-walk-cards/assets/art/pose-frog-1.webp",
+        "games/animal-walk-cards/assets/art/title-lockup.webp"
+      ],
       "packs": []
     },
     "balance-beam-trail": {
@@ -3888,6 +3904,7 @@
         "world-music-dance"
       ],
       "shared/js/audio-unlock.js": [
+        "animal-walk-cards",
         "balance-beam-trail",
         "bead-path-builder",
         "bean-sprout-watch",
@@ -4034,6 +4051,7 @@
         "throwing-target-garden"
       ],
       "shared/js/celebrate.js": [
+        "animal-walk-cards",
         "balance-beam-trail",
         "bead-path-builder",
         "bean-sprout-watch",
@@ -4117,6 +4135,7 @@
         "sound-hopscotch"
       ],
       "shared/js/debug-harness.js": [
+        "animal-walk-cards",
         "balance-beam-trail",
         "bead-path-builder",
         "bean-sprout-watch",
@@ -4231,7 +4250,6 @@
         "problem-solving-puppets"
       ],
       "shared/js/engines/coach-timer.js": [
-        "animal-walk-cards",
         "melting-race",
         "neighborhood-map-walk",
         "shelf-reset-game",
@@ -4275,6 +4293,7 @@
         "shape-detective"
       ],
       "shared/js/hud.js": [
+        "animal-walk-cards",
         "bead-path-builder",
         "bean-sprout-watch",
         "block-tower-measure",
@@ -4425,6 +4444,7 @@
         "sound-painting"
       ],
       "shared/js/narrator.js": [
+        "animal-walk-cards",
         "bean-sprout-watch",
         "beat-the-bugs",
         "big-paper-murals",
@@ -4468,6 +4488,7 @@
         "weather-scientist"
       ],
       "shared/js/preload.js": [
+        "animal-walk-cards",
         "balance-beam-trail",
         "bead-path-builder",
         "beat-the-bugs",
@@ -4534,6 +4555,7 @@
         "puzzle-map-match"
       ],
       "shared/js/rng.js": [
+        "animal-walk-cards",
         "balance-beam-trail",
         "big-paper-murals",
         "block-tower-measure",
@@ -4605,6 +4627,7 @@
         "world-music-dance"
       ],
       "shared/js/screens.js": [
+        "animal-walk-cards",
         "bean-sprout-watch",
         "beat-the-bugs",
         "block-tower-measure",
@@ -4775,7 +4798,6 @@
         "world-music-dance"
       ],
       "shared/js/speech.js": [
-        "animal-walk-cards",
         "bead-path-builder",
         "big-paper-murals",
         "blend-train",
@@ -4937,6 +4959,7 @@
         "sink-or-float"
       ],
       "shared/js/tap.js": [
+        "animal-walk-cards",
         "bead-path-builder",
         "bean-sprout-watch",
         "big-paper-murals",
@@ -5024,6 +5047,7 @@
         "world-music-dance"
       ],
       "shared/js/timers.js": [
+        "animal-walk-cards",
         "balance-beam-trail",
         "bead-path-builder",
         "bean-sprout-watch",
@@ -5102,6 +5126,7 @@
         "world-music-dance"
       ],
       "shared/js/voice-clips.js": [
+        "animal-walk-cards",
         "balance-beam-trail",
         "bead-path-builder",
         "bean-sprout-watch",
@@ -5328,7 +5353,6 @@
         "world-music-dance"
       ],
       "shared/css/engine-base.css": [
-        "animal-walk-cards",
         "blend-train",
         "grace-courtesy-theater",
         "letter-road-driving",
@@ -5348,6 +5372,7 @@
         "waiting-muscle-game"
       ],
       "shared/css/hud.css": [
+        "animal-walk-cards",
         "balance-beam-trail",
         "bead-path-builder",
         "bean-sprout-watch",
@@ -5770,6 +5795,27 @@
       ]
     },
     "assets": {
+      "games/animal-walk-cards/assets/art/action-button.webp": [
+        "animal-walk-cards"
+      ],
+      "games/animal-walk-cards/assets/art/card-frog.webp": [
+        "animal-walk-cards"
+      ],
+      "games/animal-walk-cards/assets/art/meadow-landscape.webp": [
+        "animal-walk-cards"
+      ],
+      "games/animal-walk-cards/assets/art/parade-banner.webp": [
+        "animal-walk-cards"
+      ],
+      "games/animal-walk-cards/assets/art/paw-stamp.webp": [
+        "animal-walk-cards"
+      ],
+      "games/animal-walk-cards/assets/art/pose-frog-1.webp": [
+        "animal-walk-cards"
+      ],
+      "games/animal-walk-cards/assets/art/title-lockup.webp": [
+        "animal-walk-cards"
+      ],
       "games/balance-beam-trail/assets/art/action-button.webp": [
         "balance-beam-trail"
       ],

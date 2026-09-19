@@ -1,0 +1,296 @@
+{
+  "source": "games/animal-walk-cards/assets/source/gpt-image-2/kid-poses-bunny-penguin-flamingo-master.png",
+  "sourceSha256": "00dfafc1b590c041f1c4adc722cfb8ea9294acd34b0c47b930b0c660daebf587",
+  "sourceSize": [
+    1443,
+    1090
+  ],
+  "detection": "background-threshold",
+  "sampledBackgroundRgb": [
+    251,
+    4,
+    251
+  ],
+  "padding": 6,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "bunny-1",
+      "file": "bunny-1.png",
+      "componentArea": 154756,
+      "foregroundBbox": [
+        14,
+        14,
+        472,
+        357
+      ],
+      "cropBbox": [
+        8,
+        8,
+        478,
+        363
+      ],
+      "cropXywh": [
+        8,
+        8,
+        470,
+        355
+      ],
+      "normalizedCropBbox": [
+        0.005544,
+        0.007339,
+        0.331254,
+        0.333028
+      ]
+    },
+    {
+      "index": 2,
+      "name": "bunny-2",
+      "file": "bunny-2.png",
+      "componentArea": 155758,
+      "foregroundBbox": [
+        492,
+        14,
+        953,
+        356
+      ],
+      "cropBbox": [
+        486,
+        8,
+        959,
+        362
+      ],
+      "cropXywh": [
+        486,
+        8,
+        473,
+        354
+      ],
+      "normalizedCropBbox": [
+        0.336798,
+        0.007339,
+        0.664588,
+        0.33211
+      ]
+    },
+    {
+      "index": 3,
+      "name": "bunny-3",
+      "file": "bunny-3.png",
+      "componentArea": 155019,
+      "foregroundBbox": [
+        971,
+        14,
+        1430,
+        357
+      ],
+      "cropBbox": [
+        965,
+        8,
+        1436,
+        363
+      ],
+      "cropXywh": [
+        965,
+        8,
+        471,
+        355
+      ],
+      "normalizedCropBbox": [
+        0.668746,
+        0.007339,
+        0.995149,
+        0.333028
+      ]
+    },
+    {
+      "index": 4,
+      "name": "penguin-1",
+      "file": "penguin-1.png",
+      "componentArea": 153129,
+      "foregroundBbox": [
+        13,
+        368,
+        472,
+        706
+      ],
+      "cropBbox": [
+        7,
+        362,
+        478,
+        712
+      ],
+      "cropXywh": [
+        7,
+        362,
+        471,
+        350
+      ],
+      "normalizedCropBbox": [
+        0.004851,
+        0.33211,
+        0.331254,
+        0.653211
+      ]
+    },
+    {
+      "index": 5,
+      "name": "penguin-2",
+      "file": "penguin-2.png",
+      "componentArea": 154127,
+      "foregroundBbox": [
+        492,
+        368,
+        952,
+        706
+      ],
+      "cropBbox": [
+        486,
+        362,
+        958,
+        712
+      ],
+      "cropXywh": [
+        486,
+        362,
+        472,
+        350
+      ],
+      "normalizedCropBbox": [
+        0.336798,
+        0.33211,
+        0.663895,
+        0.653211
+      ]
+    },
+    {
+      "index": 6,
+      "name": "penguin-3",
+      "file": "penguin-3.png",
+      "componentArea": 153542,
+      "foregroundBbox": [
+        971,
+        368,
+        1430,
+        706
+      ],
+      "cropBbox": [
+        965,
+        362,
+        1436,
+        712
+      ],
+      "cropXywh": [
+        965,
+        362,
+        471,
+        350
+      ],
+      "normalizedCropBbox": [
+        0.668746,
+        0.33211,
+        0.995149,
+        0.653211
+      ]
+    },
+    {
+      "index": 7,
+      "name": "flamingo-1",
+      "file": "flamingo-1.png",
+      "componentArea": 159420,
+      "foregroundBbox": [
+        15,
+        718,
+        472,
+        1071
+      ],
+      "cropBbox": [
+        9,
+        712,
+        478,
+        1077
+      ],
+      "cropXywh": [
+        9,
+        712,
+        469,
+        365
+      ],
+      "normalizedCropBbox": [
+        0.006237,
+        0.653211,
+        0.331254,
+        0.988073
+      ]
+    },
+    {
+      "index": 8,
+      "name": "flamingo-2",
+      "file": "flamingo-2.png",
+      "componentArea": 160498,
+      "foregroundBbox": [
+        491,
+        718,
+        952,
+        1071
+      ],
+      "cropBbox": [
+        485,
+        712,
+        958,
+        1077
+      ],
+      "cropXywh": [
+        485,
+        712,
+        473,
+        365
+      ],
+      "normalizedCropBbox": [
+        0.336105,
+        0.653211,
+        0.663895,
+        0.988073
+      ]
+    },
+    {
+      "index": 9,
+      "name": "flamingo-3",
+      "file": "flamingo-3.png",
+      "componentArea": 159507,
+      "foregroundBbox": [
+        972,
+        718,
+        1429,
+        1071
+      ],
+      "cropBbox": [
+        966,
+        712,
+        1435,
+        1077
+      ],
+      "cropXywh": [
+        966,
+        712,
+        469,
+        365
+      ],
+      "normalizedCropBbox": [
+        0.669439,
+        0.653211,
+        0.994456,
+        0.988073
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 2,
+    "minArea": 786,
+    "order": "reading"
+  }
+}

@@ -1,34 +1,41 @@
 {
   "id": "animal-walk-cards",
-  "title": "Animal Walk Cards",
+  "title": "Animal Motion Cards",
   "category": "movement-outdoor",
   "path": "games/animal-walk-cards/",
-  "icon": "ðŸ»",
+  "icon": "🐾",
   "entry": "index.html",
   "age": { "min": 5, "max": 6 },
   "status": "beta",
-  "accent": "#f4a261",
-  "shareTitle": "Animal Walk Cards ðŸ¾ â€” Animal Movement Play",
-  "description": "Bear crawl, frog jump, crab walk, and flamingo balance through short animal rounds, then chain them all into a family parade. A playful gross-motor romp for ages 5â€“6.",
+  "accent": "#1fa9df",
+  "shareTitle": "Animal Motion Cards — Hop, Crawl, Waddle & Balance",
+  "description": "Pick a tactile toy animal card, learn its move in three picture steps, earn paw stamps, and chain favorite motions into a joyful three-animal parade.",
   "learningGoals": [
-    "Build gross-motor strength and coordination",
-    "Imitate distinct animal body shapes",
-    "Practice cardio movement through short playful rounds",
-    "Remember and chain movements into a parade sequence"
+    "Build gross-motor strength, balance, and bilateral coordination",
+    "Imitate six distinct animal body shapes from picture and voice cues",
+    "Practice safe, self-paced whole-body movement in short playful rounds",
+    "Remember and sequence three movements in an animal parade"
   ],
-  "interactionModel": "tap the large done target after each animal movement; timed rounds coach short bursts and chain the parade sequence",
-  "feedbackModel": "playful zookeeper speech gives every animal a sound moment, layered with sparkle, tick, and tada SFX",
+  "interactionModel": "pick a large animal card, study three modeled poses, then follow three forgiving auto-paced movement beats or advance with the large self-confirm button",
+  "feedbackModel": "recorded warm-teacher coaching, animated raster poses, tactile sound effects, persistent paw stamps, and a confetti parade finale",
   "uses": [
-    "shared/js/engines/coach-timer.js",
-    "shared/js/speech.js",
-    "shared/js/sfx.js"
+    "shared/js/screens.js",
+    "shared/js/tap.js",
+    "shared/js/audio-unlock.js",
+    "shared/js/narrator.js",
+    "shared/js/voice-clips.js",
+    "shared/js/sfx.js",
+    "shared/js/celebrate.js",
+    "shared/js/timers.js",
+    "shared/js/rng.js",
+    "shared/js/debug-harness.js"
   ],
   "modes": [
-    { "id": "learn", "title": "Animal School", "skill": "animal body shapes and coordination" },
+    { "id": "cards", "title": "Motion Cards", "skill": "gross-motor imitation and coordination" },
     { "id": "parade", "title": "Animal Parade", "skill": "movement memory and cardio play" }
   ],
   "license": { "code": "MIT", "assets": "CC-BY-4.0" },
-  "credits": "Kaigani; emoji placeholder art only (see ASSETS.md). Built with Codex for QLOBE Kids.",
+  "credits": "Kaigani; original Toy-world art produced with GPT Image and Krea 2; teacher voice produced with Qwen3 TTS and Whisper QA. See ASSETS.md. Built with Codex for QLOBE Kids.",
   "characters": [],
   "conceptVideo": null
 }

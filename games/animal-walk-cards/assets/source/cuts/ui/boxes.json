@@ -1,0 +1,116 @@
+{
+  "source": "games/animal-walk-cards/assets/source/gpt-image-2/ui-sheet-master.png",
+  "sourceSha256": "a4d6c8043bba0c1cf46c2bfe1c0369b8b15714e1fa35ee83a0c3175c8c6bfc2b",
+  "sourceSize": [
+    2172,
+    724
+  ],
+  "detection": "background-threshold",
+  "sampledBackgroundRgb": [
+    249,
+    4,
+    250
+  ],
+  "padding": 14,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "action-button",
+      "file": "action-button.png",
+      "componentArea": 185384,
+      "foregroundBbox": [
+        49,
+        209,
+        746,
+        494
+      ],
+      "cropBbox": [
+        35,
+        195,
+        760,
+        508
+      ],
+      "cropXywh": [
+        35,
+        195,
+        725,
+        313
+      ],
+      "normalizedCropBbox": [
+        0.016114,
+        0.269337,
+        0.349908,
+        0.701657
+      ]
+    },
+    {
+      "index": 2,
+      "name": "paw-stamp",
+      "file": "paw-stamp.png",
+      "componentArea": 148342,
+      "foregroundBbox": [
+        883,
+        124,
+        1290,
+        601
+      ],
+      "cropBbox": [
+        869,
+        110,
+        1304,
+        615
+      ],
+      "cropXywh": [
+        869,
+        110,
+        435,
+        505
+      ],
+      "normalizedCropBbox": [
+        0.400092,
+        0.151934,
+        0.600368,
+        0.849448
+      ]
+    },
+    {
+      "index": 3,
+      "name": "parade-banner",
+      "file": "parade-banner.png",
+      "componentArea": 115332,
+      "foregroundBbox": [
+        1417,
+        230,
+        2126,
+        459
+      ],
+      "cropBbox": [
+        1403,
+        216,
+        2140,
+        473
+      ],
+      "cropXywh": [
+        1403,
+        216,
+        737,
+        257
+      ],
+      "normalizedCropBbox": [
+        0.645948,
+        0.298343,
+        0.985267,
+        0.653315
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 2,
+    "minArea": 786,
+    "order": "reading"
+  }
+}
