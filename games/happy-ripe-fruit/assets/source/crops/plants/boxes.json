@@ -1,0 +1,202 @@
+{
+  "source": "plants-source.png",
+  "sourceSha256": "db5df1eee865ea7f9dc1779f0dba3d8434c0fd4b6aeff1d8e3ea8f4d00830d9e",
+  "sourceSize": [
+    1536,
+    1024
+  ],
+  "detection": "alpha",
+  "sampledBackgroundRgb": null,
+  "padding": 12,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "strawberry",
+      "file": "strawberry.png",
+      "componentArea": 105015,
+      "foregroundBbox": [
+        53,
+        71,
+        478,
+        478
+      ],
+      "cropBbox": [
+        41,
+        59,
+        490,
+        490
+      ],
+      "cropXywh": [
+        41,
+        59,
+        449,
+        431
+      ],
+      "normalizedCropBbox": [
+        0.026693,
+        0.057617,
+        0.31901,
+        0.478516
+      ]
+    },
+    {
+      "index": 2,
+      "name": "banana",
+      "file": "banana.png",
+      "componentArea": 111292,
+      "foregroundBbox": [
+        538,
+        38,
+        1017,
+        478
+      ],
+      "cropBbox": [
+        526,
+        26,
+        1029,
+        490
+      ],
+      "cropXywh": [
+        526,
+        26,
+        503,
+        464
+      ],
+      "normalizedCropBbox": [
+        0.342448,
+        0.025391,
+        0.669922,
+        0.478516
+      ]
+    },
+    {
+      "index": 3,
+      "name": "apple",
+      "file": "apple.png",
+      "componentArea": 116833,
+      "foregroundBbox": [
+        1067,
+        31,
+        1485,
+        477
+      ],
+      "cropBbox": [
+        1055,
+        19,
+        1497,
+        489
+      ],
+      "cropXywh": [
+        1055,
+        19,
+        442,
+        470
+      ],
+      "normalizedCropBbox": [
+        0.686849,
+        0.018555,
+        0.974609,
+        0.477539
+      ]
+    },
+    {
+      "index": 4,
+      "name": "lemon",
+      "file": "lemon.png",
+      "componentArea": 124223,
+      "foregroundBbox": [
+        41,
+        517,
+        468,
+        985
+      ],
+      "cropBbox": [
+        29,
+        505,
+        480,
+        997
+      ],
+      "cropXywh": [
+        29,
+        505,
+        451,
+        492
+      ],
+      "normalizedCropBbox": [
+        0.01888,
+        0.493164,
+        0.3125,
+        0.973633
+      ]
+    },
+    {
+      "index": 5,
+      "name": "cherry",
+      "file": "cherry.png",
+      "componentArea": 89449,
+      "foregroundBbox": [
+        546,
+        511,
+        983,
+        985
+      ],
+      "cropBbox": [
+        534,
+        499,
+        995,
+        997
+      ],
+      "cropXywh": [
+        534,
+        499,
+        461,
+        498
+      ],
+      "normalizedCropBbox": [
+        0.347656,
+        0.487305,
+        0.647786,
+        0.973633
+      ]
+    },
+    {
+      "index": 6,
+      "name": "pear",
+      "file": "pear.png",
+      "componentArea": 117493,
+      "foregroundBbox": [
+        1074,
+        525,
+        1489,
+        985
+      ],
+      "cropBbox": [
+        1062,
+        513,
+        1501,
+        997
+      ],
+      "cropXywh": [
+        1062,
+        513,
+        439,
+        484
+      ],
+      "normalizedCropBbox": [
+        0.691406,
+        0.500977,
+        0.977214,
+        0.973633
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 3,
+    "minArea": 1800,
+    "order": "reading"
+  }
+}

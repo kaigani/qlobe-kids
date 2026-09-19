@@ -1,0 +1,23 @@
+{
+  "id":"happy-ripe-fruit", "title":"Happy Ripe Fruit", "artDirection":"Kawaii tactile gouache-and-soft-clay orchard", "music":"../../shared/assets/music/upbeat-playground-pop.mp3",
+  "progression":{"rounds":3,"fruits":["strawberry","banana","apple","lemon","cherry","pear"]},
+  "fruitDetails":{
+    "strawberry":{"title":"Strawberry Patch","short":"strawberry","ripeCue":"deep red and juicy"},
+    "banana":{"title":"Banana Grove","short":"banana","ripeCue":"golden yellow and gently curved"},
+    "apple":{"title":"Apple Tree","short":"apple","ripeCue":"shiny, bright red, and plump"},
+    "lemon":{"title":"Lemon Tree","short":"lemon","ripeCue":"sunny yellow and smooth"},
+    "cherry":{"title":"Cherry Tree","short":"cherry pair","ripeCue":"deep ruby red and glossy"},
+    "pear":{"title":"Pear Tree","short":"pear","ripeCue":"golden green, smooth, and plump"}
+  },
+  "assets":{
+    "backgrounds":{"orchard":"assets/orchard.webp","title":"assets/title.webp","party":"assets/party.webp"},
+    "plants":{"strawberry":"assets/plants/strawberry.webp","banana":"assets/plants/banana.webp","apple":"assets/plants/apple.webp","lemon":"assets/plants/lemon.webp","cherry":"assets/plants/cherry.webp","pear":"assets/plants/pear.webp"},
+    "basket":{"empty":"assets/ui/basket-empty.webp","one":"assets/ui/basket-one.webp","two":"assets/ui/basket-two.webp","three":"assets/ui/basket-three.webp"},
+    "badges":{"strawberry":"assets/badges/strawberry.webp","banana":"assets/badges/banana.webp","apple":"assets/badges/apple.webp","lemon":"assets/badges/lemon.webp","cherry":"assets/badges/cherry.webp","pear":"assets/badges/pear.webp"},
+    "stageTokens":{"early":"assets/ui/stage-early.webp","ripe":"assets/ui/stage-ripe.webp","late":"assets/ui/stage-late.webp"},
+    "ui":{"badgeMedallion":"assets/ui/badge-medallion.webp","lockedRibbon":"assets/ui/locked-ribbon.webp","rewardWreath":"assets/ui/reward-wreath.webp","promptPlaque":"assets/ui/prompt-plaque.webp"},
+    "fruits":{"strawberry":{"early":"assets/fruit/strawberry-early.webp","ripe":"assets/fruit/strawberry-ripe.webp","late":"assets/fruit/strawberry-late.webp"},"banana":{"early":"assets/fruit/banana-early.webp","ripe":"assets/fruit/banana-ripe.webp","late":"assets/fruit/banana-late.webp"},"apple":{"early":"assets/fruit/apple-early.webp","ripe":"assets/fruit/apple-ripe.webp","late":"assets/fruit/apple-late.webp"},"lemon":{"early":"assets/fruit/lemon-early.webp","ripe":"assets/fruit/lemon-ripe.webp","late":"assets/fruit/lemon-late.webp"},"cherry":{"early":"assets/fruit/cherry-early.webp","ripe":"assets/fruit/cherry-ripe.webp","late":"assets/fruit/cherry-late.webp"},"pear":{"early":"assets/fruit/pear-early.webp","ripe":"assets/fruit/pear-ripe.webp","late":"assets/fruit/pear-late.webp"}},
+    "audio":{"manifest":"assets/audio/manifest.json","lines":"assets/audio/lines.json"}
+  },
+  "voice":{"welcome":"Welcome to Happy Ripe Fruit! Tap the basket and let's pick together.","choose-patch":"Our fruit garden is ready. Choose the glowing fruit patch.","strawberry-prompt":"Find the strawberry that is deep red and juicy. Put the ripe one in the basket!","banana-prompt":"Find the banana that is golden yellow and gently curved. Put the ripe one in the basket!","apple-prompt":"Find the apple that is shiny bright red and plump. Put the ripe one in the basket!","lemon-prompt":"Find the lemon that is sunny yellow and smooth. Put the ripe one in the basket!","cherry-prompt":"Find the cherries that are deep ruby red and glossy. Put the ripe pair in the basket!","pear-prompt":"Find the pear that is golden green, smooth, and plump. Put the ripe one in the basket!","retry-early":"That fruit needs a little more sunshine. Try the ripe one.","retry-late":"That fruit waited a little too long. Try the ripe one.","praise-one":"Pop! That fruit is just right.","praise-two":"Ripe and ready. Lovely looking!","praise-three":"You spotted the happy ripe fruit!","strawberry-complete":"Three ruby strawberries! Your berry badge is blooming.","banana-complete":"Three golden bananas! Your banana badge is shining.","apple-complete":"Three bright apples! Your apple badge is sparkling.","lemon-complete":"Three sunny lemons! Your lemon badge is glowing.","cherry-complete":"Three ruby cherry pairs! Your cherry badge is twinkling.","pear-complete":"Three golden pears! Your pear badge is gleaming.","finale":"Your whole rainbow harvest is ripe and ready. What a careful fruit picker!","idle":"Look closely at the colors and the skin. Which fruit is just right?"}
+}

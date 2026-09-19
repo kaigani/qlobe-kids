@@ -1,0 +1,56 @@
+{
+  "id": "happy-ripe-fruit",
+  "title": "Happy Ripe Fruit",
+  "category": "sensorial-science",
+  "path": "games/happy-ripe-fruit/",
+  "entry": "index.html",
+  "age": { "min": 2, "max": 5 },
+  "status": "beta",
+  "accent": "#f2c34f",
+  "icon": "🍓",
+  "shareTitle": "Happy Ripe Fruit - Pick the Just-Right Fruit",
+  "description": "Look closely at color, shape, sheen, and texture to pick the fruit that is just right.",
+  "learningGoals": [
+    "Compare visible stages of fruit ripeness",
+    "Practice careful observation and visual discrimination"
+  ],
+  "interactionModel": "Tap a ripe fruit or drag it into a forgiving woven basket across six sequential orchard patches.",
+  "feedbackModel": "Recorded teacher prompts, stage-aware hints, tactile fruit motion, sparkles, filling baskets, and collectible patch badges.",
+  "modes": [
+    {
+      "id": "orchard",
+      "title": "Rainbow Orchard",
+      "skill": "Compare early, ripe, and late fruit stages and pick the ripe one."
+    }
+  ],
+  "uses": [
+    "shared/css/base.css",
+    "shared/css/hud.css",
+    "shared/css/screens.css",
+    "shared/js/screens.js",
+    "shared/js/hud.js",
+    "shared/js/narrator.js",
+    "shared/js/voice-clips.js",
+    "shared/js/audio-unlock.js",
+    "shared/js/sfx.js",
+    "shared/js/bgm.js",
+    "shared/assets/music/upbeat-playground-pop.mp3",
+    "shared/js/tap.js",
+    "shared/js/celebrate.js",
+    "shared/js/idle-nudge.js",
+    "shared/js/rng.js",
+    "shared/js/timers.js",
+    "shared/js/preload.js",
+    "shared/js/debug-harness.js",
+    "shared/js/stage/drag-to-slot-dom.js"
+  ],
+  "privacy": {
+    "recording": "none",
+    "storage": "completion-only",
+    "uploads": false,
+    "exports": false
+  },
+  "license": { "code": "MIT", "assets": "CC-BY-4.0" },
+  "credits": "QLOBE Kids; authored GPT Image 2 Kawaii raster art, local Krea 2 exploration, repository asset cutting, and transcript-QA'd local Qwen teacher voice documented in ASSETS.md.",
+  "conceptVideo": null
+}

@@ -1,0 +1,52 @@
+{
+  "source": "title-source.png",
+  "sourceSha256": "037c2e8ca037888be9b933f9573df2fc841982301267d8974faf83b6ec8347dd",
+  "sourceSize": [
+    1448,
+    1086
+  ],
+  "detection": "alpha",
+  "sampledBackgroundRgb": null,
+  "padding": 12,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "title",
+      "file": "title.png",
+      "componentArea": 713687,
+      "foregroundBbox": [
+        139,
+        120,
+        1309,
+        936
+      ],
+      "cropBbox": [
+        127,
+        108,
+        1321,
+        948
+      ],
+      "cropXywh": [
+        127,
+        108,
+        1194,
+        840
+      ],
+      "normalizedCropBbox": [
+        0.087707,
+        0.099448,
+        0.912293,
+        0.872928
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 6,
+    "minArea": 4000,
+    "order": "reading"
+  }
+}

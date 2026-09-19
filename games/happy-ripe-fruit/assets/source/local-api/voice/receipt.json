@@ -1,0 +1,140 @@
+{
+  "format": "qlobe-voice-production-receipt",
+  "formatVersion": 1,
+  "game": "happy-ripe-fruit",
+  "createdAt": "2026-09-19T22:52:29.240591+00:00",
+  "workflow": "qwen3-tts-voiceclone -> AAC/M4A -> whisper-stt transcript QA",
+  "endpoint": "authorized local workflow API (address intentionally omitted)",
+  "reference": "shared/assets/refs/voice-teacher.wav",
+  "generation": {
+    "praise-one": {
+      "seed": 7,
+      "status": "kept",
+      "duration": 2.357
+    },
+    "praise-two": {
+      "seed": 7,
+      "status": "kept",
+      "duration": 2.641
+    },
+    "praise-three": {
+      "seed": 7,
+      "status": "kept",
+      "duration": 1.946
+    },
+    "strawberry-complete": {
+      "seed": 7,
+      "status": "kept",
+      "duration": 3.5
+    },
+    "banana-complete": {
+      "seed": 7,
+      "status": "kept",
+      "duration": 3.8
+    },
+    "apple-complete": {
+      "seed": 7,
+      "status": "kept",
+      "duration": 2.938
+    },
+    "lemon-complete": {
+      "seed": 7,
+      "status": "kept",
+      "duration": 3.2
+    },
+    "cherry-complete": {
+      "seed": 7,
+      "status": "kept",
+      "duration": 3.3
+    },
+    "pear-complete": {
+      "seed": 7,
+      "status": "kept",
+      "duration": 3.7
+    },
+    "finale": {
+      "seed": 7,
+      "status": "kept",
+      "duration": 4.5
+    },
+    "idle": {
+      "seed": 7,
+      "status": "kept",
+      "duration": 3.8
+    },
+    "welcome": {
+      "seed": 7,
+      "status": "kept",
+      "duration": 4.1
+    },
+    "choose-patch": {
+      "seed": 7,
+      "status": "kept",
+      "duration": 3.7
+    },
+    "strawberry-prompt": {
+      "seed": 7,
+      "status": "kept",
+      "duration": 4.1
+    },
+    "banana-prompt": {
+      "seed": 7,
+      "status": "kept",
+      "duration": 5.0
+    },
+    "apple-prompt": {
+      "seed": 7,
+      "status": "kept",
+      "duration": 4.2
+    },
+    "lemon-prompt": {
+      "seed": 7,
+      "status": "kept",
+      "duration": 4.3
+    },
+    "cherry-prompt": {
+      "seed": 7,
+      "status": "kept",
+      "duration": 5.1
+    },
+    "pear-prompt": {
+      "seed": 7,
+      "status": "kept",
+      "duration": 4.7
+    },
+    "retry-early": {
+      "seed": 7,
+      "status": "kept",
+      "duration": 3.4
+    },
+    "retry-late": {
+      "seed": 8,
+      "status": "kept",
+      "duration": 3.9
+    }
+  },
+  "accepted": [
+    "welcome",
+    "choose-patch",
+    "strawberry-prompt",
+    "banana-prompt",
+    "apple-prompt",
+    "lemon-prompt",
+    "cherry-prompt",
+    "pear-prompt",
+    "retry-early",
+    "retry-late",
+    "praise-one",
+    "praise-two",
+    "praise-three",
+    "strawberry-complete",
+    "banana-complete",
+    "apple-complete",
+    "lemon-complete",
+    "cherry-complete",
+    "pear-complete",
+    "finale",
+    "idle"
+  ],
+  "fallback": []
+}

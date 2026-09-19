@@ -9,12 +9,11 @@
     "games/<id>/config.js",
     "games/<id>/js/**/*.js"
   ],
-  "generated": "2026-09-19T21:28:21.904Z",
+  "generated": "2026-09-19T22:31:52.182Z",
   "engines": {
     "coach-timer": {
-      "count": 4,
+      "count": 3,
       "games": [
-        "melting-race",
         "neighborhood-map-walk",
         "shelf-reset-game",
         "waiting-muscle-game"
@@ -1096,6 +1095,39 @@
       ],
       "packs": []
     },
+    "happy-ripe-fruit": {
+      "engine": null,
+      "status": "beta",
+      "category": "sensorial-science",
+      "characters": [],
+      "modules": [
+        "shared/js/analytics.js",
+        "shared/js/audio-unlock.js",
+        "shared/js/bgm.js",
+        "shared/js/celebrate.js",
+        "shared/js/debug-harness.js",
+        "shared/js/hud.js",
+        "shared/js/idle-nudge.js",
+        "shared/js/narrator.js",
+        "shared/js/preload.js",
+        "shared/js/rng.js",
+        "shared/js/screens.js",
+        "shared/js/sfx.js",
+        "shared/js/stage/drag-to-slot-dom.js",
+        "shared/js/tap.js",
+        "shared/js/timers.js",
+        "shared/js/voice-clips.js"
+      ],
+      "css": [
+        "shared/css/base.css",
+        "shared/css/hud.css",
+        "shared/css/screens.css"
+      ],
+      "assets": [
+        "shared/assets/music/upbeat-playground-pop.mp3"
+      ],
+      "packs": []
+    },
     "instrument-detective": {
       "engine": null,
       "status": "beta",
@@ -1511,25 +1543,6 @@
         "games/magnet-explorer/assets",
         "shared/assets/music/whimsical-toy-workshop.mp3"
       ],
-      "packs": []
-    },
-    "melting-race": {
-      "engine": "coach-timer",
-      "status": "in-design",
-      "category": "sensorial-science",
-      "characters": [],
-      "modules": [
-        "shared/js/analytics.js",
-        "shared/js/engines/coach-timer.js",
-        "shared/js/sfx.js",
-        "shared/js/speech.js"
-      ],
-      "css": [
-        "shared/css/base.css",
-        "shared/css/engine-base.css",
-        "shared/css/screens.css"
-      ],
-      "assets": [],
       "packs": []
     },
     "momma-bear-storybook": {
@@ -3830,6 +3843,7 @@
         "garden-graphers",
         "globe-spin-stories",
         "grace-courtesy-theater",
+        "happy-ripe-fruit",
         "instrument-detective",
         "joke-workshop",
         "kindness-delivery",
@@ -3840,7 +3854,6 @@
         "line-walking-challenge",
         "lunchbox-pack",
         "magnet-explorer",
-        "melting-race",
         "momma-bear-storybook",
         "monster-opera",
         "mountain-seasons-wheel",
@@ -3938,6 +3951,7 @@
         "garden-graphers",
         "globe-spin-stories",
         "grace-courtesy-theater",
+        "happy-ripe-fruit",
         "instrument-detective",
         "joke-workshop",
         "kindness-delivery",
@@ -4017,6 +4031,7 @@
         "garden-delivery-game",
         "garden-graphers",
         "grace-courtesy-theater",
+        "happy-ripe-fruit",
         "line-walking-challenge",
         "magnet-explorer",
         "momma-bear-storybook",
@@ -4080,6 +4095,7 @@
         "feelings-charades",
         "garden-delivery-game",
         "grace-courtesy-theater",
+        "happy-ripe-fruit",
         "instrument-detective",
         "joke-workshop",
         "land-water-tray",
@@ -4172,6 +4188,7 @@
         "garden-graphers",
         "globe-spin-stories",
         "grace-courtesy-theater",
+        "happy-ripe-fruit",
         "instrument-detective",
         "joke-workshop",
         "kindness-delivery",
@@ -4260,7 +4277,6 @@
         "problem-solving-puppets"
       ],
       "shared/js/engines/coach-timer.js": [
-        "melting-race",
         "neighborhood-map-walk",
         "shelf-reset-game",
         "waiting-muscle-game"
@@ -4319,6 +4335,7 @@
         "flashlight-cave",
         "garden-delivery-game",
         "grace-courtesy-theater",
+        "happy-ripe-fruit",
         "instrument-detective",
         "joke-workshop",
         "kindness-delivery",
@@ -4366,6 +4383,7 @@
         "garden-delivery-game",
         "garden-graphers",
         "grace-courtesy-theater",
+        "happy-ripe-fruit",
         "joke-workshop",
         "kindness-delivery",
         "land-water-tray",
@@ -4468,6 +4486,7 @@
         "family-timeline",
         "freeze-focus-dance",
         "grace-courtesy-theater",
+        "happy-ripe-fruit",
         "kindness-delivery",
         "land-water-tray",
         "laundry-sorter",
@@ -4519,6 +4538,7 @@
         "garden-graphers",
         "globe-spin-stories",
         "grace-courtesy-theater",
+        "happy-ripe-fruit",
         "instrument-detective",
         "joke-workshop",
         "kindness-delivery",
@@ -4586,6 +4606,7 @@
         "garden-graphers",
         "globe-spin-stories",
         "grace-courtesy-theater",
+        "happy-ripe-fruit",
         "instrument-detective",
         "joke-workshop",
         "kindness-delivery",
@@ -4657,6 +4678,7 @@
         "freeze-focus-dance",
         "garden-graphers",
         "grace-courtesy-theater",
+        "happy-ripe-fruit",
         "instrument-detective",
         "joke-workshop",
         "kindness-delivery",
@@ -4730,6 +4752,7 @@
         "garden-graphers",
         "globe-spin-stories",
         "grace-courtesy-theater",
+        "happy-ripe-fruit",
         "instrument-detective",
         "joke-workshop",
         "kindness-delivery",
@@ -4742,7 +4765,6 @@
         "loose-parts-collage",
         "lunchbox-pack",
         "magnet-explorer",
-        "melting-race",
         "momma-bear-storybook",
         "monster-opera",
         "mountain-seasons-wheel",
@@ -4827,7 +4849,6 @@
         "laundry-sorter",
         "letter-road-driving",
         "lunchbox-pack",
-        "melting-race",
         "mystery-letter-bag",
         "name-puzzle",
         "neighborhood-map-walk",
@@ -4883,6 +4904,7 @@
         "cooking-craze",
         "counting-treasure-cups",
         "garden-graphers",
+        "happy-ripe-fruit",
         "laundry-sorter",
         "lunchbox-pack",
         "name-puzzle",
@@ -4996,6 +5018,7 @@
         "garden-graphers",
         "globe-spin-stories",
         "grace-courtesy-theater",
+        "happy-ripe-fruit",
         "instrument-detective",
         "joke-workshop",
         "kindness-delivery",
@@ -5084,6 +5107,7 @@
         "garden-graphers",
         "globe-spin-stories",
         "grace-courtesy-theater",
+        "happy-ripe-fruit",
         "instrument-detective",
         "joke-workshop",
         "kindness-delivery",
@@ -5170,6 +5194,7 @@
         "garden-graphers",
         "globe-spin-stories",
         "grace-courtesy-theater",
+        "happy-ripe-fruit",
         "instrument-detective",
         "joke-workshop",
         "kindness-delivery",
@@ -5290,6 +5315,7 @@
         "garden-graphers",
         "globe-spin-stories",
         "grace-courtesy-theater",
+        "happy-ripe-fruit",
         "instrument-detective",
         "joke-workshop",
         "kindness-delivery",
@@ -5302,7 +5328,6 @@
         "loose-parts-collage",
         "lunchbox-pack",
         "magnet-explorer",
-        "melting-race",
         "momma-bear-storybook",
         "monster-opera",
         "mountain-seasons-wheel",
@@ -5371,7 +5396,6 @@
       "shared/css/engine-base.css": [
         "blend-train",
         "letter-road-driving",
-        "melting-race",
         "my-puppet-band",
         "mystery-letter-bag",
         "neighborhood-map-walk",
@@ -5410,6 +5434,7 @@
         "garden-graphers",
         "globe-spin-stories",
         "grace-courtesy-theater",
+        "happy-ripe-fruit",
         "instrument-detective",
         "joke-workshop",
         "kindness-delivery",
@@ -5483,6 +5508,7 @@
         "freeze-focus-dance",
         "garden-graphers",
         "grace-courtesy-theater",
+        "happy-ripe-fruit",
         "instrument-detective",
         "joke-workshop",
         "kindness-delivery",
@@ -5494,7 +5520,6 @@
         "loose-parts-collage",
         "lunchbox-pack",
         "magnet-explorer",
-        "melting-race",
         "momma-bear-storybook",
         "monster-opera",
         "mountain-seasons-wheel",
@@ -7097,6 +7122,7 @@
       ],
       "shared/assets/music/upbeat-playground-pop.mp3": [
         "beat-the-bugs",
+        "happy-ripe-fruit",
         "question-ball",
         "sound-hopscotch"
       ],

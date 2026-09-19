@@ -1,0 +1,32 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "happy-ripe-fruit-hub-krea-exploration",
+  "kind": "image",
+  "asset": "games/happy-ripe-fruit/assets/source/local-api/hub/hub-krea-seed-42-candidate.jpg",
+  "artDirection": "Kawaii",
+  "steps": [
+    {
+      "workflow": "krea2-turbo-t2i",
+      "prompt": "a premium handcrafted Kawaii preschool game tableau in a magical sunny fruit orchard, one large honey-colored woven harvest basket centered and overflowing with exactly six instantly readable happy ripe fruit friends: one ruby strawberry, one golden curved banana, one shiny red apple, one sunny yellow lemon, one paired deep-red cherry character, and one golden-green pear; plump smiling faces, leaf-green orchard framing, tiny white daisies, blue sky, warm cream edge lights, cocoa contours, hand-painted gouache texture combined with soft sculpted clay volume, warm upper-left morning light, strong centered 6:5 menu-tile silhouette, the basket and six fruit fill most of the frame; absolutely no writing, letters, numbers, title, logo, UI, button, border, device, hand, extra fruit, flat vector art, photorealism, mold, or clutter",
+      "seed": 42,
+      "width": 768,
+      "height": 640,
+      "steps": 8,
+      "cfg": 1
+    }
+  ],
+  "source": "hub-krea-seed-42.png",
+  "sourceSha256": "58b4ea39fb9d74773b0ef0648d5a1eb837e5d91594b9056cd6c5037d1e864484",
+  "candidateSha256": "d9086c17daf98065f88c911f38112cb8ed43373449b545ca09f773bd5d86efe6",
+  "job": "sanitized-local-job-id",
+  "qa": {
+    "status": "pending-art-director",
+    "finalSize": [
+      640,
+      533
+    ],
+    "productionOverwrite": false
+  },
+  "createdAt": "2026-09-19T22:10:06.921147+00:00"
+}

@@ -1,0 +1,682 @@
+{
+  "format": "happy-ripe-fruit-processing-v1",
+  "generator": "GPT Image 2 built-in",
+  "sourceAlpha": "native RGBA; no layered redraw required",
+  "cutter": "tools/cut-asset-sheet.py",
+  "sources": {
+    "fruit-stages-source.png": "7b2ac3e0beb5dca143bef537f08adc10e257c023ceac0feec3c2993347afec10",
+    "hub-final-source.png": "f27344687f540834f1b70a6775eaa11c6a137864fe7f6feea06fa29b4512ac58",
+    "orchard-source.png": "c9204ce98cbeb13511c892c3b5780ac34b991d58f3bb8a426382cc5088c912ec",
+    "plants-source.png": "db5df1eee865ea7f9dc1779f0dba3d8434c0fd4b6aeff1d8e3ea8f4d00830d9e",
+    "title-source.png": "037c2e8ca037888be9b933f9573df2fc841982301267d8974faf83b6ec8347dd",
+    "ui-source.png": "a6a4697425fc372c1157e54e92b67f722b29875221c3a121e9e850c91e7023e9"
+  },
+  "outputs": {
+    "assets/orchard.webp": {
+      "source": "assets/source/gpt-image-2/orchard-source.png",
+      "sourceSha256": "c9204ce98cbeb13511c892c3b5780ac34b991d58f3bb8a426382cc5088c912ec",
+      "dimensions": [
+        1440,
+        1080
+      ],
+      "quality": 86,
+      "bytes": 262266
+    },
+    "assets/fruit/strawberry-early.webp": {
+      "source": "assets/source/crops/fruit/strawberry-early.png",
+      "sourceSha256": "258b1e0fd13788509c1ebe7a16f08655b069c1279d180ddbd20126f8a0985d83",
+      "dimensions": [
+        182,
+        242
+      ],
+      "bytes": 49048,
+      "alpha": {
+        "width": 182,
+        "height": 242,
+        "transparentPct": 41.304,
+        "opaquePct": 48.542
+      },
+      "qaMagenta": "assets/source/qa/fruit/strawberry-early-magenta.png"
+    },
+    "assets/fruit/banana-early.webp": {
+      "source": "assets/source/crops/fruit/banana-early.png",
+      "sourceSha256": "2a6687a391b6672599216365d413d36d9d676fca5ef9815b75da5ded342c6a55",
+      "dimensions": [
+        238,
+        243
+      ],
+      "bytes": 46450,
+      "alpha": {
+        "width": 238,
+        "height": 243,
+        "transparentPct": 56.073,
+        "opaquePct": 34.789
+      },
+      "qaMagenta": "assets/source/qa/fruit/banana-early-magenta.png"
+    },
+    "assets/fruit/apple-early.webp": {
+      "source": "assets/source/crops/fruit/apple-early.png",
+      "sourceSha256": "eb1557c8ca7dafae73a42bc596c7b5277683dfe136a28fcbad0cac06c55e36c8",
+      "dimensions": [
+        220,
+        239
+      ],
+      "bytes": 54476,
+      "alpha": {
+        "width": 220,
+        "height": 239,
+        "transparentPct": 37.347,
+        "opaquePct": 53.777
+      },
+      "qaMagenta": "assets/source/qa/fruit/apple-early-magenta.png"
+    },
+    "assets/fruit/lemon-early.webp": {
+      "source": "assets/source/crops/fruit/lemon-early.png",
+      "sourceSha256": "697991237c6bdbb0bf933b04edbe730582ed4c263e36fef9ccc257615fd1e106",
+      "dimensions": [
+        238,
+        209
+      ],
+      "bytes": 51102,
+      "alpha": {
+        "width": 238,
+        "height": 209,
+        "transparentPct": 39.767,
+        "opaquePct": 50.649
+      },
+      "qaMagenta": "assets/source/qa/fruit/lemon-early-magenta.png"
+    },
+    "assets/fruit/cherry-early.webp": {
+      "source": "assets/source/crops/fruit/cherry-early.png",
+      "sourceSha256": "37de38823d89ede2467e8f5c3ec6b474fb539121654b952fe2022ec62c265545",
+      "dimensions": [
+        246,
+        236
+      ],
+      "bytes": 52518,
+      "alpha": {
+        "width": 246,
+        "height": 236,
+        "transparentPct": 56.714,
+        "opaquePct": 31.573
+      },
+      "qaMagenta": "assets/source/qa/fruit/cherry-early-magenta.png"
+    },
+    "assets/fruit/pear-early.webp": {
+      "source": "assets/source/crops/fruit/pear-early.png",
+      "sourceSha256": "caffcbb5bfeb2a2ee532b70974451ceae4777ac786158f8669af6e55aee658e1",
+      "dimensions": [
+        187,
+        268
+      ],
+      "bytes": 43984,
+      "alpha": {
+        "width": 187,
+        "height": 268,
+        "transparentPct": 50.391,
+        "opaquePct": 41.039
+      },
+      "qaMagenta": "assets/source/qa/fruit/pear-early-magenta.png"
+    },
+    "assets/fruit/strawberry-ripe.webp": {
+      "source": "assets/source/crops/fruit/strawberry-ripe.png",
+      "sourceSha256": "51ef1c38c7974a013ffbc11f13d0e568a8fbebb2c2aea7d4738b134778bdae75",
+      "dimensions": [
+        212,
+        257
+      ],
+      "bytes": 62186,
+      "alpha": {
+        "width": 212,
+        "height": 257,
+        "transparentPct": 38.997,
+        "opaquePct": 51.935
+      },
+      "qaMagenta": "assets/source/qa/fruit/strawberry-ripe-magenta.png"
+    },
+    "assets/fruit/banana-ripe.webp": {
+      "source": "assets/source/crops/fruit/banana-ripe.png",
+      "sourceSha256": "d20bf3126beb5f30510a65e26ef28cf96edff39b5ec7fa214eec9e23a5356043",
+      "dimensions": [
+        264,
+        268
+      ],
+      "bytes": 55364,
+      "alpha": {
+        "width": 264,
+        "height": 268,
+        "transparentPct": 57.772,
+        "opaquePct": 33.877
+      },
+      "qaMagenta": "assets/source/qa/fruit/banana-ripe-magenta.png"
+    },
+    "assets/fruit/apple-ripe.webp": {
+      "source": "assets/source/crops/fruit/apple-ripe.png",
+      "sourceSha256": "484282e8a6da959e6c7c1235ac824b6a1ab9fbd8a4b96a931914081d449f863e",
+      "dimensions": [
+        238,
+        260
+      ],
+      "bytes": 67372,
+      "alpha": {
+        "width": 238,
+        "height": 260,
+        "transparentPct": 35.73,
+        "opaquePct": 55.601
+      },
+      "qaMagenta": "assets/source/qa/fruit/apple-ripe-magenta.png"
+    },
+    "assets/fruit/lemon-ripe.webp": {
+      "source": "assets/source/crops/fruit/lemon-ripe.png",
+      "sourceSha256": "bfe8827e0e6158c2116569df493969897672eb03e7f534f5551be0c109c732ad",
+      "dimensions": [
+        243,
+        206
+      ],
+      "bytes": 51896,
+      "alpha": {
+        "width": 243,
+        "height": 206,
+        "transparentPct": 39.71,
+        "opaquePct": 51.35
+      },
+      "qaMagenta": "assets/source/qa/fruit/lemon-ripe-magenta.png"
+    },
+    "assets/fruit/cherry-ripe.webp": {
+      "source": "assets/source/crops/fruit/cherry-ripe.png",
+      "sourceSha256": "7049ce59782cf4a6892b164ef4fe79853f7162841778dc4fecf377e2831ba77d",
+      "dimensions": [
+        263,
+        240
+      ],
+      "bytes": 57364,
+      "alpha": {
+        "width": 263,
+        "height": 240,
+        "transparentPct": 55.631,
+        "opaquePct": 32.559
+      },
+      "qaMagenta": "assets/source/qa/fruit/cherry-ripe-magenta.png"
+    },
+    "assets/fruit/pear-ripe.webp": {
+      "source": "assets/source/crops/fruit/pear-ripe.png",
+      "sourceSha256": "6246abc4ed782ca628b8a5fb3627a5eb325a5d77293b5285c6614b7b14e03fbf",
+      "dimensions": [
+        197,
+        264
+      ],
+      "bytes": 49644,
+      "alpha": {
+        "width": 197,
+        "height": 264,
+        "transparentPct": 45.264,
+        "opaquePct": 46.358
+      },
+      "qaMagenta": "assets/source/qa/fruit/pear-ripe-magenta.png"
+    },
+    "assets/fruit/strawberry-late.webp": {
+      "source": "assets/source/crops/fruit/strawberry-late.png",
+      "sourceSha256": "01d33ce28f5a0e52958a09ec5089613327361cfae12df888758137d24f41271a",
+      "dimensions": [
+        211,
+        249
+      ],
+      "bytes": 57492,
+      "alpha": {
+        "width": 211,
+        "height": 249,
+        "transparentPct": 40.861,
+        "opaquePct": 49.51
+      },
+      "qaMagenta": "assets/source/qa/fruit/strawberry-late-magenta.png"
+    },
+    "assets/fruit/banana-late.webp": {
+      "source": "assets/source/crops/fruit/banana-late.png",
+      "sourceSha256": "eb4149e84dbe806ed74a0173c844f9ff950804a785ea2334074fb2e02ff3755d",
+      "dimensions": [
+        262,
+        238
+      ],
+      "bytes": 54928,
+      "alpha": {
+        "width": 262,
+        "height": 238,
+        "transparentPct": 55.387,
+        "opaquePct": 35.374
+      },
+      "qaMagenta": "assets/source/qa/fruit/banana-late-magenta.png"
+    },
+    "assets/fruit/apple-late.webp": {
+      "source": "assets/source/crops/fruit/apple-late.png",
+      "sourceSha256": "e563051d3c40239b373edff98fbed02b6b95a858622ad7c9f057500a45b3717e",
+      "dimensions": [
+        236,
+        250
+      ],
+      "bytes": 63008,
+      "alpha": {
+        "width": 236,
+        "height": 250,
+        "transparentPct": 37.481,
+        "opaquePct": 53.622
+      },
+      "qaMagenta": "assets/source/qa/fruit/apple-late-magenta.png"
+    },
+    "assets/fruit/lemon-late.webp": {
+      "source": "assets/source/crops/fruit/lemon-late.png",
+      "sourceSha256": "aacd9aea5673bf99455ea96b12ce46c9260ce9ef98b8708e8433f5c103a567a8",
+      "dimensions": [
+        238,
+        210
+      ],
+      "bytes": 54216,
+      "alpha": {
+        "width": 238,
+        "height": 210,
+        "transparentPct": 38.329,
+        "opaquePct": 51.673
+      },
+      "qaMagenta": "assets/source/qa/fruit/lemon-late-magenta.png"
+    },
+    "assets/fruit/cherry-late.webp": {
+      "source": "assets/source/crops/fruit/cherry-late.png",
+      "sourceSha256": "98ec5671e03b65fc2ccd2f730203dcd5898aae5efc1b680c07d6cfb50c124642",
+      "dimensions": [
+        257,
+        231
+      ],
+      "bytes": 53398,
+      "alpha": {
+        "width": 257,
+        "height": 231,
+        "transparentPct": 55.566,
+        "opaquePct": 30.889
+      },
+      "qaMagenta": "assets/source/qa/fruit/cherry-late-magenta.png"
+    },
+    "assets/fruit/pear-late.webp": {
+      "source": "assets/source/crops/fruit/pear-late.png",
+      "sourceSha256": "e5c7a38303ecfe9bdf4cfa5be56fade2887f3d2683e52961d65ed16a02431a02",
+      "dimensions": [
+        191,
+        260
+      ],
+      "bytes": 48306,
+      "alpha": {
+        "width": 191,
+        "height": 260,
+        "transparentPct": 45.826,
+        "opaquePct": 45.489
+      },
+      "qaMagenta": "assets/source/qa/fruit/pear-late-magenta.png"
+    },
+    "assets/plants/strawberry.webp": {
+      "source": "assets/source/crops/plants/strawberry.png",
+      "sourceSha256": "3fbf493297f577ab9ca54a5adffcb60821412594d736e19dd3c1763c4b9d145c",
+      "dimensions": [
+        445,
+        427
+      ],
+      "bytes": 222440,
+      "alpha": {
+        "width": 445,
+        "height": 427,
+        "transparentPct": 45.0,
+        "opaquePct": 49.488
+      },
+      "qaMagenta": "assets/source/qa/plants/strawberry-magenta.png"
+    },
+    "assets/plants/banana.webp": {
+      "source": "assets/source/crops/plants/banana.png",
+      "sourceSha256": "37fc5af064a67d5a8a2de9dabd376e2dc3bce3a83d9f0b2aa98caa8f63cb621b",
+      "dimensions": [
+        499,
+        460
+      ],
+      "bytes": 249240,
+      "alpha": {
+        "width": 499,
+        "height": 460,
+        "transparentPct": 51.797,
+        "opaquePct": 42.275
+      },
+      "qaMagenta": "assets/source/qa/plants/banana-magenta.png"
+    },
+    "assets/plants/apple.webp": {
+      "source": "assets/source/crops/plants/apple.png",
+      "sourceSha256": "954eb851c3cd7e186785061567e720845abaa53b49040cf356dc2dc826aa2611",
+      "dimensions": [
+        438,
+        466
+      ],
+      "bytes": 236884,
+      "alpha": {
+        "width": 438,
+        "height": 466,
+        "transparentPct": 42.96,
+        "opaquePct": 52.537
+      },
+      "qaMagenta": "assets/source/qa/plants/apple-magenta.png"
+    },
+    "assets/plants/lemon.webp": {
+      "source": "assets/source/crops/plants/lemon.png",
+      "sourceSha256": "f954a82b7604299690aab12f4f84936995e08419984743faf36d3bec84ab1ae8",
+      "dimensions": [
+        447,
+        488
+      ],
+      "bytes": 262436,
+      "alpha": {
+        "width": 447,
+        "height": 488,
+        "transparentPct": 43.266,
+        "opaquePct": 52.331
+      },
+      "qaMagenta": "assets/source/qa/plants/lemon-magenta.png"
+    },
+    "assets/plants/cherry.webp": {
+      "source": "assets/source/crops/plants/cherry.png",
+      "sourceSha256": "80d7bbd0392dc37452abfcea8bd9710c671f762d393b65730b0767a7ce00b4d3",
+      "dimensions": [
+        457,
+        494
+      ],
+      "bytes": 237268,
+      "alpha": {
+        "width": 457,
+        "height": 494,
+        "transparentPct": 60.993,
+        "opaquePct": 30.308
+      },
+      "qaMagenta": "assets/source/qa/plants/cherry-magenta.png"
+    },
+    "assets/plants/pear.webp": {
+      "source": "assets/source/crops/plants/pear.png",
+      "sourceSha256": "d70edd6fa438d3ae1e1b47406244ce9f08a4ca9c8eb8c994b5307f6b6adf9e9f",
+      "dimensions": [
+        435,
+        480
+      ],
+      "bytes": 242940,
+      "alpha": {
+        "width": 435,
+        "height": 480,
+        "transparentPct": 43.926,
+        "opaquePct": 51.58
+      },
+      "qaMagenta": "assets/source/qa/plants/pear-magenta.png"
+    },
+    "assets/ui/basket-empty.webp": {
+      "source": "assets/source/crops/ui/basket-empty.png",
+      "sourceSha256": "f7e5c2e8368dd6b245f176671fc61dce007ce0c14d19f88fd1520ebdfcfb0766",
+      "dimensions": [
+        404,
+        400
+      ],
+      "bytes": 158348,
+      "alpha": {
+        "width": 404,
+        "height": 400,
+        "transparentPct": 41.101,
+        "opaquePct": 54.926
+      },
+      "qaMagenta": "assets/source/qa/ui/basket-empty-magenta.png"
+    },
+    "assets/ui/badge-medallion.webp": {
+      "source": "assets/source/crops/ui/badge-medallion.png",
+      "sourceSha256": "b25b3eee45765dcb16d5e22de13dc81b846c713ba32687607b62a5fc766f8249",
+      "dimensions": [
+        346,
+        354
+      ],
+      "bytes": 106974,
+      "alpha": {
+        "width": 346,
+        "height": 354,
+        "transparentPct": 36.019,
+        "opaquePct": 60.815
+      },
+      "qaMagenta": "assets/source/qa/ui/badge-medallion-magenta.png"
+    },
+    "assets/ui/locked-ribbon.webp": {
+      "source": "assets/source/crops/ui/locked-ribbon.png",
+      "sourceSha256": "af4439d8d76401774491015302655bbbb7855f0994e4c0394890581539f3e372",
+      "dimensions": [
+        413,
+        198
+      ],
+      "bytes": 83774,
+      "alpha": {
+        "width": 413,
+        "height": 198,
+        "transparentPct": 38.067,
+        "opaquePct": 56.868
+      },
+      "qaMagenta": "assets/source/qa/ui/locked-ribbon-magenta.png"
+    },
+    "assets/ui/reward-wreath.webp": {
+      "source": "assets/source/crops/ui/reward-wreath.png",
+      "sourceSha256": "f89b0ed6fa2dd9656e52a7d4da6b106408256f4c7186c429e0cddc50093f4b36",
+      "dimensions": [
+        397,
+        391
+      ],
+      "bytes": 120796,
+      "alpha": {
+        "width": 397,
+        "height": 391,
+        "transparentPct": 57.271,
+        "opaquePct": 37.646
+      },
+      "qaMagenta": "assets/source/qa/ui/reward-wreath-magenta.png"
+    },
+    "assets/ui/stage-early.webp": {
+      "source": "assets/source/crops/ui/stage-early.png",
+      "sourceSha256": "b1326ca364c2db99166ad6fc04b3899bde04d2aa2a67e93ee0d8b5b791cc845e",
+      "dimensions": [
+        190,
+        189
+      ],
+      "bytes": 41288,
+      "alpha": {
+        "width": 190,
+        "height": 189,
+        "transparentPct": 30.382,
+        "opaquePct": 66.636
+      },
+      "qaMagenta": "assets/source/qa/ui/stage-early-magenta.png"
+    },
+    "assets/ui/stage-ripe.webp": {
+      "source": "assets/source/crops/ui/stage-ripe.png",
+      "sourceSha256": "b82e873db8a0d8565dc457ff5f6abd5ba3ee9b5b4aaff8f39e0d30c279b099aa",
+      "dimensions": [
+        190,
+        187
+      ],
+      "bytes": 43004,
+      "alpha": {
+        "width": 190,
+        "height": 187,
+        "transparentPct": 30.096,
+        "opaquePct": 67.028
+      },
+      "qaMagenta": "assets/source/qa/ui/stage-ripe-magenta.png"
+    },
+    "assets/ui/stage-late.webp": {
+      "source": "assets/source/crops/ui/stage-late.png",
+      "sourceSha256": "a99ac3c60966b07ab9ffa7699cc488a0ddd2c94b49c45a5bc26147eebef29e80",
+      "dimensions": [
+        190,
+        188
+      ],
+      "bytes": 40920,
+      "alpha": {
+        "width": 190,
+        "height": 188,
+        "transparentPct": 30.104,
+        "opaquePct": 66.912
+      },
+      "qaMagenta": "assets/source/qa/ui/stage-late-magenta.png"
+    },
+    "assets/ui/prompt-plaque.webp": {
+      "source": "assets/source/crops/ui/prompt-plaque.png",
+      "sourceSha256": "a306ec0ad4f32a35a83e1a953f2e3033fd572f3656cab009b2f1ff6da6c9b194",
+      "dimensions": [
+        561,
+        251
+      ],
+      "bytes": 145784,
+      "alpha": {
+        "width": 561,
+        "height": 251,
+        "transparentPct": 26.989,
+        "opaquePct": 69.356
+      },
+      "qaMagenta": "assets/source/qa/ui/prompt-plaque-magenta.png"
+    },
+    "assets/title.webp": {
+      "source": "assets/source/crops/title/title.png",
+      "sourceSha256": "eaa3deecc479a90a2786906ddd7a0e398c40467bbfb48c40032e8987d9e892bc",
+      "dimensions": [
+        940,
+        660
+      ],
+      "bytes": 704506,
+      "alpha": {
+        "width": 940,
+        "height": 660,
+        "transparentPct": 28.42,
+        "opaquePct": 69.517
+      },
+      "qaMagenta": "assets/source/qa/title/title-magenta.png"
+    },
+    "assets/badges/strawberry.webp": {
+      "source": [
+        "assets/ui/badge-medallion.webp",
+        "assets/fruit/strawberry-ripe.webp"
+      ],
+      "dimensions": [
+        346,
+        354
+      ],
+      "bytes": 120734,
+      "qaMagenta": "assets/source/qa/badges/strawberry-magenta.png"
+    },
+    "assets/badges/banana.webp": {
+      "source": [
+        "assets/ui/badge-medallion.webp",
+        "assets/fruit/banana-ripe.webp"
+      ],
+      "dimensions": [
+        346,
+        354
+      ],
+      "bytes": 115490,
+      "qaMagenta": "assets/source/qa/badges/banana-magenta.png"
+    },
+    "assets/badges/apple.webp": {
+      "source": [
+        "assets/ui/badge-medallion.webp",
+        "assets/fruit/apple-ripe.webp"
+      ],
+      "dimensions": [
+        346,
+        354
+      ],
+      "bytes": 118830,
+      "qaMagenta": "assets/source/qa/badges/apple-magenta.png"
+    },
+    "assets/badges/lemon.webp": {
+      "source": [
+        "assets/ui/badge-medallion.webp",
+        "assets/fruit/lemon-ripe.webp"
+      ],
+      "dimensions": [
+        346,
+        354
+      ],
+      "bytes": 116560,
+      "qaMagenta": "assets/source/qa/badges/lemon-magenta.png"
+    },
+    "assets/badges/cherry.webp": {
+      "source": [
+        "assets/ui/badge-medallion.webp",
+        "assets/fruit/cherry-ripe.webp"
+      ],
+      "dimensions": [
+        346,
+        354
+      ],
+      "bytes": 116044,
+      "qaMagenta": "assets/source/qa/badges/cherry-magenta.png"
+    },
+    "assets/badges/pear.webp": {
+      "source": [
+        "assets/ui/badge-medallion.webp",
+        "assets/fruit/pear-ripe.webp"
+      ],
+      "dimensions": [
+        346,
+        354
+      ],
+      "bytes": 115024,
+      "qaMagenta": "assets/source/qa/badges/pear-magenta.png"
+    },
+    "assets/ui/basket-one.webp": {
+      "source": "assets/ui/basket-empty.webp",
+      "dimensions": [
+        404,
+        400
+      ],
+      "bytes": 158348,
+      "note": "base basket; runtime overlays the currently harvested ripe fruit"
+    },
+    "assets/ui/basket-two.webp": {
+      "source": "assets/ui/basket-empty.webp",
+      "dimensions": [
+        404,
+        400
+      ],
+      "bytes": 158348,
+      "note": "base basket; runtime overlays the currently harvested ripe fruit"
+    },
+    "assets/ui/basket-three.webp": {
+      "source": "assets/ui/basket-empty.webp",
+      "dimensions": [
+        404,
+        400
+      ],
+      "bytes": 158348,
+      "note": "base basket; runtime overlays the currently harvested ripe fruit"
+    },
+    "assets/party.webp": {
+      "source": "deterministic composition of orchard, basket, wreath, and six accepted ripe sprites",
+      "dimensions": [
+        1440,
+        1080
+      ],
+      "quality": 86,
+      "bytes": 242698
+    },
+    "assets/hub/tiles/happy-ripe-fruit.jpg": {
+      "source": "assets/source/gpt-image-2/hub-final-source.png",
+      "sourceSha256": "f27344687f540834f1b70a6775eaa11c6a137864fe7f6feea06fa29b4512ac58",
+      "dimensions": [
+        640,
+        533
+      ],
+      "quality": 88,
+      "bytes": 109007
+    },
+    "games/happy-ripe-fruit/assets/og-image.jpg": {
+      "source": "assets/source/gpt-image-2/hub-final-source.png",
+      "sourceSha256": "f27344687f540834f1b70a6775eaa11c6a137864fe7f6feea06fa29b4512ac58",
+      "dimensions": [
+        1200,
+        630
+      ],
+      "quality": 88,
+      "bytes": 190138
+    }
+  }
+}

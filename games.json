@@ -2283,30 +2283,48 @@
       "summary": "Drag a paper magnifying glass across a bug hotel to discover twelve tiny garden guests, then keep their stickers and facts in your own bug book."
     },
     {
-      "id": "melting-race",
-      "title": "Melting Race",
+      "id": "happy-ripe-fruit",
+      "title": "Happy Ripe Fruit",
       "category": "sensorial-science",
-      "path": "games/melting-race/",
-      "icon": "assets/hub/tiles/melting-race.jpg",
+      "path": "games/happy-ripe-fruit/",
+      "icon": "assets/hub/tiles/happy-ripe-fruit.jpg",
       "age": {
-        "min": 5,
-        "max": 6
+        "min": 2,
+        "max": 5
       },
-      "status": "in-design",
-      "accent": "#2d7dd2",
+      "status": "beta",
+      "accent": "#f2c34f",
+      "uses": [
+        "shared/css/base.css",
+        "shared/css/hud.css",
+        "shared/css/screens.css",
+        "shared/js/screens.js",
+        "shared/js/hud.js",
+        "shared/js/narrator.js",
+        "shared/js/voice-clips.js",
+        "shared/js/audio-unlock.js",
+        "shared/js/sfx.js",
+        "shared/js/bgm.js",
+        "shared/assets/music/upbeat-playground-pop.mp3",
+        "shared/js/tap.js",
+        "shared/js/celebrate.js",
+        "shared/js/idle-nudge.js",
+        "shared/js/rng.js",
+        "shared/js/timers.js",
+        "shared/js/preload.js",
+        "shared/js/debug-harness.js",
+        "shared/js/stage/drag-to-slot-dom.js"
+      ],
       "modes": [
         {
-          "id": "race",
-          "title": "The Big Melt",
-          "skill": "compare melting under four conditions"
-        },
-        {
-          "id": "rescue",
-          "title": "Ice Rescue",
-          "skill": "use warmth to melt ice and free a toy"
+          "id": "orchard",
+          "title": "Rainbow Orchard",
+          "skill": "Compare early, ripe, and late fruit stages and pick the ripe one."
         }
       ],
-      "summary": "Compare ice melting in sun, shade, hand, and cloth."
+      "iconBg": "#fff4bd",
+      "iconFit": "cover",
+      "summary": "Compare three visible stages, pick the just-right fruit, fill a woven basket, and earn six sunny orchard badges."
     },
     {
       "id": "story-stones",

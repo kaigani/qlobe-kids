@@ -1,0 +1,332 @@
+{
+  "url": "http://127.0.0.1:8765/games/happy-ripe-fruit/",
+  "generatedAt": "2026-09-19T22:57:58.614Z",
+  "checks": [
+    {
+      "name": "debug handshake is ready",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "starts on splash",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "large splash basket is the primary start target",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "six fruit choices are exposed",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "desktop selector targets are at least 96px",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "name": "wrong answer shows the teaching hint without advancing",
+      "ok": true,
+      "detail": "{\"ready\":true,\"screen\":\"play\",\"fruitId\":\"strawberry\",\"round\":0,\"basketCount\":0,\"hintShown\":true,\"wrongAttempts\":1,\"transitioning\":false,\"completed\":[],\"stageOrder\":[\"late\",\"early\",\"ripe\"],\"seed\":42,\"muted\":true,\"unlocked\":[\"strawberry\"],\"timers\":0,\"reducedMotion\":false}"
+    },
+    {
+      "name": "real ripe tap awards exactly one fruit",
+      "ok": true,
+      "detail": "{\"ready\":true,\"screen\":\"play\",\"fruitId\":\"strawberry\",\"round\":1,\"basketCount\":1,\"hintShown\":false,\"wrongAttempts\":0,\"transitioning\":false,\"completed\":[],\"stageOrder\":[\"early\",\"ripe\",\"late\"],\"seed\":42,\"muted\":true,\"unlocked\":[\"strawberry\"],\"timers\":0,\"reducedMotion\":false}"
+    },
+    {
+      "name": "release outside basket does not award",
+      "ok": true,
+      "detail": "{\"ready\":true,\"screen\":\"play\",\"fruitId\":\"strawberry\",\"round\":1,\"basketCount\":1,\"hintShown\":false,\"wrongAttempts\":0,\"transitioning\":false,\"completed\":[],\"stageOrder\":[\"early\",\"ripe\",\"late\"],\"seed\":42,\"muted\":true,\"unlocked\":[\"strawberry\"],\"timers\":0,\"reducedMotion\":false}"
+    },
+    {
+      "name": "real ripe drag awards exactly one fruit",
+      "ok": true,
+      "detail": "{\"afterDrag\":{\"ready\":true,\"screen\":\"play\",\"fruitId\":\"strawberry\",\"round\":2,\"basketCount\":2,\"hintShown\":false,\"wrongAttempts\":0,\"transitioning\":false,\"completed\":[],\"stageOrder\":[\"late\",\"ripe\",\"early\"],\"seed\":42,\"muted\":true,\"unlocked\":[\"strawberry\"],\"timers\":0,\"reducedMotion\":false},\"afterSettle\":{\"ready\":true,\"screen\":\"play\",\"fruitId\":\"strawberry\",\"round\":2,\"basketCount\":2,\"hintShown\":false,\"wrongAttempts\":0,\"transitioning\":false,\"completed\":[],\"stageOrder\":[\"late\",\"ripe\",\"early\"],\"seed\":42,\"muted\":true,\"unlocked\":[\"strawberry\"],\"timers\":0,\"reducedMotion\":false}}"
+    },
+    {
+      "name": "three real picks reach strawberry reward",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "desktop reward targets are at least 96px",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "name": "reward Continue unlocks the next real patch",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "desktop interaction session has no page errors",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "desktop interaction session has no failed requests or HTTP errors",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "desktop interaction session makes no remote runtime requests",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "strawberry patch is unlocked",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "strawberry completes after exactly three ripe picks",
+      "ok": true,
+      "detail": "{\"ready\":true,\"screen\":\"reward\",\"fruitId\":\"strawberry\",\"round\":2,\"basketCount\":3,\"hintShown\":false,\"wrongAttempts\":0,\"transitioning\":true,\"completed\":[\"strawberry\"],\"stageOrder\":[\"late\",\"ripe\",\"early\"],\"seed\":42,\"muted\":true,\"unlocked\":[\"strawberry\",\"banana\"],\"timers\":0,\"reducedMotion\":false}"
+    },
+    {
+      "name": "banana patch is unlocked",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "banana completes after exactly three ripe picks",
+      "ok": true,
+      "detail": "{\"ready\":true,\"screen\":\"reward\",\"fruitId\":\"banana\",\"round\":2,\"basketCount\":3,\"hintShown\":false,\"wrongAttempts\":0,\"transitioning\":true,\"completed\":[\"strawberry\",\"banana\"],\"stageOrder\":[\"ripe\",\"early\",\"late\"],\"seed\":42,\"muted\":true,\"unlocked\":[\"strawberry\",\"banana\",\"apple\"],\"timers\":0,\"reducedMotion\":false}"
+    },
+    {
+      "name": "apple patch is unlocked",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "apple completes after exactly three ripe picks",
+      "ok": true,
+      "detail": "{\"ready\":true,\"screen\":\"reward\",\"fruitId\":\"apple\",\"round\":2,\"basketCount\":3,\"hintShown\":false,\"wrongAttempts\":0,\"transitioning\":true,\"completed\":[\"strawberry\",\"banana\",\"apple\"],\"stageOrder\":[\"late\",\"early\",\"ripe\"],\"seed\":42,\"muted\":true,\"unlocked\":[\"strawberry\",\"banana\",\"apple\",\"lemon\"],\"timers\":0,\"reducedMotion\":false}"
+    },
+    {
+      "name": "lemon patch is unlocked",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "lemon completes after exactly three ripe picks",
+      "ok": true,
+      "detail": "{\"ready\":true,\"screen\":\"reward\",\"fruitId\":\"lemon\",\"round\":2,\"basketCount\":3,\"hintShown\":false,\"wrongAttempts\":0,\"transitioning\":true,\"completed\":[\"strawberry\",\"banana\",\"apple\",\"lemon\"],\"stageOrder\":[\"late\",\"early\",\"ripe\"],\"seed\":42,\"muted\":true,\"unlocked\":[\"strawberry\",\"banana\",\"apple\",\"lemon\",\"cherry\"],\"timers\":0,\"reducedMotion\":false}"
+    },
+    {
+      "name": "cherry patch is unlocked",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "cherry completes after exactly three ripe picks",
+      "ok": true,
+      "detail": "{\"ready\":true,\"screen\":\"reward\",\"fruitId\":\"cherry\",\"round\":2,\"basketCount\":3,\"hintShown\":false,\"wrongAttempts\":0,\"transitioning\":true,\"completed\":[\"strawberry\",\"banana\",\"apple\",\"lemon\",\"cherry\"],\"stageOrder\":[\"early\",\"late\",\"ripe\"],\"seed\":42,\"muted\":true,\"unlocked\":[\"strawberry\",\"banana\",\"apple\",\"lemon\",\"cherry\",\"pear\"],\"timers\":0,\"reducedMotion\":false}"
+    },
+    {
+      "name": "pear patch is unlocked",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "pear completes after exactly three ripe picks",
+      "ok": true,
+      "detail": "{\"ready\":true,\"screen\":\"reward\",\"fruitId\":\"pear\",\"round\":2,\"basketCount\":3,\"hintShown\":false,\"wrongAttempts\":0,\"transitioning\":true,\"completed\":[\"strawberry\",\"banana\",\"apple\",\"lemon\",\"cherry\",\"pear\"],\"stageOrder\":[\"early\",\"ripe\",\"late\"],\"seed\":42,\"muted\":true,\"unlocked\":[\"strawberry\",\"banana\",\"apple\",\"lemon\",\"cherry\",\"pear\"],\"timers\":0,\"reducedMotion\":false}"
+    },
+    {
+      "name": "18 real ripe picks and six reward Continues reach party",
+      "ok": true,
+      "detail": "{\"ready\":true,\"screen\":\"party\",\"fruitId\":\"pear\",\"round\":2,\"basketCount\":3,\"hintShown\":false,\"wrongAttempts\":0,\"transitioning\":true,\"completed\":[\"strawberry\",\"banana\",\"apple\",\"lemon\",\"cherry\",\"pear\"],\"stageOrder\":[\"early\",\"ripe\",\"late\"],\"seed\":42,\"muted\":true,\"unlocked\":[\"strawberry\",\"banana\",\"apple\",\"lemon\",\"cherry\",\"pear\"],\"timers\":0,\"reducedMotion\":false}"
+    },
+    {
+      "name": "six-badge progress survives reload",
+      "ok": true,
+      "detail": "{\"ready\":true,\"screen\":\"splash\",\"fruitId\":null,\"round\":0,\"basketCount\":0,\"hintShown\":false,\"wrongAttempts\":0,\"transitioning\":false,\"completed\":[\"strawberry\",\"banana\",\"apple\",\"lemon\",\"cherry\",\"pear\"],\"stageOrder\":[\"early\",\"ripe\",\"late\"],\"seed\":42,\"muted\":false,\"unlocked\":[\"strawberry\",\"banana\",\"apple\",\"lemon\",\"cherry\",\"pear\"],\"timers\":0,\"reducedMotion\":false}"
+    },
+    {
+      "name": "all visible party images decode",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "full journey session has no page errors",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "full journey session has no failed requests or HTTP errors",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "full journey session makes no remote runtime requests",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "portrait gameplay targets are at least 96px",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "name": "banana patch is unlocked",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "banana completes after exactly three ripe picks",
+      "ok": true,
+      "detail": "{\"ready\":true,\"screen\":\"reward\",\"fruitId\":\"banana\",\"round\":2,\"basketCount\":3,\"hintShown\":false,\"wrongAttempts\":0,\"transitioning\":true,\"completed\":[\"strawberry\",\"banana\"],\"stageOrder\":[\"ripe\",\"early\",\"late\"],\"seed\":42,\"muted\":true,\"unlocked\":[\"strawberry\",\"banana\",\"apple\"],\"timers\":0,\"reducedMotion\":false}"
+    },
+    {
+      "name": "apple patch is unlocked",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "apple completes after exactly three ripe picks",
+      "ok": true,
+      "detail": "{\"ready\":true,\"screen\":\"reward\",\"fruitId\":\"apple\",\"round\":2,\"basketCount\":3,\"hintShown\":false,\"wrongAttempts\":0,\"transitioning\":true,\"completed\":[\"strawberry\",\"banana\",\"apple\"],\"stageOrder\":[\"late\",\"early\",\"ripe\"],\"seed\":42,\"muted\":true,\"unlocked\":[\"strawberry\",\"banana\",\"apple\",\"lemon\"],\"timers\":0,\"reducedMotion\":false}"
+    },
+    {
+      "name": "lemon patch is unlocked",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "lemon completes after exactly three ripe picks",
+      "ok": true,
+      "detail": "{\"ready\":true,\"screen\":\"reward\",\"fruitId\":\"lemon\",\"round\":2,\"basketCount\":3,\"hintShown\":false,\"wrongAttempts\":0,\"transitioning\":true,\"completed\":[\"strawberry\",\"banana\",\"apple\",\"lemon\"],\"stageOrder\":[\"late\",\"early\",\"ripe\"],\"seed\":42,\"muted\":true,\"unlocked\":[\"strawberry\",\"banana\",\"apple\",\"lemon\",\"cherry\"],\"timers\":0,\"reducedMotion\":false}"
+    },
+    {
+      "name": "cherry patch is unlocked",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "cherry completes after exactly three ripe picks",
+      "ok": true,
+      "detail": "{\"ready\":true,\"screen\":\"reward\",\"fruitId\":\"cherry\",\"round\":2,\"basketCount\":3,\"hintShown\":false,\"wrongAttempts\":0,\"transitioning\":true,\"completed\":[\"strawberry\",\"banana\",\"apple\",\"lemon\",\"cherry\"],\"stageOrder\":[\"early\",\"late\",\"ripe\"],\"seed\":42,\"muted\":true,\"unlocked\":[\"strawberry\",\"banana\",\"apple\",\"lemon\",\"cherry\",\"pear\"],\"timers\":0,\"reducedMotion\":false}"
+    },
+    {
+      "name": "pear patch is unlocked",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "pear completes after exactly three ripe picks",
+      "ok": true,
+      "detail": "{\"ready\":true,\"screen\":\"reward\",\"fruitId\":\"pear\",\"round\":2,\"basketCount\":3,\"hintShown\":false,\"wrongAttempts\":0,\"transitioning\":true,\"completed\":[\"strawberry\",\"banana\",\"apple\",\"lemon\",\"cherry\",\"pear\"],\"stageOrder\":[\"early\",\"ripe\",\"late\"],\"seed\":42,\"muted\":true,\"unlocked\":[\"strawberry\",\"banana\",\"apple\",\"lemon\",\"cherry\",\"pear\"],\"timers\":0,\"reducedMotion\":false}"
+    },
+    {
+      "name": "portrait full journey reaches party",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "portrait session has no page errors",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "portrait session has no failed requests or HTTP errors",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "portrait session makes no remote runtime requests",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "reduced-motion answer path advances normally",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "reduced-motion session has no page errors",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "reduced-motion session has no failed requests or HTTP errors",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "reduced-motion session makes no remote runtime requests",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "slow audio metadata never blocks the splash",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "debug ready has a bounded audio deadline",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "first gesture uses the recorded teacher welcome",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "fruit prompt and sound replay use recorded clips",
+      "ok": true,
+      "detail": "[{\"key\":\"welcome\",\"text\":\"Welcome to Happy Ripe Fruit! Tap the basket and let's pick together.\",\"kind\":\"clip\",\"at\":701},{\"key\":\"strawberry-prompt\",\"text\":\"Find the strawberry that is deep red and juicy. Put the ripe one in the basket!\",\"kind\":\"clip\",\"at\":743},{\"key\":\"strawberry-prompt\",\"text\":\"Find the strawberry that is deep red and juicy. Put the ripe one in the basket!\",\"kind\":\"clip\",\"at\":1493}]"
+    },
+    {
+      "name": "audio session has no page errors",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "audio session has no failed requests or HTTP errors",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "audio session makes no remote runtime requests",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "catalog exposes exactly one Happy Ripe Fruit card",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "catalog card uses the curated raster tile",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "replaced Melting Race stub is absent from the public catalog",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "catalog session has no page errors",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "catalog session has no failed requests or HTTP errors",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "catalog session makes no remote runtime requests",
+      "ok": true,
+      "detail": ""
+    }
+  ],
+  "screenshots": "C:\\Users\\kaiga\\Documents\\SYNC\\260703 QLOBE Kids\\qlobe-kids\\games\\happy-ripe-fruit\\assets\\source\\qa\\captures-local"
+}

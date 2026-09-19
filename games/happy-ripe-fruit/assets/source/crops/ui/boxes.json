@@ -1,0 +1,262 @@
+{
+  "source": "ui-source.png",
+  "sourceSha256": "a6a4697425fc372c1157e54e92b67f722b29875221c3a121e9e850c91e7023e9",
+  "sourceSize": [
+    1774,
+    887
+  ],
+  "detection": "alpha",
+  "sampledBackgroundRgb": null,
+  "padding": 12,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "basket-empty",
+      "file": "basket-empty.png",
+      "componentArea": 95240,
+      "foregroundBbox": [
+        58,
+        65,
+        442,
+        445
+      ],
+      "cropBbox": [
+        46,
+        53,
+        454,
+        457
+      ],
+      "cropXywh": [
+        46,
+        53,
+        408,
+        404
+      ],
+      "normalizedCropBbox": [
+        0.02593,
+        0.059752,
+        0.255919,
+        0.51522
+      ]
+    },
+    {
+      "index": 2,
+      "name": "badge-medallion",
+      "file": "badge-medallion.png",
+      "componentArea": 78447,
+      "foregroundBbox": [
+        512,
+        97,
+        838,
+        431
+      ],
+      "cropBbox": [
+        500,
+        85,
+        850,
+        443
+      ],
+      "cropXywh": [
+        500,
+        85,
+        350,
+        358
+      ],
+      "normalizedCropBbox": [
+        0.281849,
+        0.095829,
+        0.479143,
+        0.499436
+      ]
+    },
+    {
+      "index": 3,
+      "name": "locked-ribbon",
+      "file": "locked-ribbon.png",
+      "componentArea": 50727,
+      "foregroundBbox": [
+        896,
+        190,
+        1289,
+        368
+      ],
+      "cropBbox": [
+        884,
+        178,
+        1301,
+        380
+      ],
+      "cropXywh": [
+        884,
+        178,
+        417,
+        202
+      ],
+      "normalizedCropBbox": [
+        0.498309,
+        0.200676,
+        0.733371,
+        0.42841
+      ]
+    },
+    {
+      "index": 4,
+      "name": "reward-wreath",
+      "file": "reward-wreath.png",
+      "componentArea": 66638,
+      "foregroundBbox": [
+        1344,
+        73,
+        1721,
+        444
+      ],
+      "cropBbox": [
+        1332,
+        61,
+        1733,
+        456
+      ],
+      "cropXywh": [
+        1332,
+        61,
+        401,
+        395
+      ],
+      "normalizedCropBbox": [
+        0.750846,
+        0.068771,
+        0.976888,
+        0.514092
+      ]
+    },
+    {
+      "index": 5,
+      "name": "stage-early",
+      "file": "stage-early.png",
+      "componentArea": 67425,
+      "foregroundBbox": [
+        82,
+        509,
+        374,
+        800
+      ],
+      "cropBbox": [
+        70,
+        497,
+        386,
+        812
+      ],
+      "cropXywh": [
+        70,
+        497,
+        316,
+        315
+      ],
+      "normalizedCropBbox": [
+        0.039459,
+        0.560316,
+        0.217587,
+        0.915445
+      ]
+    },
+    {
+      "index": 6,
+      "name": "stage-ripe",
+      "file": "stage-ripe.png",
+      "componentArea": 69047,
+      "foregroundBbox": [
+        466,
+        509,
+        763,
+        801
+      ],
+      "cropBbox": [
+        454,
+        497,
+        775,
+        813
+      ],
+      "cropXywh": [
+        454,
+        497,
+        321,
+        316
+      ],
+      "normalizedCropBbox": [
+        0.255919,
+        0.560316,
+        0.436866,
+        0.916573
+      ]
+    },
+    {
+      "index": 7,
+      "name": "stage-late",
+      "file": "stage-late.png",
+      "componentArea": 68141,
+      "foregroundBbox": [
+        847,
+        509,
+        1141,
+        800
+      ],
+      "cropBbox": [
+        835,
+        497,
+        1153,
+        812
+      ],
+      "cropXywh": [
+        835,
+        497,
+        318,
+        315
+      ],
+      "normalizedCropBbox": [
+        0.470688,
+        0.560316,
+        0.649944,
+        0.915445
+      ]
+    },
+    {
+      "index": 8,
+      "name": "prompt-plaque",
+      "file": "prompt-plaque.png",
+      "componentArea": 103020,
+      "foregroundBbox": [
+        1192,
+        545,
+        1733,
+        776
+      ],
+      "cropBbox": [
+        1180,
+        533,
+        1745,
+        788
+      ],
+      "cropXywh": [
+        1180,
+        533,
+        565,
+        255
+      ],
+      "normalizedCropBbox": [
+        0.665163,
+        0.600902,
+        0.983653,
+        0.888388
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 4,
+    "minArea": 1200,
+    "order": "reading"
+  }
+}
