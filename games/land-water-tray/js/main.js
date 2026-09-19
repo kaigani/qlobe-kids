@@ -89,7 +89,7 @@ mount.innerHTML = `
 
   <section class="qk-screen game-screen play-screen" data-qk-screen="play" aria-label="Build a landform" hidden>
     <div class="tray-stage play-stage">
-      <div class="prompt-plaque play-prompt">
+      <div class="prompt-plaque play-prompt" data-play-prompt>
         <img src="${ASSET['action-plaque']}" alt="" draggable="false" />
         <div><h2 data-play-title></h2><p data-play-clue></p></div>
       </div>
@@ -364,6 +364,7 @@ function setupPlay(kind, mode) {
 
   const screen = screens.el('play');
   screen.classList.toggle('is-free', mode === 'free');
+  screen.querySelector('[data-play-prompt]').hidden = false;
   screen.querySelector('[data-reward]').hidden = true;
   screen.querySelector('[data-sailing]').hidden = true;
   screen.querySelector('[data-play-title]').textContent = mode === 'free' ? 'Build your own coast' : config.voice[`${kind}-prompt`];
@@ -379,6 +380,7 @@ function setupPlay(kind, mode) {
     kind,
     tool: state.tool,
     color: config.field.color,
+    texture: ASSET['clay-surface'],
     guide: mode === 'guided',
     onStroke: onBoardStroke,
   });
@@ -446,6 +448,7 @@ function completeGuided() {
   nudger.stop();
 
   const reward = document.querySelector('[data-reward]');
+  document.querySelector('[data-play-prompt]').hidden = true;
   reward.hidden = false;
   reward.querySelector('[data-reward-title]').textContent = `You made a ${LABEL[state.kind]}!`;
   reward.querySelector('[data-reward-copy]').textContent = config.voice[`${state.kind}-clue`];
@@ -630,7 +633,7 @@ installUnlockOnGesture({
 installKioskGuards();
 
 const imagePaths = [
-  ASSET.tray, ASSET.title, ASSET['clay-lump'], ASSET.scoop, ASSET['action-plaque'],
+  ASSET.tray, ASSET.title, ASSET['clay-lump'], ASSET['clay-surface'], ASSET['wood-surface'], ASSET.scoop, ASSET['action-plaque'],
   ASSET.boat, ASSET.fish, ASSET.turtle, ...Object.values(ASSET.cards),
 ];
 const preloadImages = Promise.all(imagePaths.map((src) => new Promise((resolve) => {
@@ -680,9 +683,15 @@ async function debugWinRound() {
   if (state.screen === 'mystery') return debugTap(`landform-${state.mysteryAnswer}`);
   if (state.screen !== 'play') return false;
   if (state.mode === 'free') {
-    board.applyStroke([{ x: .34, y: .5 }, { x: .66, y: .5 }], 'pour');
-    board.applyStroke([{ x: .36, y: .42 }, { x: .64, y: .42 }], 'pour');
-    board.applyStroke([{ x: .40, y: .60 }, { x: .60, y: .60 }], 'pour');
+    // An overlapping, child-like loop exercises a real invented coastline
+    // without manufacturing the three parallel ridges of a test-only shape.
+    board.applyStroke([
+      { x: .36, y: .54 }, { x: .42, y: .42 }, { x: .54, y: .38 },
+      { x: .65, y: .48 }, { x: .61, y: .61 }, { x: .48, y: .65 },
+      { x: .36, y: .54 },
+    ], 'pour');
+    board.applyStroke([{ x: .41, y: .52 }, { x: .59, y: .49 }], 'pour');
+    board.applyStroke([{ x: .47, y: .44 }, { x: .53, y: .59 }], 'pour');
     return launchBoat();
   }
   const recipes = {

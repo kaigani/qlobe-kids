@@ -79,7 +79,8 @@ export class ClayRenderer {
   /**
    * @param {HTMLCanvasElement} canvas the visible, DPR-sized canvas to blit into.
    * @param {{width:number, height:number, cells:ArrayLike<number>, revision:number}} field
-   * @param {{color?:string, background?:string|null, maxDpr?:number}} [options]
+   * @param {{color?:string, background?:string|null, maxDpr?:number,
+   *   ridgeStrength?:number, crossRidgeStrength?:number, noiseStrength?:number}} [options]
    */
   constructor(canvas, field, options = {}) {
     this.canvas = canvas;
@@ -87,6 +88,12 @@ export class ClayRenderer {
     this.color = options.color || '#ef725e';
     this.background = options.background === undefined ? '#dec297' : options.background;
     this.maxDpr = options.maxDpr || 2;
+    // Directional ridges suit rolled playdough, but some material worlds use
+    // an authored raster albedo instead. Defaults preserve every existing
+    // consumer; a game may reduce them without forking the renderer.
+    this.ridgeStrength = options.ridgeStrength ?? .045;
+    this.crossRidgeStrength = options.crossRidgeStrength ?? .022;
+    this.noiseStrength = options.noiseStrength ?? .035;
 
     const transparent = this.background === null;
     this.context = canvas.getContext('2d', { alpha: transparent });
@@ -268,9 +275,9 @@ export class ClayRenderer {
         const right = cells[y * width + Math.min(width - 1, x + 1)];
         const up = cells[Math.max(0, y - 1) * width + x];
         const down = cells[Math.min(height - 1, y + 1) * width + x];
-        const ridge = Math.sin(x * .47 + Math.sin(y * .14) * 2.4) * .045;
+        const ridge = Math.sin(x * .47 + Math.sin(y * .14) * 2.4) * this.ridgeStrength;
         const nxRaw = -(right - left) * .38 + ridge;
-        const nyRaw = -(down - up) * .38 + Math.cos(y * .41 + x * .035) * .022;
+        const nyRaw = -(down - up) * .38 + Math.cos(y * .41 + x * .035) * this.crossRidgeStrength;
         const normalLength = Math.hypot(nxRaw, nyRaw, 1);
         const nx = nxRaw / normalLength;
         const ny = nyRaw / normalLength;
@@ -286,7 +293,7 @@ export class ClayRenderer {
           1,
         ), 24) * .38;
         const edge = smoothstep(.02, .7, value);
-        const lightLevel = (.49 + diffuse * .56 + specular + noise * .035) * (.73 + edge * .27);
+        const lightLevel = (.49 + diffuse * .56 + specular + noise * this.noiseStrength) * (.73 + edge * .27);
         const warmBounce = (1 - diffuse) * .045;
         pixels[pixel] = clamp(base[0] * lightLevel + 255 * specular + 60 * warmBounce, 0, 255);
         pixels[pixel + 1] = clamp(base[1] * lightLevel + 242 * specular + 28 * warmBounce, 0, 255);

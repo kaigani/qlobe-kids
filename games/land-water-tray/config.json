@@ -1,7 +1,7 @@
 {
   "id": "land-water-tray",
   "title": "Land Explorer",
-  "field": { "width": 192, "height": 128, "color": "#79b52d" },
+  "field": { "width": 432, "height": 192, "color": "#79b52d" },
   "modes": [
     { "id": "guided", "title": "Build Landforms", "skill": "Spatially construct island, lake, peninsula, and bay land/water relationships." },
     { "id": "mystery", "title": "Mystery Maps", "skill": "Recognize island, lake, peninsula, and bay from spoken clues and picture cards." },
@@ -34,6 +34,8 @@
       "bay": "./assets/ui/card-bay.webp"
     },
     "clay-lump": "./assets/ui/clay-lump.webp",
+    "clay-surface": "./assets/textures/clay-surface.webp",
+    "wood-surface": "./assets/textures/wood-surface.webp",
     "scoop": "./assets/ui/scoop.webp",
     "action-plaque": "./assets/ui/action-plaque.webp",
     "boat": "./assets/world/boat.webp",

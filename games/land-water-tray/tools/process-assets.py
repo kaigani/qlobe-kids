@@ -2,10 +2,45 @@
 import argparse, io, json, os, time, urllib.request
 from collections import deque
 from pathlib import Path
-from PIL import Image, ImageFilter, ImageOps
+from PIL import Image, ImageChops, ImageFilter, ImageOps
 
 GAME=Path(__file__).resolve().parents[1]; REPO=GAME.parents[1]; SRC=GAME/'assets/source/gpt-image-2'; OUT=GAME/'assets';
 OBJECTS={'title':('title-magenta.png',None,'ui/title.webp',1000),'island':('landform-cards-charcoal.png',(0,0,627,627),'ui/card-island.webp',520),'lake':('landform-cards-charcoal.png',(627,0,1254,627),'ui/card-lake.webp',520),'peninsula':('landform-cards-charcoal.png',(0,627,627,1254),'ui/card-peninsula.webp',520),'bay':('landform-cards-charcoal.png',(627,627,1254,1254),'ui/card-bay.webp',520),'clay-lump':('props-charcoal.png',(0,0,512,512),'ui/clay-lump.webp',520),'scoop':('props-charcoal.png',(512,0,1024,512),'ui/scoop.webp',520),'boat':('boat-magenta.png',None,'world/boat.webp',380),'fish':('props-charcoal.png',(0,512,512,1024),'world/fish.webp',260),'turtle':('turtle-magenta.png',None,'world/turtle.webp',260),'action-plaque':('action-plaque-magenta.png',None,'ui/action-plaque.webp',520)}
+SURFACES={
+ 'wood-surface': {'source':'tray-empty.png','crop':(500,0,756,180),'quadrant':256,'final':'textures/wood-surface.webp','workflow':'gpt-image-2 source surface derivation'},
+ 'clay-surface': {'source':'clay-surface-gpt-image-2.png','crop':(371,371,883,883),'quadrant':512,'flatten':True,'final':'textures/clay-surface.webp','workflow':'gpt-image-2 reference edit + deterministic albedo finalization','reference':'assets/source/gpt-image-2/clay-lump-layer2-seed42.png'},
+}
+CLAY_SURFACE_PROMPT='Create a seamless square albedo texture for the exact lime-green modeling clay in the reference. Fill the frame with one continuous flat clay surface under even neutral light. Add only subtle irregular pores, random fingerprints, and organic micro-wrinkles in many directions. No silhouette, edge, shadow, directional gradient, symmetry, repeating motif, parallel grooves, combed stripes, diagonal bands, large waves, text, or objects.'
+
+def flatten_clay_albedo(image):
+ image=image.convert('RGB'); low=image.filter(ImageFilter.GaussianBlur(48)); base=(121,181,45); channels=[]
+ for source,blurred,midpoint in zip(image.split(),low.split(),base):
+  channels.append(ImageChops.subtract(source,blurred,scale=1.0,offset=midpoint))
+ detail=Image.merge('RGB',channels)
+ return Image.blend(Image.new('RGB',image.size,base),detail,.68)
+
+def quilt_surface(image,quadrant):
+ image=image.convert('RGB').resize((quadrant,quadrant),Image.Resampling.LANCZOS)
+ tile=Image.new('RGB',(quadrant*2,quadrant*2))
+ variants=(image,ImageOps.mirror(image),ImageOps.flip(image),ImageOps.flip(ImageOps.mirror(image)))
+ for index,variant in enumerate(variants): tile.paste(variant,((index%2)*quadrant,(index//2)*quadrant))
+ return tile
+
+def process_surfaces():
+ records={}
+ for name,spec in SURFACES.items():
+  source=SRC/spec['source']; crop=Image.open(source).crop(spec['crop'])
+  if spec.get('flatten'): crop=flatten_clay_albedo(crop)
+  quadrant=spec['quadrant']; dimensions=[quadrant*2,quadrant*2]
+  final=OUT/spec['final']; final.parent.mkdir(parents=True,exist_ok=True)
+  quilt_surface(crop,quadrant).save(final,'WEBP',quality=88,method=6)
+  with Image.open(final) as check:
+   if list(check.size) != dimensions: raise RuntimeError(f'{name} output must be {dimensions[0]}x{dimensions[1]}')
+  derivation=f'{crop.width}x{crop.height} crop resized to {quadrant}x{quadrant}, then arranged as original, mirrored, flipped, and mirrored+flipped quadrants'
+  if spec.get('flatten'): derivation='48px low-frequency lighting removed; flat #79b52d albedo blended with 68% source micro-detail; '+derivation
+  records[name]={'source':source.relative_to(GAME).as_posix(),'crop':list(spec['crop']),'derivation':derivation,'dimensions':dimensions,'final':final.relative_to(GAME).as_posix(),'finalKB':round(final.stat().st_size/1024,1),'quality':88,'method':6,'workflow':spec['workflow'],'validation':'passed'}
+  if spec.get('reference'): records[name].update({'reference':spec['reference'],'prompt':CLAY_SURFACE_PROMPT})
+ return records
 
 def base_url(a):
  c={}
@@ -97,7 +132,9 @@ def main():
  for n,(sn,cell,_,_) in OBJECTS.items():
   if cell:
    im=Image.open(SRC/sn).crop(cell); im.save(slices/f'{n}.png')
- if a.prepare_only: return
+ surface_records=process_surfaces()
+ if a.prepare_only:
+  record_path=SRC/'processing.json'; rec=json.loads(record_path.read_text()) if record_path.is_file() else {}; rec['surfaces']=surface_records; record_path.write_text(json.dumps(rec,indent=2)+'\n'); return
  if a.reprocess_only:
   record_path=SRC/'processing.json'
   rec=json.loads(record_path.read_text())
@@ -113,8 +150,9 @@ def main():
    if result is None: raise RuntimeError(f'no accepted raw Layered candidate available for {n}: {failures}')
    result.update({'source':str(((slices/f'{n}.png') if cell else SRC/sn).relative_to(GAME)),'crop':list(cell) if cell else None,'prompt':prompt(n),'workflow':'qwen-image-layered','final':str(final.relative_to(GAME)),'rejectedCandidates':[ *previous.get('rejectedCandidates',[]), *failures ],'visualRejections':VISUAL_REJECTIONS.get(n,[])})
    rec.setdefault('objects',{})[n]=result
-  rec['alphaCleanup']='small disconnected Layered matte components removed and alpha below 16 floored; no flood fill or chroma key'
-  record_path.write_text(json.dumps(rec,indent=2)+'\n'); return
+ rec['alphaCleanup']='small disconnected Layered matte components removed and alpha below 16 floored; no flood fill or chroma key'
+ rec['surfaces']=surface_records
+ record_path.write_text(json.dumps(rec,indent=2)+'\n'); return
  if not base: raise SystemExit('qwen URL not configured')
  record_path=SRC/'processing.json'
  if a.only and record_path.is_file(): rec=json.loads(record_path.read_text())

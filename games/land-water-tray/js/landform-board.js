@@ -10,9 +10,11 @@ import { applyLandStroke, measureLandform, resetLandform, targetMask } from './l
 
 const LAND_HEIGHT = .72;
 const MAX_DPR = 2;
-// Matches config.json and keeps the 3:2 basin sampling dense enough that a
-// finger-drawn inlet stays rounded when the field is enlarged on an iPad.
-const FIELD_SIZE = Object.freeze({ width: 192, height: 128 });
+// The responsive basin ranges from about 2.17:1 to 2.35:1. This 2.25:1
+// compromise keeps a circular clay brush within 5% of circular in both tablet
+// orientations, while the denser field gives the shared shader enough samples
+// for a soft handmade silhouette without changing normalized gameplay rules.
+const FIELD_SIZE = Object.freeze({ width: 432, height: 192 });
 
 const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
 
@@ -80,13 +82,8 @@ function drawBoundary(context, mask, width, height, canvas, options) {
   context.save();
   context.beginPath();
   edgeSegments(mask, width, height, (x1, y1, x2, y2) => {
-    const fragment = options.fragment || 0;
-    const ax = x1 + (x2 - x1) * fragment;
-    const ay = y1 + (y2 - y1) * fragment;
-    const bx = x2 + (x1 - x2) * fragment;
-    const by = y2 + (y1 - y2) * fragment;
-    context.moveTo(ax * sx, ay * sy);
-    context.lineTo(bx * sx, by * sy);
+    context.moveTo(x1 * sx, y1 * sy);
+    context.lineTo(x2 * sx, y2 * sy);
   });
   context.strokeStyle = options.color;
   context.lineWidth = options.lineWidth;
@@ -94,6 +91,41 @@ function drawBoundary(context, mask, width, height, canvas, options) {
   context.lineCap = 'round';
   if (options.dash) context.setLineDash(options.dash);
   if (options.filter) context.filter = options.filter;
+  context.stroke();
+  context.restore();
+}
+
+function drawGuide(context, kind, canvas) {
+  const width = canvas.width;
+  const height = canvas.height;
+  const weight = clamp(Math.min(width, height) * .009, 3, 8);
+  const x = (value) => value * width;
+  const y = (value) => value * height;
+
+  context.clearRect(0, 0, width, height);
+  context.save();
+  context.beginPath();
+  if (kind === 'island') {
+    context.ellipse(x(.5), y(.5), x(.225), y(.235), 0, 0, Math.PI * 2);
+  } else if (kind === 'lake') {
+    context.ellipse(x(.5), y(.5), x(.17), y(.165), 0, 0, Math.PI * 2);
+  } else if (kind === 'peninsula') {
+    context.moveTo(x(.16), y(.29));
+    context.bezierCurveTo(x(.34), y(.30), x(.63), y(.34), x(.74), y(.45));
+    context.bezierCurveTo(x(.77), y(.48), x(.77), y(.52), x(.74), y(.55));
+    context.bezierCurveTo(x(.63), y(.66), x(.34), y(.70), x(.16), y(.71));
+  } else {
+    context.moveTo(x(.43), y(.38));
+    context.bezierCurveTo(x(.58), y(.39), x(.74), y(.41), x(.96), y(.47));
+    context.moveTo(x(.43), y(.62));
+    context.bezierCurveTo(x(.58), y(.61), x(.74), y(.59), x(.96), y(.53));
+  }
+  context.strokeStyle = 'rgba(238, 253, 255, .92)';
+  context.lineWidth = weight;
+  context.lineJoin = 'round';
+  context.lineCap = 'round';
+  context.setLineDash([weight * 3.2, weight * 2.4]);
+  context.filter = `drop-shadow(0 ${Math.max(1, weight * .35)}px ${Math.max(1, weight * .45)}px rgba(13, 91, 116, .58))`;
   context.stroke();
   context.restore();
 }
@@ -124,6 +156,7 @@ export function createLandformBoard(mount, {
   kind: initialKind = 'island',
   tool: initialTool = 'pour',
   color = '#79b52d',
+  texture = './assets/textures/clay-surface.webp',
   guide: initialGuide = true,
   onStroke,
 } = {}) {
@@ -143,34 +176,65 @@ export function createLandformBoard(mount, {
   const shorelineContext = shorelineCanvas.getContext('2d');
   const guideContext = guideCanvas.getContext('2d');
   const field = new HeightfieldClay(FIELD_SIZE.width, FIELD_SIZE.height);
-  const renderer = new ClayRenderer(clayCanvas, field, { color, background: null, maxDpr: MAX_DPR });
+  const renderer = new ClayRenderer(clayCanvas, field, {
+    color,
+    background: null,
+    maxDpr: MAX_DPR,
+    // Land Explorer supplies a real GPT Image 2 clay albedo. Disable the
+    // generic rolled-dough sine ridges so broad coasts do not look combed.
+    ridgeStrength: 0,
+    crossRidgeStrength: 0,
+    noiseStrength: .024,
+  });
+  const clayContext = clayCanvas.getContext('2d');
+  const textureImage = texture ? new Image() : null;
   let kind = initialKind;
   let tool = initialTool;
   let guideOn = Boolean(initialGuide);
-  let guideMask;
+  let texturePattern = null;
   let active = null;
   let destroyed = false;
   let layerFrame = null;
 
+  if (textureImage) {
+    textureImage.decoding = 'async';
+    textureImage.onload = () => {
+      texturePattern = null;
+      renderNow(true);
+    };
+    textureImage.src = texture;
+  }
+
+  function applyClayTexture() {
+    if (!textureImage?.complete || !textureImage.naturalWidth) return;
+    texturePattern ||= clayContext.createPattern(textureImage, 'repeat');
+    if (!texturePattern) return;
+    clayContext.save();
+    clayContext.globalCompositeOperation = 'source-atop';
+    // This is material grain, not painted detail. Keeping the albedo quiet
+    // lets the heightfield lighting describe the child's shape without a
+    // repeated source patch becoming visible across broad areas of clay.
+    clayContext.globalAlpha = .24;
+    clayContext.fillStyle = texturePattern;
+    clayContext.fillRect(0, 0, clayCanvas.width, clayCanvas.height);
+    clayContext.restore();
+  }
+
   function redrawShoreline() {
     shorelineContext.clearRect(0, 0, shorelineCanvas.width, shorelineCanvas.height);
     const mask = landMask(field);
-    // Two raster strokes make an actual thresholded-clay shoreline glow:
-    // the blurred pass sits behind a small crisp pale-cyan waterline.
+    // One soft raster pass sits behind the clay. A crisp cell-edge pass would
+    // expose the simulation grid, so the glow deliberately carries no hard
+    // threshold outline.
     drawBoundary(shorelineContext, mask, field.width, field.height, shorelineCanvas, {
-      color: 'rgba(180, 246, 250, .72)', lineWidth: 8, filter: 'blur(5px)',
-    });
-    drawBoundary(shorelineContext, mask, field.width, field.height, shorelineCanvas, {
-      color: 'rgba(216, 252, 255, .78)', lineWidth: 1.5,
+      color: 'rgba(190, 248, 251, .76)', lineWidth: 7, filter: 'blur(3px)',
     });
   }
 
   function redrawGuide() {
     guideContext.clearRect(0, 0, guideCanvas.width, guideCanvas.height);
     if (!guideOn) return;
-    drawBoundary(guideContext, guideMask, field.width, field.height, guideCanvas, {
-      color: 'rgba(31, 104, 128, .40)', lineWidth: 1.5, dash: [5, 5], fragment: .17,
-    });
+    drawGuide(guideContext, kind, guideCanvas);
   }
 
   function renderNow(force = false) {
@@ -180,6 +244,7 @@ export function createLandformBoard(mount, {
       layerFrame = null;
     }
     renderer.draw(force);
+    applyClayTexture();
     redrawShoreline();
   }
 
@@ -188,12 +253,13 @@ export function createLandformBoard(mount, {
     layerFrame = requestAnimationFrame(() => {
       layerFrame = null;
       if (destroyed) return;
+      renderer.draw();
+      applyClayTexture();
       redrawShoreline();
     });
   }
 
   function scheduleRender() {
-    renderer.requestDraw();
     requestLayers();
   }
 
@@ -206,6 +272,8 @@ export function createLandformBoard(mount, {
       volume: summary.volume,
       peak: summary.peak,
       renders: renderer.renders,
+      fieldWidth: field.width,
+      fieldHeight: field.height,
       tool,
       kind,
     };
@@ -349,7 +417,13 @@ export function createLandformBoard(mount, {
     if (destroyed) return;
     resizeCanvas(shorelineCanvas);
     resizeCanvas(guideCanvas);
+    const clayWidth = clayCanvas.width;
+    const clayHeight = clayCanvas.height;
     renderer.resize();
+    // Resizing a canvas clears every composited pixel. The shared renderer
+    // restores its heightfield, then this restores the quiet raster albedo
+    // exactly once (not on no-op ResizeObserver notifications).
+    if (clayCanvas.width !== clayWidth || clayCanvas.height !== clayHeight) applyClayTexture();
     redrawShoreline();
     redrawGuide();
   }
@@ -373,7 +447,6 @@ export function createLandformBoard(mount, {
     active = null;
     kind = nextKind;
     resetLandform(field, kind);
-    guideMask = targetMask(kind, field.width, field.height);
     renderNow(true);
     redrawGuide();
     return metrics();
@@ -403,6 +476,7 @@ export function createLandformBoard(mount, {
     window.removeEventListener('blur', onBlur);
     window.removeEventListener('resize', resize);
     renderer.destroy();
+    if (textureImage) textureImage.onload = null;
     shorelineCanvas.remove();
     clayCanvas.remove();
     guideCanvas.remove();

@@ -11,6 +11,17 @@ const base = args.flag('base', 'http://127.0.0.1:8000');
 const url = `${base.replace(/\/$/, '')}/games/land-water-tray/`;
 const shots = resolveShots('games/land-water-tray/qa-shots/land-explorer');
 const { check, note, finish } = createReporter();
+const PLATFORM_ANALYTICS = [
+  'https://www.googletagmanager.com/',
+  'https://www.google-analytics.com/',
+];
+
+async function stubAnalytics(session) {
+  await session.context.route(
+    /https:\/\/(?:www\.googletagmanager\.com|www\.google-analytics\.com)\//,
+    (route) => route.fulfill({ status: 204, body: '' }),
+  );
+}
 
 async function boot(page, { muted = true } = {}) {
   await page.waitForFunction(() => window.QLOBE_DEBUG?.ready);
@@ -25,8 +36,11 @@ async function boot(page, { muted = true } = {}) {
 
 async function session(browser, viewport, reducedMotion = 'no-preference', muted = true) {
   const result = await openSession(browser, {
-    url, base, viewport, reducedMotion, allowAbortedMedia: true,
+    url, base, viewport, reducedMotion, goto: false, ready: false,
+    allowAbortedMedia: true, allowRemote: PLATFORM_ANALYTICS,
   });
+  await stubAnalytics(result);
+  await result.page.goto(url, { waitUntil: 'networkidle' });
   await boot(result.page, { muted });
   return result;
 }
@@ -53,18 +67,50 @@ async function assertLargeTargets(page, label) {
   check(`${label}: every visible child target is at least 96px`, small.length === 0, small.join(', '));
 }
 
-async function assertStageInside(page, label) {
+async function assertStageInside(page, label, { portrait = false } = {}) {
   const geometry = await page.locator('.tray-stage:visible').evaluate((node) => {
     const rect = node.getBoundingClientRect();
     return { x: rect.x, y: rect.y, right: rect.right, bottom: rect.bottom, width: rect.width, height: rect.height };
   });
   const viewport = page.viewportSize();
-  check(`${label}: 4:3 tray remains fully inside the viewport`,
+  check(`${label}: stage remains fully inside the viewport`,
     geometry.x >= -.5 && geometry.y >= -.5 && geometry.right <= viewport.width + .5 && geometry.bottom <= viewport.height + .5,
     JSON.stringify(geometry));
-  check(`${label}: tray keeps a 4:3 aspect ratio`, Math.abs(geometry.width / geometry.height - 4 / 3) < .01,
-    `${geometry.width}×${geometry.height}`);
+  if (portrait) {
+    check(`${label}: portrait stage fills the viewport`,
+      Math.abs(geometry.x) < 1 && Math.abs(geometry.y) < 1
+        && Math.abs(geometry.width - viewport.width) < 1
+        && Math.abs(geometry.height - viewport.height) < 1,
+      JSON.stringify({ viewport, geometry }));
+  } else {
+    check(`${label}: tray keeps a 4:3 aspect ratio`, Math.abs(geometry.width / geometry.height - 4 / 3) < .01,
+      `${geometry.width}×${geometry.height}`);
+  }
   return geometry;
+}
+
+async function assertRewardLeavesResultVisible(page, label) {
+  const geometry = await page.evaluate(() => {
+    const rect = (node) => {
+      const box = node.getBoundingClientRect();
+      return { left: box.left, top: box.top, right: box.right, bottom: box.bottom };
+    };
+    const board = rect(document.querySelector('[data-board]'));
+    const plaque = rect(document.querySelector('.reward-plaque'));
+    const centre = { x: (board.left + board.right) / 2, y: (board.top + board.bottom) / 2 };
+    const blockers = ['.reward-plaque', '.reward-boat', '.reward-fish', '.reward-turtle']
+      .map((selector) => ({ selector, box: rect(document.querySelector(selector)) }))
+      .filter(({ box }) => centre.x >= box.left && centre.x <= box.right && centre.y >= box.top && centre.y <= box.bottom)
+      .map(({ selector }) => selector);
+    return { board, plaque, centre, blockers };
+  });
+  const overlaps = geometry.plaque.left < geometry.board.right - 1
+    && geometry.plaque.right > geometry.board.left + 1
+    && geometry.plaque.top < geometry.board.bottom - 1
+    && geometry.plaque.bottom > geometry.board.top + 1;
+  check(`${label}: celebration plaque stays clear of the completed landform`, !overlaps, JSON.stringify(geometry));
+  check(`${label}: reward friends leave the landform centre visible`, geometry.blockers.length === 0,
+    JSON.stringify(geometry));
 }
 
 async function waitReward(page) {
@@ -135,14 +181,26 @@ async function drive(browser) {
 
   const board = await page.locator('[data-board]').boundingBox();
   if (!board) throw new Error('landform board has no layout box');
-  await page.mouse.move(board.x + board.width * .35, board.y + board.height * .50);
+  const islandGesture = [
+    [.42, .50], [.44, .43], [.50, .40], [.57, .44], [.60, .50],
+    [.57, .57], [.50, .60], [.43, .56], [.42, .50], [.50, .50],
+  ];
+  await page.mouse.move(board.x + board.width * islandGesture[0][0], board.y + board.height * islandGesture[0][1]);
   await page.mouse.down();
-  await page.mouse.move(board.x + board.width * .65, board.y + board.height * .50, { steps: 18 });
+  for (const [x, y] of islandGesture.slice(1)) {
+    await page.mouse.move(board.x + board.width * x, board.y + board.height * y, { steps: 3 });
+  }
   await page.mouse.up();
   await waitReward(page);
   state = await page.evaluate(() => window.QLOBE_DEBUG.getState());
   check('real pointer stroke reaches semantic island success', state.kind === 'island' && state.boardMetrics?.complete && state.completed.includes('island'));
+  const boardAspect = board.width / board.height;
+  const fieldAspect = state.boardMetrics.fieldWidth / state.boardMetrics.fieldHeight;
+  check('clay simulation aspect keeps a round brush round on the rendered basin',
+    Math.abs(boardAspect / fieldAspect - 1) < .06,
+    JSON.stringify({ boardAspect, fieldAspect }));
   check('success waits for the child instead of auto-advancing', state.screen === 'play' && state.awaitingInput === false);
+  await assertRewardLeavesResultVisible(page, 'island reward');
   await page.waitForTimeout(450);
   await page.screenshot({ path: path.join(shots, '04-island-reward.png') });
 
@@ -157,6 +215,7 @@ async function drive(browser) {
     check(`${kind}: semantic completion is accepted`, state.kind === kind && state.boardMetrics?.complete);
     if (kind !== 'bay') await page.evaluate(() => window.QLOBE_DEBUG.tap('continue'));
   }
+  await assertRewardLeavesResultVisible(page, 'bay reward');
   await page.screenshot({ path: path.join(shots, '05-bay-reward.png') });
   await page.evaluate(() => window.QLOBE_DEBUG.tap('continue'));
   await page.waitForFunction(() => window.QLOBE_DEBUG.getState().screen === 'end');
@@ -246,7 +305,14 @@ async function drive(browser) {
 
   const portrait = await session(browser, { width: 820, height: 1180 });
   await assertLargeTargets(portrait.page, 'portrait splash');
-  const portraitSplashStage = await assertStageInside(portrait.page, 'portrait splash');
+  await assertStageInside(portrait.page, 'portrait splash', { portrait: true });
+  const portraitRasters = await portrait.page.locator('.game-screen:visible').evaluate((screen) => ({
+    world: getComputedStyle(screen).backgroundImage,
+    tray: getComputedStyle(screen.querySelector('.tray-stage')).backgroundImage,
+  }));
+  check('portrait is framed by authored raster surfaces',
+    portraitRasters.world.includes('wood-surface.webp') && portraitRasters.tray.includes('tray.webp'),
+    JSON.stringify(portraitRasters));
   const portraitModeOverlaps = await portrait.page.locator('.mode-plaque:visible').evaluateAll((cards) => cards
     .map((card) => {
       const title = card.querySelector('.qk-mode-title')?.getBoundingClientRect();
@@ -258,13 +324,7 @@ async function drive(browser) {
   await portrait.page.screenshot({ path: path.join(shots, '10-splash-portrait.png') });
   await portrait.page.evaluate(() => window.QLOBE_DEBUG.startMode('free'));
   await assertLargeTargets(portrait.page, 'portrait free play');
-  const portraitPlayStage = await assertStageInside(portrait.page, 'portrait free play');
-  check('portrait tray does not jump when play starts',
-    Math.abs(portraitSplashStage.x - portraitPlayStage.x) < .5
-      && Math.abs(portraitSplashStage.y - portraitPlayStage.y) < .5
-      && Math.abs(portraitSplashStage.width - portraitPlayStage.width) < .5
-      && Math.abs(portraitSplashStage.height - portraitPlayStage.height) < .5,
-    JSON.stringify({ splash: portraitSplashStage, play: portraitPlayStage }));
+  await assertStageInside(portrait.page, 'portrait free play', { portrait: true });
   const portraitBoard = await portrait.page.locator('[data-board]').boundingBox();
   check('portrait preserves a useful live basin', portraitBoard && portraitBoard.width > 600 && portraitBoard.height > 260,
     JSON.stringify(portraitBoard));
@@ -277,7 +337,46 @@ async function drive(browser) {
   });
   check('portrait tool labels stay inside the authored tray', clippedToolLabels.length === 0,
     clippedToolLabels.join(','));
+  const portraitSoundCollision = await portrait.page.locator('.play-hud .qk-hud-bottom-left:visible').evaluate((sound) => {
+    const soundBox = sound.getBoundingClientRect();
+    const intersects = (node) => {
+      const box = node.getBoundingClientRect();
+      return soundBox.left < box.right && soundBox.right > box.left
+        && soundBox.top < box.bottom && soundBox.bottom > box.top;
+    };
+    const blockers = [
+      ['basin', document.querySelector('[data-board]')],
+      ['tool shelf', document.querySelector('.tool-shelf')],
+      ...[...document.querySelectorAll('.tool-button > span')].map((node) => [`label:${node.textContent}`, node]),
+    ].filter(([, node]) => node?.getClientRects().length && intersects(node)).map(([name]) => name);
+    return {
+      blockers,
+      sound: { left: soundBox.left, top: soundBox.top, right: soundBox.right, bottom: soundBox.bottom },
+    };
+  });
+  check('portrait listening control stays clear of the basin and clay tools', portraitSoundCollision.blockers.length === 0,
+    JSON.stringify(portraitSoundCollision));
   await portrait.page.screenshot({ path: path.join(shots, '11-free-portrait.png') });
+
+  await portrait.page.evaluate(() => window.QLOBE_DEBUG.home());
+  await portrait.page.evaluate(() => window.QLOBE_DEBUG.startMode('guided'));
+  await assertLargeTargets(portrait.page, 'portrait guided shelf');
+  await portrait.page.screenshot({ path: path.join(shots, '11a-guided-shelf-portrait.png') });
+  for (let round = 0; round < 4; round += 1) {
+    await portrait.page.evaluate(() => window.QLOBE_DEBUG.winRound());
+    await waitReward(portrait.page);
+    await portrait.page.evaluate(() => window.QLOBE_DEBUG.tap('continue'));
+  }
+  await portrait.page.waitForFunction(() => window.QLOBE_DEBUG.getState().screen === 'end');
+  await assertLargeTargets(portrait.page, 'portrait guided end');
+  check('portrait end presents all four completed landforms',
+    await portrait.page.locator('.end-card:visible').count() === 4);
+  await portrait.page.waitForTimeout(650);
+  check('portrait end cards finish their entrance before the settled frame',
+    await portrait.page.locator('.end-card:visible').evaluateAll((cards) => (
+      cards.length === 4 && cards.every((card) => Number.parseFloat(getComputedStyle(card).opacity) > .95)
+    )));
+  await portrait.page.screenshot({ path: path.join(shots, '11b-guided-end-portrait.png') });
 
   const compact = await session(browser, { width: 1180, height: 520 }, 'reduce');
   await assertLargeTargets(compact.page, 'wide-short reduced splash');
@@ -294,8 +393,10 @@ async function drive(browser) {
   const hub = await openSession(browser, {
     url: `${base.replace(/\/$/, '')}/#culture-geography`, base,
     viewport: { width: 1180, height: 820 }, reducedMotion: 'no-preference',
-    allowAbortedMedia: true, ready: false,
+    goto: false, ready: false, allowAbortedMedia: true, allowRemote: PLATFORM_ANALYTICS,
   });
+  await stubAnalytics(hub);
+  await hub.page.goto(`${base.replace(/\/$/, '')}/#culture-geography`, { waitUntil: 'networkidle' });
   const hubTile = hub.page.locator('a').filter({ has: hub.page.locator('img[src$="land-water-tray.jpg"]') });
   await hubTile.first().waitFor({ state: 'visible' });
   const hubImage = hub.page.locator('img[src$="land-water-tray.jpg"]');
@@ -324,6 +425,7 @@ async function drive(browser) {
     'assets/ui/card-lake.webp', 'assets/ui/card-peninsula.webp', 'assets/ui/card-bay.webp',
     'assets/ui/clay-lump.webp', 'assets/ui/scoop.webp', 'assets/ui/action-plaque.webp',
     'assets/world/boat.webp', 'assets/world/fish.webp', 'assets/world/turtle.webp',
+    'assets/textures/wood-surface.webp', 'assets/textures/clay-surface.webp',
   ];
   const sizes = Object.fromEntries(await Promise.all(runtimeAssets.map(async (name) => [name, (await stat(new URL(`../${name}`, import.meta.url))).size])));
   check('tray plate stays under the 300 KB scene budget', sizes['assets/scenes/tray.webp'] <= 300_000,
@@ -331,6 +433,9 @@ async function drive(browser) {
   check('every foreground raster stays under 150 KB',
     Object.entries(sizes).filter(([name]) => name !== 'assets/scenes/tray.webp').every(([, size]) => size <= 150_000),
     JSON.stringify(sizes));
+  check('generated surface textures stay under 100 KB',
+    ['assets/textures/wood-surface.webp', 'assets/textures/clay-surface.webp'].every((name) => sizes[name] <= 100_000),
+    JSON.stringify({ wood: sizes['assets/textures/wood-surface.webp'], clay: sizes['assets/textures/clay-surface.webp'] }));
   const css = await readFile(new URL('../css/style.css', import.meta.url), 'utf8');
   const main = await readFile(new URL('../js/main.js', import.meta.url), 'utf8');
   const configText = await readFile(new URL('../config.json', import.meta.url), 'utf8');

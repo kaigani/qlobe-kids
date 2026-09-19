@@ -53,9 +53,9 @@ for (const kind of Object.keys(CHALLENGES)) {
     assert.equal(measureLandform(field, kind).complete, true, `${kind}: a loose practical gesture can complete the form`);
   }
 
-  // The production tray is larger than the compact regression field. Keep
-  // these same loose recipes covered at the canonical 192×128 board size.
-  const production = { width: 192, height: 128 };
+  // The production tray is larger and wider than the compact regression
+  // field. Keep the same loose recipes covered at its canonical 432x192 size.
+  const production = { width: 432, height: 192 };
   const productionGestures = {
     island: [[{ x: .35, y: .5 }, { x: .65, y: .5 }]],
     lake: Array.from({ length: 4 }, () => [{ x: .5, y: .5 }]),

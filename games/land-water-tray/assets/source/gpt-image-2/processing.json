@@ -634,5 +634,49 @@
       "visualRejections": []
     }
   },
-  "alphaCleanup": "small disconnected Layered matte components removed and alpha below 16 floored; no flood fill or chroma key"
+  "alphaCleanup": "small disconnected Layered matte components removed and alpha below 16 floored; no flood fill or chroma key",
+  "surfaces": {
+    "wood-surface": {
+      "source": "assets/source/gpt-image-2/tray-empty.png",
+      "crop": [
+        500,
+        0,
+        756,
+        180
+      ],
+      "derivation": "256x180 crop resized to 256x256, then arranged as original, mirrored, flipped, and mirrored+flipped quadrants",
+      "dimensions": [
+        512,
+        512
+      ],
+      "final": "assets/textures/wood-surface.webp",
+      "finalKB": 15.4,
+      "quality": 88,
+      "method": 6,
+      "workflow": "gpt-image-2 source surface derivation",
+      "validation": "passed"
+    },
+    "clay-surface": {
+      "source": "assets/source/gpt-image-2/clay-surface-gpt-image-2.png",
+      "crop": [
+        371,
+        371,
+        883,
+        883
+      ],
+      "derivation": "48px low-frequency lighting removed; flat #79b52d albedo blended with 68% source micro-detail; 512x512 crop resized to 512x512, then arranged as original, mirrored, flipped, and mirrored+flipped quadrants",
+      "dimensions": [
+        1024,
+        1024
+      ],
+      "final": "assets/textures/clay-surface.webp",
+      "finalKB": 89.7,
+      "quality": 88,
+      "method": 6,
+      "workflow": "gpt-image-2 reference edit + deterministic albedo finalization",
+      "validation": "passed",
+      "reference": "assets/source/gpt-image-2/clay-lump-layer2-seed42.png",
+      "prompt": "Create a seamless square albedo texture for the exact lime-green modeling clay in the reference. Fill the frame with one continuous flat clay surface under even neutral light. Add only subtle irregular pores, random fingerprints, and organic micro-wrinkles in many directions. No silhouette, edge, shadow, directional gradient, symmetry, repeating motif, parallel grooves, combed stripes, diagonal bands, large waves, text, or objects."
+    }
+  }
 }
