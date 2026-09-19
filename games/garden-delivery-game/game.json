@@ -15,10 +15,12 @@
     "Notice and counter a visible gentle breeze while balancing",
     "Build confidence through a forgiving carry-and-care loop with no fail state"
   ],
-  "interactionModel": "Choose a flower, keep the bucket marker in the visible center of a touchable balance rail with a tablet tilt, one-finger slide, or arrow-key slider control, then tip toward the flower to pour.",
+  "interactionModel": "Choose a flower, keep the water-drop gauge in the visible center of a touchable balance rail with a tablet tilt, one-finger slide, or arrow-key slider control, then tip toward the flower to pour from Sunny's carried bucket.",
   "feedbackModel": "Sunny hops across stones, a playful splash invites recentering without lost progress, and each thirsty flower blooms with spoken celebration.",
   "uses": [
     "shared/js/audio-unlock.js",
+    "shared/js/bgm.js",
+    "shared/assets/music/gentle-country-morning.mp3",
     "shared/js/voice-clips.js",
     "shared/js/sfx.js",
     "shared/js/celebrate.js",

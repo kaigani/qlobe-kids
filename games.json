@@ -3482,6 +3482,21 @@
       },
       "status": "beta",
       "accent": "#80b75d",
+      "uses": [
+        "shared/js/audio-unlock.js",
+        "shared/js/bgm.js",
+        "shared/assets/music/gentle-country-morning.mp3",
+        "shared/js/voice-clips.js",
+        "shared/js/sfx.js",
+        "shared/js/celebrate.js",
+        "shared/js/idle-nudge.js",
+        "shared/js/timers.js",
+        "shared/js/rng.js",
+        "shared/js/debug-harness.js",
+        "shared/js/hud.js",
+        "shared/css/base.css",
+        "shared/css/hud.css"
+      ],
       "modes": [
         {
           "id": "rose",

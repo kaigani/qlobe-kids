@@ -73,13 +73,17 @@ score, grade, or fail state.
   clay water-drop badge. It remains replayable.
 - The first real child tap unlocks all audio. A flower-card tap also calls the
   sensor permission request synchronously, satisfying iOS's gesture rule.
+- A quiet recorded acoustic-folk bed (`shared/assets/music/gentle-country-morning.mp3`)
+  starts on that first gesture, ducks under every spoken line, follows the
+  game's mute control, and stops when the page is left.
 
 ### Balance path
 
 - The path plate has five baked clay stepping stones, quiet sky space for the
   rail, and clear foreground space for Sunny and the destination flower.
 - A large authored clay rail shows a green center and coral outer zones. The
-  authored bucket marker moves along it and tilts with the normalized input.
+  authored water-drop gauge moves along it and tilts with the normalized input;
+  Sunny's carried bucket remains the one physical bucket in the scene.
 - Holding inside the safe band fills one invisible per-step accumulator. At
   the threshold Sunny hops to the next stone. Leaving the band gently drains
   the accumulator; completed stones never roll back.
@@ -164,8 +168,8 @@ safe-area positioning, transforms, masks, and subtle authored-image shadows.
 | Flowers | paired thirsty/bloom transparent sprites | card buttons and scene sockets |
 | Flower cards | authored clay card-frame sprite + flower sprite | 96 px+ `<button>` |
 | Balance rail | authored clay rail sprite | invisible normalized coordinate region |
-| Bucket marker | transparent authored bucket sprite | pointer-captured control |
-| Water and droplets | transparent authored stream/drop sprites | scale/opacity state only |
+| Water-drop gauge | transparent authored drop sprite | pointer-captured control |
+| Water and droplets | transparent authored stream/drop sprites | stream starts at the carried bucket lip and grows toward soil with pour progress |
 | Petal progress | authored petal sprite instances | semantic progress container |
 | Bloom button/badge | authored clay plaque/badge | HTML button/label |
 | Home/back/sound | existing shared raster UI assets | shared HUD semantics |

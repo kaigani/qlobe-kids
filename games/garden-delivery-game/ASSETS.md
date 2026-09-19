@@ -48,6 +48,13 @@ masters, edited masters, cell crops, alpha finals, and saturated-magenta QA
 panels remain under `assets/source/`; runtime derivatives are built by
 `tools/process-assets.py`.
 
+The coordinated contact sheets were also audited with the repository's shared
+`tools/cut-asset-sheet.py` cutter rather than estimated by eye. With
+`--expected-count`, it found exactly 4 character/prop subjects, 6 flower
+subjects, and 8 UI/effect subjects (the UI sheet uses `--min-area 6000`). The
+generated crop manifests and masks were reviewed in authoring scratch before
+the already-approved alpha finals were packaged.
+
 The hub recipe is preserved at
 `assets/source/local-api/hub-krea2-recipe.json`. Its full prompt is a cheerful
 sunflower carrying a silver bucket across five stones toward a drooping red rose,
@@ -67,6 +74,13 @@ intro and tulip bloom use seed-8 rerenders because their transcripts were exact;
 the remaining selected clips use seed 7. The controls clip scored 0.969 because
 Whisper rendered “and tilt” as the homophone “until”; it still exceeds the 0.8
 gate and preserves the intended meaning and fallback text.
+
+## Music
+
+Garden Delivery reuses `shared/assets/music/gentle-country-morning.mp3` through
+`shared/js/bgm.js` at a quiet 0.14 volume. It is unlocked and started only by
+the first real child gesture, ducks during narration, follows the in-game mute
+control, and stops on page exit.
 
 ## Link preview (`og:image`)
 

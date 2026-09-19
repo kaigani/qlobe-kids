@@ -10,6 +10,7 @@ import { mulberry32 } from '../../../shared/js/rng.js';
 import { installDebug } from '../../../shared/js/debug-harness.js';
 import { soundDebounce } from '../../../shared/js/hud.js';
 import { preloadImages } from '../../../shared/js/preload.js';
+import * as bgm from '../../../shared/js/bgm.js';
 
 const mount = document.getElementById('game');
 const timers = createTimers();
@@ -40,6 +41,9 @@ let celebrationDispose = null;
 let soundHoldTimer = null;
 let soundWasLongPress = false;
 const repeatSound = soundDebounce(repeatPrompt, 650);
+const musicUrl = config.music.track;
+const musicVolume = config.music.volume;
+bgm.preload(musicUrl);
 
 const tilt = createTiltInput({
   onSample: handleTiltSample,
@@ -67,7 +71,7 @@ function play(name) { if (!state.muted) { try { sfx[name]?.(); } catch { /* audi
 function say(key) {
   currentVoiceKey = key;
   mount.querySelector('[data-live]')?.replaceChildren(document.createTextNode(config.voice[key] || ''));
-  if (!state.muted) voiceClips.say(key, config.voice[key] || '');
+  if (!state.muted) bgm.duckDuring(voiceClips.say(key, config.voice[key] || ''));
 }
 function currentFlowerAsset(selectedMode, blooming = false) {
   return selectedMode?.flowerAssets?.[blooming ? 'bloom' : 'thirsty'] || '';
@@ -97,7 +101,7 @@ function mapMarkup() {
       <img class="flower-card-frame" src="${asset(config.assets.flowerCard)}" alt="" draggable="false">
       <img class="flower-card-flower" src="${asset(currentFlowerAsset(item, done))}" alt="" draggable="false">
       ${done ? `<img class="flower-card-badge" src="${asset(config.assets.gardenHelper)}" alt="Restored" draggable="false">` : ''}
-      <span>${item.title}</span>
+      <span class="flower-card-tab">${item.title}</span>
     </button>`;
   }).join('');
   return `<section class="garden-screen map-screen" aria-label="Choose a thirsty flower">${liveMarkup()}
@@ -128,13 +132,13 @@ function sceneMarkup(kind) {
     <img class="scene-sunny ${flowerBlooming ? 'is-cheering' : ''}" src="${asset(flowerBlooming ? config.assets.sunnyCheer : config.assets.sunnyCarry)}" alt="Sunny the sunflower" draggable="false">
     <div class="flower-socket ${flowerBlooming ? 'is-bloomed' : ''}">
       <img class="scene-flower" src="${asset(currentFlowerAsset(selectedMode, flowerBlooming))}" alt="${flowerBlooming ? `Blooming ${selectedMode.title}` : `Thirsty ${selectedMode.title}`}" draggable="false">
-      <img class="water-stream ${isPour ? 'is-pouring' : ''}" src="${asset(config.assets.waterStream)}" alt="" draggable="false">
       <span class="soil-fill" aria-hidden="true"></span>
     </div>
+    ${isPour ? `<img class="water-stream" src="${asset(config.assets.waterStream)}" alt="Pouring water" draggable="false">` : ''}
     <div class="rail-area ${isPour ? 'is-pour' : ''}" data-rail data-target="${isPour ? 'pour-rail' : 'balance-rail'}" role="slider" tabindex="0" aria-label="${isPour ? 'Tip the bucket toward the flower' : 'Move the bucket along the balance rail'}" aria-valuemin="-100" aria-valuemax="100" aria-valuenow="${Math.round(clamp(state.input.x) * 100)}" aria-valuetext="${bucketValueText(clamp(state.input.x), isPour)}">
       <img class="rail-art" src="${asset(railAsset)}" alt="" draggable="false">
       <span class="breeze-glow" aria-hidden="true"></span>
-      <img class="bucket-marker" src="${asset(config.assets.bucket)}" alt="Bucket marker" draggable="false">
+      <img class="water-drop-gauge" src="${asset(config.assets.waterDrop)}" alt="Water drop gauge" draggable="false">
       <div class="drop-burst" aria-hidden="true"><img class="splash-mark" src="${asset(config.assets.waterSplash)}" alt="" draggable="false">${Array.from({ length: 3 }, () => `<img src="${asset(config.assets.waterDrop)}" alt="" draggable="false">`).join('')}</div>
     </div>
     <p class="scene-copy">${isPour ? 'Tip toward the glowing side and hold.' : 'Keep the bucket in the middle.'}</p>
@@ -358,6 +362,7 @@ function repeatPrompt() { say(currentVoiceKey); }
 function toggleMute() {
   state.muted = !state.muted;
   voiceClips.setMuted(state.muted);
+  bgm.setMuted(state.muted);
   if (!state.muted) repeatPrompt();
 }
 
@@ -432,6 +437,13 @@ window.addEventListener('blur', () => {
   if (state.input.source === 'keyboard') state.inputReady = false;
   tilt.releasePointer();
 });
+window.addEventListener('orientationchange', () => {
+  // A rotation invalidates the captured rail coordinates. Drop pointer
+  // ownership so a stale sample cannot keep advancing the current task.
+  state.pointerHeld = false;
+  state.inputReady = false;
+  tilt.releasePointer();
+});
 document.addEventListener('visibilitychange', () => {
   lastFrameAt = performance.now();
   if (document.hidden) {
@@ -452,7 +464,12 @@ mount.addEventListener('click', (event) => {
   if (action === 'sound' && !soundWasLongPress) repeatSound();
 });
 
-installUnlockOnGesture({ target: window, onFirst: () => { if (state.screen === 'map') say('welcome'); } });
+installUnlockOnGesture({ target: window, onFirst: () => {
+  bgm.setVolume(musicVolume);
+  bgm.play(musicUrl, { key: 'garden-delivery', fadeInMs: 900 });
+  if (state.screen === 'map') say('welcome');
+}, extra: [bgm.unlock] });
+window.addEventListener('pagehide', () => bgm.stop({ fadeOutMs: 0 }));
 installKioskGuards();
 window.requestAnimationFrame(animationFrame);
 
@@ -500,6 +517,7 @@ installDebug({
     return Boolean(target);
   },
   setTilt: (x, y, source = 'debug') => handleTiltSample({ x, y, source }),
+  pauseInput: () => { state.inputReady = false; return true; },
   setTiltStatus: (status) => { state.inputStatus = status; updateLiveScene(); return status; },
   calibrateTilt: () => tilt.calibrate(),
   completeStep,
@@ -513,8 +531,10 @@ installDebug({
   mute: (on = true) => {
     state.muted = Boolean(on);
     voiceClips.setMuted(state.muted);
+    bgm.setMuted(state.muted);
     return state.muted;
   },
+  music: () => bgm.stats(),
   getAudioLog: () => voiceClips.getAudioLog(),
   fastTimers: (on = true) => {
     const scale = on === false ? 1 : (typeof on === 'number' ? Math.max(.01, on) : 20);

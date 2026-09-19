@@ -9,7 +9,7 @@
     "games/<id>/config.js",
     "games/<id>/js/**/*.js"
   ],
-  "generated": "2026-09-19T19:12:05.800Z",
+  "generated": "2026-09-19T19:58:58.475Z",
   "engines": {
     "coach-timer": {
       "count": 4,
@@ -975,6 +975,7 @@
       "modules": [
         "shared/js/analytics.js",
         "shared/js/audio-unlock.js",
+        "shared/js/bgm.js",
         "shared/js/celebrate.js",
         "shared/js/debug-harness.js",
         "shared/js/hud.js",
@@ -989,7 +990,9 @@
         "shared/css/base.css",
         "shared/css/hud.css"
       ],
-      "assets": [],
+      "assets": [
+        "shared/assets/music/gentle-country-morning.mp3"
+      ],
       "packs": []
     },
     "garden-graphers": {
@@ -4003,6 +4006,7 @@
         "community-helper-cards",
         "family-story-interview",
         "family-timeline",
+        "garden-delivery-game",
         "garden-graphers",
         "line-walking-challenge",
         "magnet-explorer",
@@ -7052,6 +7056,7 @@
       ],
       "shared/assets/music/gentle-country-morning.mp3": [
         "family-timeline",
+        "garden-delivery-game",
         "garden-graphers",
         "picture-word-match",
         "subtraction-picnic",
