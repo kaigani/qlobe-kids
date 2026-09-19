@@ -212,7 +212,7 @@ Both clips are produced through the LAN wrapper, normalized to H.264/yuv420p/`+f
 ## Responsive and accessible behavior
 
 - Landscape 4:3 is the art target; extra-wide layouts letterbox the board inside atelier edges rather than stretch it.
-- Portrait stacks prompt, board, and tray while preserving ≥96px bead targets; compact phones page the six free-play choices three at a time, and the full background may crop at its sides.
+- Portrait stacks prompt, board, and tray while preserving ≥96px bead targets. Compact phones use a tall crop of the authored workboard so the tactile play surface occupies roughly 62% of a 375×667 viewport, page the six free-play choices three at a time, and keep the active cream-and-teal target unmistakable over linen and cord.
 - Safe-area variables protect every HUD button. No functional control sits in generated art.
 - Beads differ by silhouette, highlight notch, and color. Pattern narration names shapes, not colors alone.
 - Keyboard and assistive-tech path: real buttons, concise labels, visible focus ring, `aria-live` for prompts, tap-to-place works with Enter/Space.
@@ -262,6 +262,10 @@ The generic `build-assemble` engine is intentionally retired for this route. Its
 - Registry manifests validate, status is `live`, the hub tile remains the user-curated asset, and the final splash screenshot replaces `og-image.jpg`.
 - An independent adversarial art-direction review passes foreground material fidelity, hierarchy, legibility, edge quality, responsive crops, and delight—not only functional QA.
 
-Final evidence: 137/137 production-Chrome assertions pass, including 375×667
-compact Free and guided states; the independent art director returned ACCEPT
-after the compact tray blocker was corrected.
+Recovery evidence (2026-09-19): the expanded 145-check production-Chrome suite
+passes locally, including 375×667 Free, guided, and completion states. The
+completion board now uses a non-stretched raster crop, preserves the child’s
+necklace as the focal object, and moves replay choices outside the reward art.
+The independent adversarial art director returned ACCEPT WITH NON-BLOCKING
+NOTES after the mobile-scale, target-contrast, and reward-composition blockers
+were corrected. The same suite is the post-deploy production gate.

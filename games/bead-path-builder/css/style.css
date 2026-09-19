@@ -192,6 +192,11 @@ button {
   animation: slot-breathe 1.4s ease-in-out infinite;
 }
 
+.slot.current::after {
+  border-color: #fff8e7;
+  box-shadow: 0 0 0 3px #237f91, 0 0 15px 5px rgb(53 194 203 / 78%);
+}
+
 .slot.placed { opacity: 1; }
 .slot.placed::after { display: none; }
 .slot:disabled { cursor: default; }
@@ -308,6 +313,12 @@ button {
   text-shadow: 0 3px 0 #fff6dd;
 }
 
+.complete-board {
+  aspect-ratio: 16 / 9;
+  background-position: center top;
+  background-size: 100% auto;
+}
+
 .necklace {
   position: absolute;
   inset: 0;
@@ -338,6 +349,12 @@ button {
 .sparkle-two { animation-delay: 180ms; }
 .sparkle-three { animation-delay: 360ms; }
 
+.complete-board .sparkle {
+  top: 44%;
+  animation-fill-mode: both;
+  animation-iteration-count: infinite;
+}
+
 .wear {
   position: absolute;
   bottom: 21%;
@@ -367,9 +384,11 @@ button {
 .complete-actions {
   position: absolute;
   right: 8%;
-  bottom: 1%;
+  bottom: -130px;
   left: 8%;
 }
+
+.complete-board .wear { bottom: 2%; }
 
 .mirror {
   display: flex;
@@ -431,10 +450,10 @@ button {
 }
 
 @keyframes sparkle-travel {
-  0% { left: 12%; opacity: 0; transform: rotate(45deg) scale(.4); }
+  0% { left: 12%; opacity: .35; transform: rotate(45deg) scale(.55); }
   20% { opacity: 1; }
   80% { opacity: 1; }
-  100% { left: 88%; opacity: 0; transform: rotate(315deg) scale(1.1); }
+  100% { left: 88%; opacity: .35; transform: rotate(315deg) scale(1.1); }
 }
 
 @media (max-width: 760px), (orientation: portrait) {
@@ -449,6 +468,7 @@ button {
   .complete-board h1 { top: 6%; }
   .wear { bottom: 22%; width: min(490px, 74%); }
   .complete-actions { bottom: -1%; }
+  .complete-board .complete-actions { bottom: -130px; }
   .complete-actions .art-action img { width: 88px; height: 88px; }
   .complete-actions .art-action { min-height: 112px; }
   .mirror-actions .art-action img { width: 88px; height: 88px; }
@@ -479,18 +499,47 @@ button {
 }
 
 @media (max-width: 520px) and (orientation: portrait) {
+  .board-shell {
+    width: calc(100vw - 8px);
+    min-height: min(62dvh, 420px);
+    height: min(62dvh, 420px);
+    aspect-ratio: auto;
+    background-size: auto 100%;
+    background-position: center;
+  }
+
+  .complete-board {
+    height: min(60dvh, 410px);
+    min-height: 390px;
+    aspect-ratio: auto;
+    background-size: auto 150%;
+    background-position: center top;
+  }
+
+  .complete-board .necklace { inset: 0; }
+  .complete-board h1 { top: 8%; font-size: clamp(25px, 7vw, 34px); }
+  .complete-board .wear { top: auto; bottom: 3%; width: 92%; }
+  .complete-board .complete-actions { top: calc(100% + 2px); bottom: auto; }
+
   .qk-hud-btn {
     --qk-hud-size: 96px;
     --qk-hud-gap: 8px;
   }
 
   .slot {
-    padding: 21px;
+    padding: 14px;
   }
 
   .slot::after {
-    inset: 23px;
-    border-width: 3px;
+    inset: 16px;
+    border: 3px dashed rgb(146 99 56 / 48%);
+    box-shadow: none;
+  }
+
+  .slot.current::after {
+    border-width: 5px;
+    border-color: #fff8e7;
+    box-shadow: 0 0 0 3px #237f91, 0 0 14px 4px rgb(53 194 203 / 82%);
   }
 
   .compact-free .tray {
@@ -523,7 +572,7 @@ button {
   }
 
   .board-shell > [data-target='hint'] {
-    top: calc(100% + 2px);
+    top: calc(100% - 4px);
     right: 50%;
     transform: translateX(50%);
   }
@@ -547,5 +596,10 @@ button {
     animation-duration: .01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: .01ms !important;
+  }
+
+  .complete-board .sparkle {
+    opacity: 1;
+    animation: none !important;
   }
 }

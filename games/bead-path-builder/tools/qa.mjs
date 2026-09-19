@@ -306,9 +306,13 @@ async function auditVideos(page) {
 
 async function drive(browser) {
   const hub = await openRun(browser, { url: `${base}/#writing-fine-motor`, ready: false, viewport: { width: 1280, height: 960 } });
-  const tile = hub.page.locator('a.tile[aria-label*="Bead Path Builder"]');
-  check('hub registers Bead Path Builder exactly once', await tile.count() === 1);
-  check('hub preserves the curated tile', (await tile.locator('img').getAttribute('src')) === 'assets/hub/tiles/bead-path-builder.jpg');
+  await hub.page.locator('#game-grid .game-card').first().waitFor({ state: 'visible' });
+  const tile = hub.page.locator('a.game-card[data-game-id="bead-path-builder"]');
+  const tileCount = await tile.count();
+  const tileSrc = tileCount === 1 ? await tile.locator('img').getAttribute('src') : null;
+  const tilePath = tileSrc ? new URL(tileSrc, hub.page.url()).pathname : '';
+  check('hub registers Bead Path Builder exactly once', tileCount === 1, `found ${tileCount}`);
+  check('hub preserves the curated tile', tilePath.endsWith('/assets/hub/tiles/bead-path-builder.jpg'), String(tileSrc));
   await shot(hub.page, '00-hub.png');
 
   const run = await openRun(browser);
@@ -323,6 +327,11 @@ async function drive(browser) {
 
   await runGuidedMode(page, config, 'ab', { interactions: true });
   await auditLayout(page, 'AB completion');
+  const completionRatio = await page.locator('.complete-board').evaluate((node) => {
+    const rect = node.getBoundingClientRect();
+    return rect.width / rect.height;
+  });
+  check('completion crops away the empty drawer without stretching the workboard', Math.abs(completionRatio - (16 / 9)) < 0.02, String(completionRatio));
   await shot(page, '02-ab-complete.png');
 
   await debug.startMode(page, 'abc');
@@ -428,7 +437,28 @@ async function drive(browser) {
   await shot(phone.page, '13-free-phone-finish.png');
   await debug.startMode(phone.page, 'abc');
   await auditLayout(phone.page, '375px guided board');
+  const compactBoard = await phone.page.evaluate(() => {
+    const board = document.querySelector('.board-shell').getBoundingClientRect();
+    const cue = getComputedStyle(document.querySelector('.slot.current'), '::after');
+    return {
+      heightShare: board.height / innerHeight,
+      cueBorder: cue.borderTopColor,
+      cueShadow: cue.boxShadow,
+    };
+  });
+  check('375px board dominates the mobile playfield', compactBoard.heightShare >= 0.6, JSON.stringify(compactBoard));
+  check('current slot has a high-contrast glow over linen and cord', compactBoard.cueShadow !== 'none' && compactBoard.cueBorder !== 'rgb(168, 120, 72)', JSON.stringify(compactBoard));
   await shot(phone.page, '14-guided-phone.png');
+  await debug.call(phone.page, 'completeRound');
+  await phone.page.waitForFunction(() => window.QLOBE_DEBUG.getState().screen === 'complete');
+  await auditLayout(phone.page, '375px completion');
+  const compactCompletion = await phone.page.evaluate(() => {
+    const wear = document.querySelector('.wear').getBoundingClientRect();
+    const actions = document.querySelector('.complete-actions').getBoundingClientRect();
+    return { wearBottom: wear.bottom, actionsTop: actions.top, viewport: innerHeight };
+  });
+  check('phone reward keeps Wear It separate from replay choices', compactCompletion.wearBottom <= compactCompletion.actionsTop + 1, JSON.stringify(compactCompletion));
+  await shot(phone.page, '15-complete-phone.png');
 
   const fallback = await openRun(browser, {
     ignoreConsole: ['Failed to load resource'],
