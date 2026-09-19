@@ -1,0 +1,44 @@
+{
+  "format": "qlobe-voice-production-receipt",
+  "formatVersion": 1,
+  "game": "grace-courtesy-theater",
+  "createdAt": "2026-09-19T21:15:44.771648+00:00",
+  "workflow": "qwen3-tts-voiceclone -> AAC/M4A -> whisper-stt transcript QA",
+  "endpoint": "authorized local workflow API (address intentionally omitted)",
+  "reference": "shared/assets/refs/voice-teacher.wav",
+  "generation": {
+    "choose-costumes": {
+      "seed": 7,
+      "status": "encoded",
+      "duration": 3.2
+    }
+  },
+  "accepted": [
+    "welcome",
+    "choose-costumes",
+    "curtain-up",
+    "idle",
+    "retry",
+    "take-a-bow",
+    "another-story",
+    "greeting-prompt",
+    "greeting-success",
+    "greeting-retry",
+    "asking-prompt",
+    "asking-success",
+    "asking-retry",
+    "thanks-prompt",
+    "thanks-success",
+    "thanks-retry",
+    "turns-prompt",
+    "turns-success",
+    "turns-retry",
+    "listening-prompt",
+    "listening-success",
+    "listening-retry",
+    "apology-prompt",
+    "apology-success",
+    "apology-retry"
+  ],
+  "fallback": []
+}

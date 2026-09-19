@@ -9,7 +9,7 @@
     "games/<id>/config.js",
     "games/<id>/js/**/*.js"
   ],
-  "generated": "2026-09-19T19:58:58.475Z",
+  "generated": "2026-09-19T21:28:21.904Z",
   "engines": {
     "coach-timer": {
       "count": 4,
@@ -21,9 +21,8 @@
       ]
     },
     "choose-one": {
-      "count": 3,
+      "count": 2,
       "games": [
-        "grace-courtesy-theater",
         "mystery-letter-bag",
         "problem-solving-puppets"
       ]
@@ -1065,28 +1064,36 @@
       "packs": []
     },
     "grace-courtesy-theater": {
-      "engine": "choose-one",
-      "status": "in-design",
+      "engine": null,
+      "status": "beta",
       "category": "social-emotional",
-      "characters": [
-        "leo",
-        "maya",
-        "nia",
-        "ravi",
-        "sam"
-      ],
+      "characters": [],
       "modules": [
         "shared/js/analytics.js",
-        "shared/js/engines/choose-one.js",
+        "shared/js/audio-unlock.js",
+        "shared/js/bgm.js",
+        "shared/js/celebrate.js",
+        "shared/js/debug-harness.js",
+        "shared/js/dom.js",
+        "shared/js/hud.js",
+        "shared/js/idle-nudge.js",
+        "shared/js/narrator.js",
+        "shared/js/preload.js",
+        "shared/js/rng.js",
+        "shared/js/screens.js",
         "shared/js/sfx.js",
-        "shared/js/speech.js"
+        "shared/js/tap.js",
+        "shared/js/timers.js",
+        "shared/js/voice-clips.js"
       ],
       "css": [
         "shared/css/base.css",
-        "shared/css/engine-base.css",
+        "shared/css/hud.css",
         "shared/css/screens.css"
       ],
-      "assets": [],
+      "assets": [
+        "shared/assets/music/mug-and-sunbeam.mp3"
+      ],
       "packs": []
     },
     "instrument-detective": {
@@ -3930,6 +3937,7 @@
         "garden-delivery-game",
         "garden-graphers",
         "globe-spin-stories",
+        "grace-courtesy-theater",
         "instrument-detective",
         "joke-workshop",
         "kindness-delivery",
@@ -4008,6 +4016,7 @@
         "family-timeline",
         "garden-delivery-game",
         "garden-graphers",
+        "grace-courtesy-theater",
         "line-walking-challenge",
         "magnet-explorer",
         "momma-bear-storybook",
@@ -4070,6 +4079,7 @@
         "family-timeline",
         "feelings-charades",
         "garden-delivery-game",
+        "grace-courtesy-theater",
         "instrument-detective",
         "joke-workshop",
         "land-water-tray",
@@ -4161,6 +4171,7 @@
         "garden-delivery-game",
         "garden-graphers",
         "globe-spin-stories",
+        "grace-courtesy-theater",
         "instrument-detective",
         "joke-workshop",
         "kindness-delivery",
@@ -4231,6 +4242,7 @@
       "shared/js/dom.js": [
         "family-story-interview",
         "family-timeline",
+        "grace-courtesy-theater",
         "puppet-retell",
         "sandpaper-number-match",
         "shadow-chase",
@@ -4244,7 +4256,6 @@
         "blend-train"
       ],
       "shared/js/engines/choose-one.js": [
-        "grace-courtesy-theater",
         "mystery-letter-bag",
         "problem-solving-puppets"
       ],
@@ -4307,6 +4318,7 @@
         "feelings-charades",
         "flashlight-cave",
         "garden-delivery-game",
+        "grace-courtesy-theater",
         "instrument-detective",
         "joke-workshop",
         "kindness-delivery",
@@ -4353,6 +4365,7 @@
         "family-timeline",
         "garden-delivery-game",
         "garden-graphers",
+        "grace-courtesy-theater",
         "joke-workshop",
         "kindness-delivery",
         "land-water-tray",
@@ -4454,6 +4467,7 @@
         "family-story-interview",
         "family-timeline",
         "freeze-focus-dance",
+        "grace-courtesy-theater",
         "kindness-delivery",
         "land-water-tray",
         "laundry-sorter",
@@ -4504,6 +4518,7 @@
         "garden-delivery-game",
         "garden-graphers",
         "globe-spin-stories",
+        "grace-courtesy-theater",
         "instrument-detective",
         "joke-workshop",
         "kindness-delivery",
@@ -4570,6 +4585,7 @@
         "garden-delivery-game",
         "garden-graphers",
         "globe-spin-stories",
+        "grace-courtesy-theater",
         "instrument-detective",
         "joke-workshop",
         "kindness-delivery",
@@ -4640,6 +4656,7 @@
         "emotion-voice-game",
         "freeze-focus-dance",
         "garden-graphers",
+        "grace-courtesy-theater",
         "instrument-detective",
         "joke-workshop",
         "kindness-delivery",
@@ -4806,7 +4823,6 @@
         "feelings-charades",
         "flashlight-cave",
         "globe-spin-stories",
-        "grace-courtesy-theater",
         "joke-workshop",
         "laundry-sorter",
         "letter-road-driving",
@@ -4979,6 +4995,7 @@
         "freeze-focus-dance",
         "garden-graphers",
         "globe-spin-stories",
+        "grace-courtesy-theater",
         "instrument-detective",
         "joke-workshop",
         "kindness-delivery",
@@ -5066,6 +5083,7 @@
         "garden-delivery-game",
         "garden-graphers",
         "globe-spin-stories",
+        "grace-courtesy-theater",
         "instrument-detective",
         "joke-workshop",
         "kindness-delivery",
@@ -5151,6 +5169,7 @@
         "garden-delivery-game",
         "garden-graphers",
         "globe-spin-stories",
+        "grace-courtesy-theater",
         "instrument-detective",
         "joke-workshop",
         "kindness-delivery",
@@ -5351,7 +5370,6 @@
       ],
       "shared/css/engine-base.css": [
         "blend-train",
-        "grace-courtesy-theater",
         "letter-road-driving",
         "melting-race",
         "my-puppet-band",
@@ -5391,6 +5409,7 @@
         "garden-delivery-game",
         "garden-graphers",
         "globe-spin-stories",
+        "grace-courtesy-theater",
         "instrument-detective",
         "joke-workshop",
         "kindness-delivery",
@@ -5621,7 +5640,6 @@
       ],
       "leo": [
         "feelings-charades",
-        "grace-courtesy-theater",
         "lunchbox-pack",
         "problem-solving-puppets",
         "question-ball"
@@ -5639,7 +5657,6 @@
       "maya": [
         "beat-the-bugs",
         "feelings-charades",
-        "grace-courtesy-theater",
         "lunchbox-pack",
         "pouring-station",
         "problem-solving-puppets",
@@ -5659,7 +5676,6 @@
       "nia": [
         "family-timeline",
         "feelings-charades",
-        "grace-courtesy-theater",
         "lunchbox-pack",
         "problem-solving-puppets"
       ],
@@ -5728,7 +5744,6 @@
       "ravi": [
         "chocolate-chip-count",
         "feelings-charades",
-        "grace-courtesy-theater",
         "number-sense-kitchen",
         "problem-solving-puppets"
       ],
@@ -5737,7 +5752,6 @@
       ],
       "sam": [
         "feelings-charades",
-        "grace-courtesy-theater",
         "lunchbox-pack",
         "problem-solving-puppets"
       ],
@@ -7064,6 +7078,7 @@
       ],
       "shared/assets/music/mug-and-sunbeam.mp3": [
         "family-story-interview",
+        "grace-courtesy-theater",
         "plan-do-review",
         "post-office-letters",
         "pouring-station",
@@ -7189,7 +7204,6 @@
       ],
       "shared/characters/leo": [
         "feelings-charades",
-        "grace-courtesy-theater",
         "lunchbox-pack",
         "problem-solving-puppets",
         "question-ball"
@@ -7204,7 +7218,6 @@
       "shared/characters/maya": [
         "beat-the-bugs",
         "feelings-charades",
-        "grace-courtesy-theater",
         "lunchbox-pack",
         "pouring-station",
         "problem-solving-puppets",
@@ -7223,7 +7236,6 @@
       "shared/characters/nia": [
         "family-timeline",
         "feelings-charades",
-        "grace-courtesy-theater",
         "lunchbox-pack",
         "problem-solving-puppets"
       ],
@@ -7255,7 +7267,6 @@
       "shared/characters/ravi": [
         "chocolate-chip-count",
         "feelings-charades",
-        "grace-courtesy-theater",
         "number-sense-kitchen",
         "problem-solving-puppets"
       ],
@@ -7267,7 +7278,6 @@
       ],
       "shared/characters/sam": [
         "feelings-charades",
-        "grace-courtesy-theater",
         "lunchbox-pack",
         "problem-solving-puppets"
       ],

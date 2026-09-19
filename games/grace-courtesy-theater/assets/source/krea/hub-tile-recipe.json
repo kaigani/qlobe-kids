@@ -1,0 +1,31 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "grace-courtesy-theater-hub-krea2-exploration",
+  "kind": "image",
+  "asset": "games\\grace-courtesy-theater\\assets\\source\\krea\\hub-tile-krea-preview.jpg",
+  "source": "games\\grace-courtesy-theater\\assets\\source\\krea\\hub-tile-seed-42.png",
+  "steps": [
+    {
+      "workflow": "krea2-turbo-t2i",
+      "prompt": "premium preschool toy photography of two adorable handmade felt bean puppets on a tiny cranberry-curtain felt theater stage: Poppy is warm peach with burgundy yarn-loop hair and a small gold star patch, Coco is cocoa brown with two puff buns, teal ties, and a teal heart patch; both puppets wave together, with a plush heart between them and warm round footlights, centered readable friendly faces, rich wool and soft felt texture, tactile storybook world, warm theatrical lighting, clear 6:5 menu-tile composition; no text, letters, numbers, logo, UI, watermark, border, extra characters, photorealistic humans, or clutter",
+      "seed": 42,
+      "width": 768,
+      "height": 640,
+      "steps": 8,
+      "cfg": 1
+    }
+  ],
+  "job": "sanitized-local-job-id",
+  "sourceSha256": "db475475642390aea9611e91a70a1b1602c070a71a45b2743eeb2b05d7a3a487",
+  "previewSha256": "978a8f1c6bc36f22307873c4203a122e6ca4bcb0f91e634090759a766b4cd983",
+  "qa": {
+    "status": "retained-as-exploration",
+    "finalSize": [
+      640,
+      533
+    ],
+    "note": "No text; public tile received an OpenAI cast-consistency edit recorded separately."
+  },
+  "createdAt": "2026-09-19T21:05:02.928226+00:00"
+}

@@ -1,0 +1,262 @@
+{
+  "source": "costumes-cut.png",
+  "sourceSha256": "d1d7ebad03c4c892ccd0c5e25c78b2235fe963b05532216788e3b0d294ed2b7e",
+  "sourceSize": [
+    2016,
+    780
+  ],
+  "detection": "alpha",
+  "sampledBackgroundRgb": null,
+  "padding": 12,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "poppy-daisy",
+      "file": "poppy-daisy.png",
+      "componentArea": 48482,
+      "foregroundBbox": [
+        45,
+        73,
+        466,
+        348
+      ],
+      "cropBbox": [
+        33,
+        61,
+        478,
+        360
+      ],
+      "cropXywh": [
+        33,
+        61,
+        445,
+        299
+      ],
+      "normalizedCropBbox": [
+        0.016369,
+        0.078205,
+        0.237103,
+        0.461538
+      ]
+    },
+    {
+      "index": 2,
+      "name": "poppy-berry",
+      "file": "poppy-berry.png",
+      "componentArea": 44007,
+      "foregroundBbox": [
+        551,
+        53,
+        962,
+        347
+      ],
+      "cropBbox": [
+        539,
+        41,
+        974,
+        359
+      ],
+      "cropXywh": [
+        539,
+        41,
+        435,
+        318
+      ],
+      "normalizedCropBbox": [
+        0.267361,
+        0.052564,
+        0.483135,
+        0.460256
+      ]
+    },
+    {
+      "index": 3,
+      "name": "poppy-sunny",
+      "file": "poppy-sunny.png",
+      "componentArea": 37273,
+      "foregroundBbox": [
+        1066,
+        51,
+        1445,
+        347
+      ],
+      "cropBbox": [
+        1054,
+        39,
+        1457,
+        359
+      ],
+      "cropXywh": [
+        1054,
+        39,
+        403,
+        320
+      ],
+      "normalizedCropBbox": [
+        0.522817,
+        0.05,
+        0.722718,
+        0.460256
+      ]
+    },
+    {
+      "index": 4,
+      "name": "poppy-twilight",
+      "file": "poppy-twilight.png",
+      "componentArea": 45015,
+      "foregroundBbox": [
+        1569,
+        93,
+        1967,
+        347
+      ],
+      "cropBbox": [
+        1557,
+        81,
+        1979,
+        359
+      ],
+      "cropXywh": [
+        1557,
+        81,
+        422,
+        278
+      ],
+      "normalizedCropBbox": [
+        0.772321,
+        0.103846,
+        0.981647,
+        0.460256
+      ]
+    },
+    {
+      "index": 5,
+      "name": "coco-daisy",
+      "file": "coco-daisy.png",
+      "componentArea": 64454,
+      "foregroundBbox": [
+        17,
+        419,
+        494,
+        717
+      ],
+      "cropBbox": [
+        5,
+        407,
+        506,
+        729
+      ],
+      "cropXywh": [
+        5,
+        407,
+        501,
+        322
+      ],
+      "normalizedCropBbox": [
+        0.00248,
+        0.521795,
+        0.250992,
+        0.934615
+      ]
+    },
+    {
+      "index": 6,
+      "name": "coco-berry",
+      "file": "coco-berry.png",
+      "componentArea": 52173,
+      "foregroundBbox": [
+        534,
+        416,
+        979,
+        717
+      ],
+      "cropBbox": [
+        522,
+        404,
+        991,
+        729
+      ],
+      "cropXywh": [
+        522,
+        404,
+        469,
+        325
+      ],
+      "normalizedCropBbox": [
+        0.258929,
+        0.517949,
+        0.491567,
+        0.934615
+      ]
+    },
+    {
+      "index": 7,
+      "name": "coco-sunny",
+      "file": "coco-sunny.png",
+      "componentArea": 45720,
+      "foregroundBbox": [
+        1043,
+        415,
+        1472,
+        717
+      ],
+      "cropBbox": [
+        1031,
+        403,
+        1484,
+        729
+      ],
+      "cropXywh": [
+        1031,
+        403,
+        453,
+        326
+      ],
+      "normalizedCropBbox": [
+        0.511409,
+        0.516667,
+        0.736111,
+        0.934615
+      ]
+    },
+    {
+      "index": 8,
+      "name": "coco-twilight",
+      "file": "coco-twilight.png",
+      "componentArea": 57476,
+      "foregroundBbox": [
+        1537,
+        455,
+        1993,
+        717
+      ],
+      "cropBbox": [
+        1525,
+        443,
+        2005,
+        729
+      ],
+      "cropXywh": [
+        1525,
+        443,
+        480,
+        286
+      ],
+      "normalizedCropBbox": [
+        0.756448,
+        0.567949,
+        0.994544,
+        0.934615
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 5,
+    "minArea": 1500,
+    "order": "reading"
+  }
+}

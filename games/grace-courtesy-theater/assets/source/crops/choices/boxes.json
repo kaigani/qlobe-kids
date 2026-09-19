@@ -1,0 +1,562 @@
+{
+  "source": "choices-cut.png",
+  "sourceSha256": "1c7a87a8aa33d0f51b38083edc9adeeba4127685bb8b77190e09f205c015c9a1",
+  "sourceSize": [
+    1024,
+    1536
+  ],
+  "detection": "alpha",
+  "sampledBackgroundRgb": null,
+  "padding": 12,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "greeting-kind",
+      "file": "greeting-kind.png",
+      "componentArea": 50554,
+      "foregroundBbox": [
+        56,
+        0,
+        318,
+        244
+      ],
+      "cropBbox": [
+        44,
+        0,
+        330,
+        256
+      ],
+      "cropXywh": [
+        44,
+        0,
+        286,
+        256
+      ],
+      "normalizedCropBbox": [
+        0.042969,
+        0.0,
+        0.322266,
+        0.166667
+      ]
+    },
+    {
+      "index": 2,
+      "name": "greeting-turn-away",
+      "file": "greeting-turn-away.png",
+      "componentArea": 50386,
+      "foregroundBbox": [
+        384,
+        0,
+        642,
+        244
+      ],
+      "cropBbox": [
+        372,
+        0,
+        654,
+        256
+      ],
+      "cropXywh": [
+        372,
+        0,
+        282,
+        256
+      ],
+      "normalizedCropBbox": [
+        0.363281,
+        0.0,
+        0.638672,
+        0.166667
+      ]
+    },
+    {
+      "index": 3,
+      "name": "greeting-shout",
+      "file": "greeting-shout.png",
+      "componentArea": 50895,
+      "foregroundBbox": [
+        706,
+        0,
+        968,
+        244
+      ],
+      "cropBbox": [
+        694,
+        0,
+        980,
+        256
+      ],
+      "cropXywh": [
+        694,
+        0,
+        286,
+        256
+      ],
+      "normalizedCropBbox": [
+        0.677734,
+        0.0,
+        0.957031,
+        0.166667
+      ]
+    },
+    {
+      "index": 4,
+      "name": "asking-kind",
+      "file": "asking-kind.png",
+      "componentArea": 50801,
+      "foregroundBbox": [
+        54,
+        269,
+        318,
+        500
+      ],
+      "cropBbox": [
+        42,
+        257,
+        330,
+        512
+      ],
+      "cropXywh": [
+        42,
+        257,
+        288,
+        255
+      ],
+      "normalizedCropBbox": [
+        0.041016,
+        0.167318,
+        0.322266,
+        0.333333
+      ]
+    },
+    {
+      "index": 5,
+      "name": "asking-grab",
+      "file": "asking-grab.png",
+      "componentArea": 50695,
+      "foregroundBbox": [
+        381,
+        269,
+        644,
+        500
+      ],
+      "cropBbox": [
+        369,
+        257,
+        656,
+        512
+      ],
+      "cropXywh": [
+        369,
+        257,
+        287,
+        255
+      ],
+      "normalizedCropBbox": [
+        0.360352,
+        0.167318,
+        0.640625,
+        0.333333
+      ]
+    },
+    {
+      "index": 6,
+      "name": "asking-stomp",
+      "file": "asking-stomp.png",
+      "componentArea": 51096,
+      "foregroundBbox": [
+        705,
+        269,
+        970,
+        500
+      ],
+      "cropBbox": [
+        693,
+        257,
+        982,
+        512
+      ],
+      "cropXywh": [
+        693,
+        257,
+        289,
+        255
+      ],
+      "normalizedCropBbox": [
+        0.676758,
+        0.167318,
+        0.958984,
+        0.333333
+      ]
+    },
+    {
+      "index": 7,
+      "name": "thanks-kind",
+      "file": "thanks-kind.png",
+      "componentArea": 50228,
+      "foregroundBbox": [
+        54,
+        525,
+        317,
+        756
+      ],
+      "cropBbox": [
+        42,
+        513,
+        329,
+        768
+      ],
+      "cropXywh": [
+        42,
+        513,
+        287,
+        255
+      ],
+      "normalizedCropBbox": [
+        0.041016,
+        0.333984,
+        0.321289,
+        0.5
+      ]
+    },
+    {
+      "index": 8,
+      "name": "thanks-walk-away",
+      "file": "thanks-walk-away.png",
+      "componentArea": 50906,
+      "foregroundBbox": [
+        379,
+        525,
+        645,
+        756
+      ],
+      "cropBbox": [
+        367,
+        513,
+        657,
+        768
+      ],
+      "cropXywh": [
+        367,
+        513,
+        290,
+        255
+      ],
+      "normalizedCropBbox": [
+        0.358398,
+        0.333984,
+        0.641602,
+        0.5
+      ]
+    },
+    {
+      "index": 9,
+      "name": "thanks-demand",
+      "file": "thanks-demand.png",
+      "componentArea": 50845,
+      "foregroundBbox": [
+        704,
+        525,
+        971,
+        756
+      ],
+      "cropBbox": [
+        692,
+        513,
+        983,
+        768
+      ],
+      "cropXywh": [
+        692,
+        513,
+        291,
+        255
+      ],
+      "normalizedCropBbox": [
+        0.675781,
+        0.333984,
+        0.959961,
+        0.5
+      ]
+    },
+    {
+      "index": 10,
+      "name": "turns-kind",
+      "file": "turns-kind.png",
+      "componentArea": 50392,
+      "foregroundBbox": [
+        52,
+        781,
+        318,
+        1012
+      ],
+      "cropBbox": [
+        40,
+        769,
+        330,
+        1024
+      ],
+      "cropXywh": [
+        40,
+        769,
+        290,
+        255
+      ],
+      "normalizedCropBbox": [
+        0.039062,
+        0.500651,
+        0.322266,
+        0.666667
+      ]
+    },
+    {
+      "index": 11,
+      "name": "turns-grab",
+      "file": "turns-grab.png",
+      "componentArea": 50061,
+      "foregroundBbox": [
+        380,
+        781,
+        643,
+        1012
+      ],
+      "cropBbox": [
+        368,
+        769,
+        655,
+        1024
+      ],
+      "cropXywh": [
+        368,
+        769,
+        287,
+        255
+      ],
+      "normalizedCropBbox": [
+        0.359375,
+        0.500651,
+        0.639648,
+        0.666667
+      ]
+    },
+    {
+      "index": 12,
+      "name": "turns-push",
+      "file": "turns-push.png",
+      "componentArea": 50592,
+      "foregroundBbox": [
+        704,
+        781,
+        971,
+        1012
+      ],
+      "cropBbox": [
+        692,
+        769,
+        983,
+        1024
+      ],
+      "cropXywh": [
+        692,
+        769,
+        291,
+        255
+      ],
+      "normalizedCropBbox": [
+        0.675781,
+        0.500651,
+        0.959961,
+        0.666667
+      ]
+    },
+    {
+      "index": 13,
+      "name": "listening-kind",
+      "file": "listening-kind.png",
+      "componentArea": 50156,
+      "foregroundBbox": [
+        51,
+        1037,
+        318,
+        1268
+      ],
+      "cropBbox": [
+        39,
+        1025,
+        330,
+        1280
+      ],
+      "cropXywh": [
+        39,
+        1025,
+        291,
+        255
+      ],
+      "normalizedCropBbox": [
+        0.038086,
+        0.667318,
+        0.322266,
+        0.833333
+      ]
+    },
+    {
+      "index": 14,
+      "name": "listening-interrupt",
+      "file": "listening-interrupt.png",
+      "componentArea": 50067,
+      "foregroundBbox": [
+        379,
+        1037,
+        645,
+        1268
+      ],
+      "cropBbox": [
+        367,
+        1025,
+        657,
+        1280
+      ],
+      "cropXywh": [
+        367,
+        1025,
+        290,
+        255
+      ],
+      "normalizedCropBbox": [
+        0.358398,
+        0.667318,
+        0.641602,
+        0.833333
+      ]
+    },
+    {
+      "index": 15,
+      "name": "listening-look-away",
+      "file": "listening-look-away.png",
+      "componentArea": 50043,
+      "foregroundBbox": [
+        704,
+        1037,
+        970,
+        1268
+      ],
+      "cropBbox": [
+        692,
+        1025,
+        982,
+        1280
+      ],
+      "cropXywh": [
+        692,
+        1025,
+        290,
+        255
+      ],
+      "normalizedCropBbox": [
+        0.675781,
+        0.667318,
+        0.958984,
+        0.833333
+      ]
+    },
+    {
+      "index": 16,
+      "name": "apology-kind",
+      "file": "apology-kind.png",
+      "componentArea": 45486,
+      "foregroundBbox": [
+        52,
+        1293,
+        320,
+        1493
+      ],
+      "cropBbox": [
+        40,
+        1281,
+        332,
+        1505
+      ],
+      "cropXywh": [
+        40,
+        1281,
+        292,
+        224
+      ],
+      "normalizedCropBbox": [
+        0.039062,
+        0.833984,
+        0.324219,
+        0.979818
+      ]
+    },
+    {
+      "index": 17,
+      "name": "apology-hide",
+      "file": "apology-hide.png",
+      "componentArea": 45781,
+      "foregroundBbox": [
+        378,
+        1293,
+        646,
+        1493
+      ],
+      "cropBbox": [
+        366,
+        1281,
+        658,
+        1505
+      ],
+      "cropXywh": [
+        366,
+        1281,
+        292,
+        224
+      ],
+      "normalizedCropBbox": [
+        0.357422,
+        0.833984,
+        0.642578,
+        0.979818
+      ]
+    },
+    {
+      "index": 18,
+      "name": "apology-blame",
+      "file": "apology-blame.png",
+      "componentArea": 45338,
+      "foregroundBbox": [
+        704,
+        1293,
+        971,
+        1492
+      ],
+      "cropBbox": [
+        692,
+        1281,
+        983,
+        1504
+      ],
+      "cropXywh": [
+        692,
+        1281,
+        291,
+        223
+      ],
+      "normalizedCropBbox": [
+        0.675781,
+        0.833984,
+        0.959961,
+        0.979167
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 5,
+    "minArea": 1500,
+    "order": "reading"
+  }
+}

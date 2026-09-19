@@ -1,0 +1,262 @@
+{
+  "source": "props-cut.png",
+  "sourceSha256": "8531e25d882eceeab9fbbe1b5057be5177e94520f2103275d18851eec56b98b1",
+  "sourceSize": [
+    1024,
+    680
+  ],
+  "detection": "alpha",
+  "sampledBackgroundRgb": null,
+  "padding": 12,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "welcome-mat",
+      "file": "welcome-mat.png",
+      "componentArea": 35062,
+      "foregroundBbox": [
+        18,
+        115,
+        249,
+        276
+      ],
+      "cropBbox": [
+        6,
+        103,
+        261,
+        288
+      ],
+      "cropXywh": [
+        6,
+        103,
+        255,
+        185
+      ],
+      "normalizedCropBbox": [
+        0.005859,
+        0.151471,
+        0.254883,
+        0.423529
+      ]
+    },
+    {
+      "index": 2,
+      "name": "red-crayon",
+      "file": "red-crayon.png",
+      "componentArea": 26203,
+      "foregroundBbox": [
+        288,
+        56,
+        482,
+        305
+      ],
+      "cropBbox": [
+        276,
+        44,
+        494,
+        317
+      ],
+      "cropXywh": [
+        276,
+        44,
+        218,
+        273
+      ],
+      "normalizedCropBbox": [
+        0.269531,
+        0.064706,
+        0.482422,
+        0.466176
+      ]
+    },
+    {
+      "index": 3,
+      "name": "stacked-blocks",
+      "file": "stacked-blocks.png",
+      "componentArea": 32061,
+      "foregroundBbox": [
+        564,
+        45,
+        703,
+        313
+      ],
+      "cropBbox": [
+        552,
+        33,
+        715,
+        325
+      ],
+      "cropXywh": [
+        552,
+        33,
+        163,
+        292
+      ],
+      "normalizedCropBbox": [
+        0.539062,
+        0.048529,
+        0.698242,
+        0.477941
+      ]
+    },
+    {
+      "index": 4,
+      "name": "drum",
+      "file": "drum.png",
+      "componentArea": 41061,
+      "foregroundBbox": [
+        785,
+        80,
+        1001,
+        331
+      ],
+      "cropBbox": [
+        773,
+        68,
+        1013,
+        343
+      ],
+      "cropXywh": [
+        773,
+        68,
+        240,
+        275
+      ],
+      "normalizedCropBbox": [
+        0.754883,
+        0.1,
+        0.989258,
+        0.504412
+      ]
+    },
+    {
+      "index": 5,
+      "name": "storybook",
+      "file": "storybook.png",
+      "componentArea": 42397,
+      "foregroundBbox": [
+        11,
+        397,
+        252,
+        594
+      ],
+      "cropBbox": [
+        0,
+        385,
+        264,
+        606
+      ],
+      "cropXywh": [
+        0,
+        385,
+        264,
+        221
+      ],
+      "normalizedCropBbox": [
+        0.0,
+        0.566176,
+        0.257812,
+        0.891176
+      ]
+    },
+    {
+      "index": 6,
+      "name": "fallen-blocks",
+      "file": "fallen-blocks.png",
+      "componentArea": 30747,
+      "foregroundBbox": [
+        272,
+        389,
+        501,
+        600
+      ],
+      "cropBbox": [
+        260,
+        377,
+        513,
+        612
+      ],
+      "cropXywh": [
+        260,
+        377,
+        253,
+        235
+      ],
+      "normalizedCropBbox": [
+        0.253906,
+        0.554412,
+        0.500977,
+        0.9
+      ]
+    },
+    {
+      "index": 7,
+      "name": "wait-clock",
+      "file": "wait-clock.png",
+      "componentArea": 38292,
+      "foregroundBbox": [
+        528,
+        381,
+        747,
+        603
+      ],
+      "cropBbox": [
+        516,
+        369,
+        759,
+        615
+      ],
+      "cropXywh": [
+        516,
+        369,
+        243,
+        246
+      ],
+      "normalizedCropBbox": [
+        0.503906,
+        0.542647,
+        0.741211,
+        0.904412
+      ]
+    },
+    {
+      "index": 8,
+      "name": "heart-reward",
+      "file": "heart-reward.png",
+      "componentArea": 35245,
+      "foregroundBbox": [
+        777,
+        393,
+        1012,
+        602
+      ],
+      "cropBbox": [
+        765,
+        381,
+        1024,
+        614
+      ],
+      "cropXywh": [
+        765,
+        381,
+        259,
+        233
+      ],
+      "normalizedCropBbox": [
+        0.74707,
+        0.560294,
+        1.0,
+        0.902941
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 0,
+    "minArea": 2000,
+    "order": "reading"
+  }
+}

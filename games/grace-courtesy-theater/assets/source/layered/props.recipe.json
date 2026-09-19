@@ -1,0 +1,15 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "workflow": "qwen-image-layered",
+  "seed": 42,
+  "selectedOutput": "layer_2",
+  "source": "games/grace-courtesy-theater/assets/source/gpt-image-2/props-source.png",
+  "prompt": "Bottom layer: only the entire production background, with no foreground objects.\nTop layer: all exactly 8 complete foreground assets together in their original positions, isolated on genuine transparency. Preserve every subject, pose, color, stitch, edge, spacing, scale, and the whole sheet layout exactly. Do not redraw, crop, rearrange, merge, add, remove, relight, or reinterpret anything.",
+  "qa": {
+    "width": 1024,
+    "height": 680,
+    "transparentPct": 59.612,
+    "opaquePct": 38.685
+  }
+}

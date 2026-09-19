@@ -1,0 +1,382 @@
+{
+  "source": "characters-cut.png",
+  "sourceSha256": "60c63597939bdf38585f210f37feb9dfac3a6c3552ed8edd35fa5f5daf591ba6",
+  "sourceSize": [
+    1024,
+    392
+  ],
+  "detection": "alpha",
+  "sampledBackgroundRgb": null,
+  "padding": 12,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "poppy-neutral",
+      "file": "poppy-neutral.png",
+      "componentArea": 12772,
+      "foregroundBbox": [
+        25,
+        6,
+        140,
+        182
+      ],
+      "cropBbox": [
+        13,
+        0,
+        152,
+        194
+      ],
+      "cropXywh": [
+        13,
+        0,
+        139,
+        194
+      ],
+      "normalizedCropBbox": [
+        0.012695,
+        0.0,
+        0.148438,
+        0.494898
+      ]
+    },
+    {
+      "index": 2,
+      "name": "poppy-wave",
+      "file": "poppy-wave.png",
+      "componentArea": 12991,
+      "foregroundBbox": [
+        184,
+        6,
+        313,
+        183
+      ],
+      "cropBbox": [
+        172,
+        0,
+        325,
+        195
+      ],
+      "cropXywh": [
+        172,
+        0,
+        153,
+        195
+      ],
+      "normalizedCropBbox": [
+        0.167969,
+        0.0,
+        0.317383,
+        0.497449
+      ]
+    },
+    {
+      "index": 3,
+      "name": "poppy-ask",
+      "file": "poppy-ask.png",
+      "componentArea": 12822,
+      "foregroundBbox": [
+        350,
+        7,
+        503,
+        183
+      ],
+      "cropBbox": [
+        338,
+        0,
+        515,
+        195
+      ],
+      "cropXywh": [
+        338,
+        0,
+        177,
+        195
+      ],
+      "normalizedCropBbox": [
+        0.330078,
+        0.0,
+        0.50293,
+        0.497449
+      ]
+    },
+    {
+      "index": 4,
+      "name": "poppy-listen",
+      "file": "poppy-listen.png",
+      "componentArea": 12769,
+      "foregroundBbox": [
+        544,
+        7,
+        659,
+        182
+      ],
+      "cropBbox": [
+        532,
+        0,
+        671,
+        194
+      ],
+      "cropXywh": [
+        532,
+        0,
+        139,
+        194
+      ],
+      "normalizedCropBbox": [
+        0.519531,
+        0.0,
+        0.655273,
+        0.494898
+      ]
+    },
+    {
+      "index": 5,
+      "name": "poppy-sorry",
+      "file": "poppy-sorry.png",
+      "componentArea": 11591,
+      "foregroundBbox": [
+        724,
+        6,
+        812,
+        183
+      ],
+      "cropBbox": [
+        712,
+        0,
+        824,
+        195
+      ],
+      "cropXywh": [
+        712,
+        0,
+        112,
+        195
+      ],
+      "normalizedCropBbox": [
+        0.695312,
+        0.0,
+        0.804688,
+        0.497449
+      ]
+    },
+    {
+      "index": 6,
+      "name": "poppy-celebrate",
+      "file": "poppy-celebrate.png",
+      "componentArea": 13226,
+      "foregroundBbox": [
+        863,
+        6,
+        1008,
+        183
+      ],
+      "cropBbox": [
+        851,
+        0,
+        1020,
+        195
+      ],
+      "cropXywh": [
+        851,
+        0,
+        169,
+        195
+      ],
+      "normalizedCropBbox": [
+        0.831055,
+        0.0,
+        0.996094,
+        0.497449
+      ]
+    },
+    {
+      "index": 7,
+      "name": "coco-neutral",
+      "file": "coco-neutral.png",
+      "componentArea": 16015,
+      "foregroundBbox": [
+        25,
+        201,
+        140,
+        392
+      ],
+      "cropBbox": [
+        13,
+        189,
+        152,
+        392
+      ],
+      "cropXywh": [
+        13,
+        189,
+        139,
+        203
+      ],
+      "normalizedCropBbox": [
+        0.012695,
+        0.482143,
+        0.148438,
+        1.0
+      ]
+    },
+    {
+      "index": 8,
+      "name": "coco-wave",
+      "file": "coco-wave.png",
+      "componentArea": 15764,
+      "foregroundBbox": [
+        185,
+        201,
+        316,
+        392
+      ],
+      "cropBbox": [
+        173,
+        189,
+        328,
+        392
+      ],
+      "cropXywh": [
+        173,
+        189,
+        155,
+        203
+      ],
+      "normalizedCropBbox": [
+        0.168945,
+        0.482143,
+        0.320312,
+        1.0
+      ]
+    },
+    {
+      "index": 9,
+      "name": "coco-talk",
+      "file": "coco-talk.png",
+      "componentArea": 15482,
+      "foregroundBbox": [
+        367,
+        201,
+        501,
+        392
+      ],
+      "cropBbox": [
+        355,
+        189,
+        513,
+        392
+      ],
+      "cropXywh": [
+        355,
+        189,
+        158,
+        203
+      ],
+      "normalizedCropBbox": [
+        0.34668,
+        0.482143,
+        0.500977,
+        1.0
+      ]
+    },
+    {
+      "index": 10,
+      "name": "coco-wait",
+      "file": "coco-wait.png",
+      "componentArea": 14330,
+      "foregroundBbox": [
+        543,
+        201,
+        653,
+        392
+      ],
+      "cropBbox": [
+        531,
+        189,
+        665,
+        392
+      ],
+      "cropXywh": [
+        531,
+        189,
+        134,
+        203
+      ],
+      "normalizedCropBbox": [
+        0.518555,
+        0.482143,
+        0.649414,
+        1.0
+      ]
+    },
+    {
+      "index": 11,
+      "name": "coco-sad",
+      "file": "coco-sad.png",
+      "componentArea": 15506,
+      "foregroundBbox": [
+        708,
+        201,
+        824,
+        392
+      ],
+      "cropBbox": [
+        696,
+        189,
+        836,
+        392
+      ],
+      "cropXywh": [
+        696,
+        189,
+        140,
+        203
+      ],
+      "normalizedCropBbox": [
+        0.679688,
+        0.482143,
+        0.816406,
+        1.0
+      ]
+    },
+    {
+      "index": 12,
+      "name": "coco-celebrate",
+      "file": "coco-celebrate.png",
+      "componentArea": 16434,
+      "foregroundBbox": [
+        865,
+        201,
+        1011,
+        392
+      ],
+      "cropBbox": [
+        853,
+        189,
+        1023,
+        392
+      ],
+      "cropXywh": [
+        853,
+        189,
+        170,
+        203
+      ],
+      "normalizedCropBbox": [
+        0.833008,
+        0.482143,
+        0.999023,
+        1.0
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 4,
+    "minArea": 1500,
+    "order": "reading"
+  }
+}

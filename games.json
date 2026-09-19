@@ -3554,24 +3554,44 @@
       "path": "games/grace-courtesy-theater/",
       "icon": "assets/hub/tiles/grace-courtesy-theater.jpg",
       "age": {
-        "min": 5,
-        "max": 6
+        "min": 4,
+        "max": 7
       },
-      "status": "in-design",
-      "accent": "#7c4fc4",
+      "status": "beta",
+      "accent": "#9d2846",
       "modes": [
         {
-          "id": "manners",
-          "title": "What Do We Say?",
-          "skill": "kind social phrases"
+          "id": "greeting",
+          "title": "Hello, Friend",
+          "skill": "welcoming a new friend"
         },
         {
-          "id": "helping",
-          "title": "Kind or Not?",
-          "skill": "recognizing helpful actions"
+          "id": "asking",
+          "title": "Ask Kindly",
+          "skill": "asking before taking"
+        },
+        {
+          "id": "thanks",
+          "title": "Thank You",
+          "skill": "showing gratitude"
+        },
+        {
+          "id": "turns",
+          "title": "Taking Turns",
+          "skill": "waiting for a turn"
+        },
+        {
+          "id": "listening",
+          "title": "Listening Ears",
+          "skill": "listening without interrupting"
+        },
+        {
+          "id": "apology",
+          "title": "Make It Right",
+          "skill": "repairing after an accident"
         }
       ],
-      "summary": "Practice greeting, asking, and waiting politely."
+      "summary": "Dress Poppy and Coco, then help kindness take the stage in six cozy felt-puppet stories."
     },
     {
       "id": "calm-corner-cards",

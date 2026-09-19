@@ -1,0 +1,578 @@
+{
+  "format": "grace-courtesy-theater-processing-v1",
+  "gptImage2Sources": {
+    "characters-source.png": "2db3214801fcf9307b783395f8e96a698aeee2511abca5456f4d80d31af8d84c",
+    "choices-cast-match-source.png": "26fc4e64132f933e2ef0a7888be741c9b7ca993a4dc12f84dbaedb18b6036ded",
+    "choices-source.png": "02f801f07a05f038ff343bc1840c02d44729748a7ef8e74f32ae05087e8aa0ca",
+    "costumes-source.png": "9ea1d6bd758a472bb1c6d4d9aa528cc7f1e239f6d77b3ce6d0f9ea5033a2e700",
+    "felt-stage-source.png": "f7c0f208d732cbf02c4cdf2b26b5a55e0b2c43f984bfe3baabc2ca5f4ef1124e",
+    "hub-cast-match-source.png": "7d07213cf7d5821fc5674a3b45d8df5d86091535433716a207a0ed6e56890783",
+    "props-source.png": "d396d637add2fb3bcbefbdee53605dfbe0e4bdc234ab128c052f7cc2a2deda64",
+    "title-source.png": "d46d6e535efa1adbb3e49461fd8e3d4b32696c09716cb03fa4681f360e2172b0",
+    "ui-kit-source.png": "9a6bc53881d47f7b6c4df94fe76d65ac7be2fb770bd43ffb78a64c9f8632b0f5"
+  },
+  "layeredWorkflow": "qwen-image-layered",
+  "cutter": "tools/cut-asset-sheet.py",
+  "outputs": {
+    "assets/stage.webp": {
+      "source": "assets/source/gpt-image-2/felt-stage-source.png",
+      "sourceSha256": "f7c0f208d732cbf02c4cdf2b26b5a55e0b2c43f984bfe3baabc2ca5f4ef1124e",
+      "dimensions": [
+        1440,
+        1080
+      ],
+      "quality": 86,
+      "bytes": 186734
+    },
+    "assets/characters/poppy-neutral.webp": {
+      "source": "assets/source/crops/characters/poppy-neutral.png",
+      "sourceSha256": "4d8fbca4c3f8a7bf7d187e472c43f5ba0dae02b1e8774249a2a6677b8eb3453f",
+      "dimensions": [
+        139,
+        194
+      ],
+      "bytes": 31784,
+      "qaMagenta": "assets/source/qa/characters/poppy-neutral-magenta.png"
+    },
+    "assets/characters/poppy-wave.webp": {
+      "source": "assets/source/crops/characters/poppy-wave.png",
+      "sourceSha256": "d2034e870bf47c754714bbd94dcc7addac0cdae096c0bf662f84cbd748a50721",
+      "dimensions": [
+        153,
+        195
+      ],
+      "bytes": 33658,
+      "qaMagenta": "assets/source/qa/characters/poppy-wave-magenta.png"
+    },
+    "assets/characters/poppy-ask.webp": {
+      "source": "assets/source/crops/characters/poppy-ask.png",
+      "sourceSha256": "018182a22b7a50540f6ebb578c747606fcafed051d2bd1d0239b4818a523e9fb",
+      "dimensions": [
+        177,
+        195
+      ],
+      "bytes": 35062,
+      "qaMagenta": "assets/source/qa/characters/poppy-ask-magenta.png"
+    },
+    "assets/characters/poppy-listen.webp": {
+      "source": "assets/source/crops/characters/poppy-listen.png",
+      "sourceSha256": "726b5c5ca2b61553c2521ca878277dc3be9d2463b5373dcb8c79d04b64524dd6",
+      "dimensions": [
+        139,
+        194
+      ],
+      "bytes": 31870,
+      "qaMagenta": "assets/source/qa/characters/poppy-listen-magenta.png"
+    },
+    "assets/characters/poppy-sorry.webp": {
+      "source": "assets/source/crops/characters/poppy-sorry.png",
+      "sourceSha256": "0b8d7a73b111bdf6efc756b24fb6f0106e5651ff094e5310cdd974d4ff7b777e",
+      "dimensions": [
+        112,
+        195
+      ],
+      "bytes": 27740,
+      "qaMagenta": "assets/source/qa/characters/poppy-sorry-magenta.png"
+    },
+    "assets/characters/poppy-celebrate.webp": {
+      "source": "assets/source/crops/characters/poppy-celebrate.png",
+      "sourceSha256": "3a7d04cfd91f0946221e769896f30e2acd8f65e066cde716249c0ff5a4b40ee6",
+      "dimensions": [
+        169,
+        195
+      ],
+      "bytes": 34978,
+      "qaMagenta": "assets/source/qa/characters/poppy-celebrate-magenta.png"
+    },
+    "assets/characters/coco-neutral.webp": {
+      "source": "assets/source/crops/characters/coco-neutral.png",
+      "sourceSha256": "1ea18b9a1bd233fffe2182e1c49a951b7ded3ad17289a6d77d6f42a4b9b08aff",
+      "dimensions": [
+        139,
+        203
+      ],
+      "bytes": 37010,
+      "qaMagenta": "assets/source/qa/characters/coco-neutral-magenta.png"
+    },
+    "assets/characters/coco-wave.webp": {
+      "source": "assets/source/crops/characters/coco-wave.png",
+      "sourceSha256": "4ba9887eed4c986ef2ae90e04bbb1a7f74ee1b1eaee40e20f0e598833e5ddfe7",
+      "dimensions": [
+        155,
+        203
+      ],
+      "bytes": 38756,
+      "qaMagenta": "assets/source/qa/characters/coco-wave-magenta.png"
+    },
+    "assets/characters/coco-talk.webp": {
+      "source": "assets/source/crops/characters/coco-talk.png",
+      "sourceSha256": "5df4f1314c42a8609ebf9ce92f4edd4620c353b06c02025c682498655a1f766a",
+      "dimensions": [
+        158,
+        203
+      ],
+      "bytes": 37924,
+      "qaMagenta": "assets/source/qa/characters/coco-talk-magenta.png"
+    },
+    "assets/characters/coco-wait.webp": {
+      "source": "assets/source/crops/characters/coco-wait.png",
+      "sourceSha256": "e41dfafb9c15104c822ac688b670c86dcaffea516810189fe1d878b0ffc5296a",
+      "dimensions": [
+        134,
+        203
+      ],
+      "bytes": 33572,
+      "qaMagenta": "assets/source/qa/characters/coco-wait-magenta.png"
+    },
+    "assets/characters/coco-sad.webp": {
+      "source": "assets/source/crops/characters/coco-sad.png",
+      "sourceSha256": "ce88a36a148de4466cf048496a78a5fa3991ba6e69e0aa30fd952b1fb37d4d79",
+      "dimensions": [
+        140,
+        203
+      ],
+      "bytes": 36448,
+      "qaMagenta": "assets/source/qa/characters/coco-sad-magenta.png"
+    },
+    "assets/characters/coco-celebrate.webp": {
+      "source": "assets/source/crops/characters/coco-celebrate.png",
+      "sourceSha256": "5184dbe62912384c17d9e2b5e6945cb614de30fc5b4d9b0fa19eda20f4ca85cd",
+      "dimensions": [
+        170,
+        203
+      ],
+      "bytes": 40104,
+      "qaMagenta": "assets/source/qa/characters/coco-celebrate-magenta.png"
+    },
+    "assets/props/welcome-mat.webp": {
+      "source": "assets/source/crops/props/welcome-mat.png",
+      "sourceSha256": "4b2b0c83d1093ec947569730d07b6d7c7341b944a019f14db36de9d254aa4690",
+      "dimensions": [
+        255,
+        185
+      ],
+      "bytes": 72180,
+      "qaMagenta": "assets/source/qa/props/welcome-mat-magenta.png"
+    },
+    "assets/props/red-crayon.webp": {
+      "source": "assets/source/crops/props/red-crayon.png",
+      "sourceSha256": "4b25a9d74a8ce1d4fde429e5232331fcb73222ab4c5331789fd1817f10c72ff2",
+      "dimensions": [
+        218,
+        273
+      ],
+      "bytes": 65098,
+      "qaMagenta": "assets/source/qa/props/red-crayon-magenta.png"
+    },
+    "assets/props/stacked-blocks.webp": {
+      "source": "assets/source/crops/props/stacked-blocks.png",
+      "sourceSha256": "11b653f8a8050fe85d17072b5c9a73a9554863d04f76e46bab5921a41c9ea714",
+      "dimensions": [
+        163,
+        292
+      ],
+      "bytes": 66914,
+      "qaMagenta": "assets/source/qa/props/stacked-blocks-magenta.png"
+    },
+    "assets/props/drum.webp": {
+      "source": "assets/source/crops/props/drum.png",
+      "sourceSha256": "90610c879c30c51ce193d2b51ae3b98f1716bfc13452f51869525154a7286770",
+      "dimensions": [
+        240,
+        275
+      ],
+      "bytes": 83648,
+      "qaMagenta": "assets/source/qa/props/drum-magenta.png"
+    },
+    "assets/props/storybook.webp": {
+      "source": "assets/source/crops/props/storybook.png",
+      "sourceSha256": "ae5315419d4458e65cdc1eade20150cfc35318443317d2abe220df389b401dd4",
+      "dimensions": [
+        264,
+        221
+      ],
+      "bytes": 73546,
+      "qaMagenta": "assets/source/qa/props/storybook-magenta.png"
+    },
+    "assets/props/fallen-blocks.webp": {
+      "source": "assets/source/crops/props/fallen-blocks.png",
+      "sourceSha256": "d85c2a0075f669cd2f1f597588c7ed23fa7b2b0edaae9baa495a15484b0fdd9e",
+      "dimensions": [
+        253,
+        235
+      ],
+      "bytes": 71478,
+      "qaMagenta": "assets/source/qa/props/fallen-blocks-magenta.png"
+    },
+    "assets/props/wait-clock.webp": {
+      "source": "assets/source/crops/props/wait-clock.png",
+      "sourceSha256": "1bc1c99e21d5e6b88c0e58c6da3ad8b1e11872f1ccd22b5519fed2637b0abe78",
+      "dimensions": [
+        243,
+        246
+      ],
+      "bytes": 71068,
+      "qaMagenta": "assets/source/qa/props/wait-clock-magenta.png"
+    },
+    "assets/props/heart-reward.webp": {
+      "source": "assets/source/crops/props/heart-reward.png",
+      "sourceSha256": "4b22c260a5e5432bd2c6062e93c45ef9dbdfe57a987a09302cea04d282d082b3",
+      "dimensions": [
+        259,
+        233
+      ],
+      "bytes": 73856,
+      "qaMagenta": "assets/source/qa/props/heart-reward-magenta.png"
+    },
+    "assets/ui/scenario-card.webp": {
+      "source": "assets/source/crops/ui/scenario-card.png",
+      "sourceSha256": "41c7eb22913d29a6490a90e874021e7a8c2f5a84aa9dcdf544fef155497c59ff",
+      "dimensions": [
+        441,
+        301
+      ],
+      "bytes": 158614,
+      "qaMagenta": "assets/source/qa/ui/scenario-card-magenta.png"
+    },
+    "assets/ui/choice-green.webp": {
+      "source": "assets/source/crops/ui/choice-green.png",
+      "sourceSha256": "ae2cd3cef9926b6320e554be72f4808bda3b00fab355e0dca2ac96e53a9c9858",
+      "dimensions": [
+        439,
+        296
+      ],
+      "bytes": 170872,
+      "qaMagenta": "assets/source/qa/ui/choice-green-magenta.png"
+    },
+    "assets/ui/choice-coral.webp": {
+      "source": "assets/source/crops/ui/choice-coral.png",
+      "sourceSha256": "9a970811c76d0255d861d08158d8a943ecb40eb7bf2b349484bcb9b6d2810282",
+      "dimensions": [
+        440,
+        297
+      ],
+      "bytes": 177466,
+      "qaMagenta": "assets/source/qa/ui/choice-coral-magenta.png"
+    },
+    "assets/ui/choice-plum.webp": {
+      "source": "assets/source/crops/ui/choice-plum.png",
+      "sourceSha256": "6edda1b7d9df267f16071619ba7a25a1f4b9291b77b4f42c2677e568979446dd",
+      "dimensions": [
+        439,
+        297
+      ],
+      "bytes": 167702,
+      "qaMagenta": "assets/source/qa/ui/choice-plum-magenta.png"
+    },
+    "assets/ui/button-orange.webp": {
+      "source": "assets/source/crops/ui/button-orange.png",
+      "sourceSha256": "bd2d0bd5097e79cc686a2cc83eae9fd43292f3c0fa3db8be612824bb3a86820e",
+      "dimensions": [
+        439,
+        303
+      ],
+      "bytes": 177272,
+      "qaMagenta": "assets/source/qa/ui/button-orange-magenta.png"
+    },
+    "assets/ui/speech-bubble.webp": {
+      "source": "assets/source/crops/ui/speech-bubble.png",
+      "sourceSha256": "192f36c20870c074cf8d1066e3b30bfc89bb6f7862b66915f0be184b46af1559",
+      "dimensions": [
+        434,
+        359
+      ],
+      "bytes": 151562,
+      "qaMagenta": "assets/source/qa/ui/speech-bubble-magenta.png"
+    },
+    "assets/ui/reward-star.webp": {
+      "source": "assets/source/crops/ui/reward-star.png",
+      "sourceSha256": "7da84c56aeb3ae8eae13cc0e226059dfaecd6c7de52054916a4a941d100d88a7",
+      "dimensions": [
+        368,
+        361
+      ],
+      "bytes": 113072,
+      "qaMagenta": "assets/source/qa/ui/reward-star-magenta.png"
+    },
+    "assets/ui/costume-trunk.webp": {
+      "source": "assets/source/crops/ui/costume-trunk.png",
+      "sourceSha256": "3b2e06bbc525ec2bc28ad7e45e1d81288b46f61d1fe1896cc5c302baaca154d0",
+      "dimensions": [
+        401,
+        373
+      ],
+      "bytes": 190060,
+      "qaMagenta": "assets/source/qa/ui/costume-trunk-magenta.png"
+    },
+    "assets/costumes/poppy-daisy.webp": {
+      "source": "assets/source/crops/costumes/poppy-daisy.png",
+      "sourceSha256": "4e14626d0b860f089434b2d445b7f9cd79f875e64eaafcdbe2c88178770d3a96",
+      "dimensions": [
+        283,
+        190
+      ],
+      "bytes": 41262,
+      "qaMagenta": "assets/source/qa/costumes/poppy-daisy-magenta.png"
+    },
+    "assets/costumes/poppy-berry.webp": {
+      "source": "assets/source/crops/costumes/poppy-berry.png",
+      "sourceSha256": "b1abf443ae3cb48f0d7099afd8c8ab591b1d79669430395a0d41a21bc9e0c79a",
+      "dimensions": [
+        260,
+        190
+      ],
+      "bytes": 38110,
+      "qaMagenta": "assets/source/qa/costumes/poppy-berry-magenta.png"
+    },
+    "assets/costumes/poppy-sunny.webp": {
+      "source": "assets/source/crops/costumes/poppy-sunny.png",
+      "sourceSha256": "fc9f6172d9f93fb87699902e78f496a1a9f89915fb30d4fd3cd8ea00b21b3b91",
+      "dimensions": [
+        239,
+        190
+      ],
+      "bytes": 32526,
+      "qaMagenta": "assets/source/qa/costumes/poppy-sunny-magenta.png"
+    },
+    "assets/costumes/poppy-twilight.webp": {
+      "source": "assets/source/crops/costumes/poppy-twilight.png",
+      "sourceSha256": "e319f219bcc6f539da25b32aeb00bc6ce764b4f985e1b6b5b1190a909a3c6a63",
+      "dimensions": [
+        288,
+        190
+      ],
+      "bytes": 44774,
+      "qaMagenta": "assets/source/qa/costumes/poppy-twilight-magenta.png"
+    },
+    "assets/costumes/coco-daisy.webp": {
+      "source": "assets/source/crops/costumes/coco-daisy.png",
+      "sourceSha256": "3d1d17f0f9853d30e604cdadc1ddb7a32596ba8b4de909d6167c43def5f2dbf9",
+      "dimensions": [
+        296,
+        190
+      ],
+      "bytes": 45932,
+      "qaMagenta": "assets/source/qa/costumes/coco-daisy-magenta.png"
+    },
+    "assets/costumes/coco-berry.webp": {
+      "source": "assets/source/crops/costumes/coco-berry.png",
+      "sourceSha256": "0d523ec102fcd56ae79714163e1c85fa5f46895aea613f02a4593ce4fb5edd04",
+      "dimensions": [
+        274,
+        190
+      ],
+      "bytes": 41546,
+      "qaMagenta": "assets/source/qa/costumes/coco-berry-magenta.png"
+    },
+    "assets/costumes/coco-sunny.webp": {
+      "source": "assets/source/crops/costumes/coco-sunny.png",
+      "sourceSha256": "4cff6fa65200889954496cf84ad079f5eb22154611c0c0634ad4e8645c96257f",
+      "dimensions": [
+        264,
+        190
+      ],
+      "bytes": 36930,
+      "qaMagenta": "assets/source/qa/costumes/coco-sunny-magenta.png"
+    },
+    "assets/costumes/coco-twilight.webp": {
+      "source": "assets/source/crops/costumes/coco-twilight.png",
+      "sourceSha256": "b8469e42ccb9bb093367eedaf6b0ad5d9e2ede81e80caecf8ada5daaefd54f19",
+      "dimensions": [
+        319,
+        190
+      ],
+      "bytes": 53036,
+      "qaMagenta": "assets/source/qa/costumes/coco-twilight-magenta.png"
+    },
+    "assets/choices/greeting-kind.webp": {
+      "source": "assets/source/crops/choices/greeting-kind.png",
+      "sourceSha256": "882040a12fce562748d0ff0571d86f0c06a9fc195d6d34c766142dac59aec20d",
+      "dimensions": [
+        260,
+        233
+      ],
+      "bytes": 69936,
+      "qaMagenta": "assets/source/qa/choices/greeting-kind-magenta.png"
+    },
+    "assets/choices/greeting-turn-away.webp": {
+      "source": "assets/source/crops/choices/greeting-turn-away.png",
+      "sourceSha256": "c3159d8b814875e9e0c738bda91f2858addf9a2c51761cd3c25f886f9fa4a5f1",
+      "dimensions": [
+        260,
+        236
+      ],
+      "bytes": 73076,
+      "qaMagenta": "assets/source/qa/choices/greeting-turn-away-magenta.png"
+    },
+    "assets/choices/greeting-shout.webp": {
+      "source": "assets/source/crops/choices/greeting-shout.png",
+      "sourceSha256": "9ae4a3f5bf941dff5d45506faa3322ab9291d14ad9e904af507ddf4d8738e801",
+      "dimensions": [
+        260,
+        233
+      ],
+      "bytes": 73580,
+      "qaMagenta": "assets/source/qa/choices/greeting-shout-magenta.png"
+    },
+    "assets/choices/asking-kind.webp": {
+      "source": "assets/source/crops/choices/asking-kind.png",
+      "sourceSha256": "9d9cba1f3ef87b83e0aa8d3a0f0ba6b6ba4519eb7d89da2ee219213ab403f2ce",
+      "dimensions": [
+        260,
+        230
+      ],
+      "bytes": 69680,
+      "qaMagenta": "assets/source/qa/choices/asking-kind-magenta.png"
+    },
+    "assets/choices/asking-grab.webp": {
+      "source": "assets/source/crops/choices/asking-grab.png",
+      "sourceSha256": "8f3a92837452350d1dbae3de6fc92bc16d2ad1e9c2232b071279e8cd95cc9d1d",
+      "dimensions": [
+        260,
+        231
+      ],
+      "bytes": 72122,
+      "qaMagenta": "assets/source/qa/choices/asking-grab-magenta.png"
+    },
+    "assets/choices/asking-stomp.webp": {
+      "source": "assets/source/crops/choices/asking-stomp.png",
+      "sourceSha256": "02cb88bf46b5cabadfd43a450090a4cfb9339657b2bb2bb301abffbcc1ac3c00",
+      "dimensions": [
+        260,
+        229
+      ],
+      "bytes": 69768,
+      "qaMagenta": "assets/source/qa/choices/asking-stomp-magenta.png"
+    },
+    "assets/choices/thanks-kind.webp": {
+      "source": "assets/source/crops/choices/thanks-kind.png",
+      "sourceSha256": "be0b2ad0c12d59770e38300986349e60551080f56869702a70c603ebfe1d2b4d",
+      "dimensions": [
+        260,
+        231
+      ],
+      "bytes": 72180,
+      "qaMagenta": "assets/source/qa/choices/thanks-kind-magenta.png"
+    },
+    "assets/choices/thanks-walk-away.webp": {
+      "source": "assets/source/crops/choices/thanks-walk-away.png",
+      "sourceSha256": "97421d7620d46a6213d62c465aa8a8371194e294929ff097514755191da1718c",
+      "dimensions": [
+        260,
+        229
+      ],
+      "bytes": 69340,
+      "qaMagenta": "assets/source/qa/choices/thanks-walk-away-magenta.png"
+    },
+    "assets/choices/thanks-demand.webp": {
+      "source": "assets/source/crops/choices/thanks-demand.png",
+      "sourceSha256": "2dd2bf668a548e903bfbac62166db6bb7917d6426738162fa89e55c546a2dc1c",
+      "dimensions": [
+        260,
+        228
+      ],
+      "bytes": 69998,
+      "qaMagenta": "assets/source/qa/choices/thanks-demand-magenta.png"
+    },
+    "assets/choices/turns-kind.webp": {
+      "source": "assets/source/crops/choices/turns-kind.png",
+      "sourceSha256": "e41b0c69cada36a39eee56d0c9bd2d65f8f94d452a2e61eda9787a5b0984203c",
+      "dimensions": [
+        260,
+        229
+      ],
+      "bytes": 72870,
+      "qaMagenta": "assets/source/qa/choices/turns-kind-magenta.png"
+    },
+    "assets/choices/turns-grab.webp": {
+      "source": "assets/source/crops/choices/turns-grab.png",
+      "sourceSha256": "89ce8bd03370fe6d0276e7302d773a69931fc9eeaf458b0a1637230cacd970d9",
+      "dimensions": [
+        260,
+        231
+      ],
+      "bytes": 73406,
+      "qaMagenta": "assets/source/qa/choices/turns-grab-magenta.png"
+    },
+    "assets/choices/turns-push.webp": {
+      "source": "assets/source/crops/choices/turns-push.png",
+      "sourceSha256": "1376f0fb3742eec2692c3053c0c13559bf4ea5c613df70ab99d27f2df3b6d9b9",
+      "dimensions": [
+        260,
+        228
+      ],
+      "bytes": 69888,
+      "qaMagenta": "assets/source/qa/choices/turns-push-magenta.png"
+    },
+    "assets/choices/listening-kind.webp": {
+      "source": "assets/source/crops/choices/listening-kind.png",
+      "sourceSha256": "c0a441dc4ce956edb5819471869c44bef8504bd2a47dcaae08ae61de7e4f634c",
+      "dimensions": [
+        260,
+        228
+      ],
+      "bytes": 68568,
+      "qaMagenta": "assets/source/qa/choices/listening-kind-magenta.png"
+    },
+    "assets/choices/listening-interrupt.webp": {
+      "source": "assets/source/crops/choices/listening-interrupt.png",
+      "sourceSha256": "e3c9c8a66a8eb8189ba6e3e5e2dfbd45b69c565b2bb90eac9b5317fc5bb91fbf",
+      "dimensions": [
+        260,
+        229
+      ],
+      "bytes": 70450,
+      "qaMagenta": "assets/source/qa/choices/listening-interrupt-magenta.png"
+    },
+    "assets/choices/listening-look-away.webp": {
+      "source": "assets/source/crops/choices/listening-look-away.png",
+      "sourceSha256": "70133f555e990ed4b9c492648bd684066a2ff7c710329cfb1511c000f760cbe8",
+      "dimensions": [
+        260,
+        229
+      ],
+      "bytes": 68388,
+      "qaMagenta": "assets/source/qa/choices/listening-look-away-magenta.png"
+    },
+    "assets/choices/apology-kind.webp": {
+      "source": "assets/source/crops/choices/apology-kind.png",
+      "sourceSha256": "27bcf83ff28c99e5723b0000878c193cfa1850b739b5b2332c2ff4593a62d10e",
+      "dimensions": [
+        260,
+        199
+      ],
+      "bytes": 61562,
+      "qaMagenta": "assets/source/qa/choices/apology-kind-magenta.png"
+    },
+    "assets/choices/apology-hide.webp": {
+      "source": "assets/source/crops/choices/apology-hide.png",
+      "sourceSha256": "e6e735902977c306cc8649a634c42dc9883f6abb6b9464a32e52c5e468306d71",
+      "dimensions": [
+        260,
+        199
+      ],
+      "bytes": 63198,
+      "qaMagenta": "assets/source/qa/choices/apology-hide-magenta.png"
+    },
+    "assets/choices/apology-blame.webp": {
+      "source": "assets/source/crops/choices/apology-blame.png",
+      "sourceSha256": "1bd450b304ffc24adf3b0b7d96e18c545fc637fb7f5b73f41289e07270e711d2",
+      "dimensions": [
+        260,
+        199
+      ],
+      "bytes": 61552,
+      "qaMagenta": "assets/source/qa/choices/apology-blame-magenta.png"
+    },
+    "assets/title.webp": {
+      "source": "assets/source/crops/title/title.png",
+      "sourceSha256": "52df75e1ae93ef2fb937708f1a0b96b32b584df7368af02d6822815f7b8b79a8",
+      "dimensions": [
+        980,
+        365
+      ],
+      "bytes": 448624,
+      "qaMagenta": "assets/source/qa/title/title-magenta.png"
+    }
+  }
+}

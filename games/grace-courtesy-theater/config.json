@@ -1,0 +1,185 @@
+{
+  "id": "grace-courtesy-theater",
+  "title": "Grace & Courtesy Theater",
+  "artDirection": "Puppet / Cozy felt fabric",
+  "assets": {
+    "stage": "./assets/stage.webp",
+    "title": "./assets/title.webp",
+    "characters": {
+      "poppy-neutral": "./assets/characters/poppy-neutral.webp",
+      "poppy-wave": "./assets/characters/poppy-wave.webp",
+      "poppy-ask": "./assets/characters/poppy-ask.webp",
+      "poppy-listen": "./assets/characters/poppy-listen.webp",
+      "poppy-sorry": "./assets/characters/poppy-sorry.webp",
+      "poppy-celebrate": "./assets/characters/poppy-celebrate.webp",
+      "coco-neutral": "./assets/characters/coco-neutral.webp",
+      "coco-wave": "./assets/characters/coco-wave.webp",
+      "coco-talk": "./assets/characters/coco-talk.webp",
+      "coco-wait": "./assets/characters/coco-wait.webp",
+      "coco-sad": "./assets/characters/coco-sad.webp",
+      "coco-celebrate": "./assets/characters/coco-celebrate.webp"
+    },
+    "props": {
+      "welcome-mat": "./assets/props/welcome-mat.webp",
+      "red-crayon": "./assets/props/red-crayon.webp",
+      "stacked-blocks": "./assets/props/stacked-blocks.webp",
+      "drum": "./assets/props/drum.webp",
+      "storybook": "./assets/props/storybook.webp",
+      "fallen-blocks": "./assets/props/fallen-blocks.webp",
+      "wait-clock": "./assets/props/wait-clock.webp",
+      "heart-reward": "./assets/props/heart-reward.webp"
+    },
+    "ui": {
+      "scenario-card": "./assets/ui/scenario-card.webp",
+      "choice-green": "./assets/ui/choice-green.webp",
+      "choice-coral": "./assets/ui/choice-coral.webp",
+      "choice-plum": "./assets/ui/choice-plum.webp",
+      "button-orange": "./assets/ui/button-orange.webp",
+      "speech-bubble": "./assets/ui/speech-bubble.webp",
+      "reward-star": "./assets/ui/reward-star.webp",
+      "costume-trunk": "./assets/ui/costume-trunk.webp"
+    }
+  },
+  "music": {
+    "track": "../../shared/assets/music/mug-and-sunbeam.mp3",
+    "volume": 0.12
+  },
+  "costumes": [
+    { "id": "daisy", "label": "Daisy crown", "swatch": "#f4efe0", "poppyAccessory": "./assets/costumes/poppy-daisy.webp", "cocoAccessory": "./assets/costumes/coco-daisy.webp" },
+    { "id": "berry", "label": "Berry stars", "swatch": "#c45375", "poppyAccessory": "./assets/costumes/poppy-berry.webp", "cocoAccessory": "./assets/costumes/coco-berry.webp" },
+    { "id": "sunny", "label": "Sunshine crown", "swatch": "#e3b447", "poppyAccessory": "./assets/costumes/poppy-sunny.webp", "cocoAccessory": "./assets/costumes/coco-sunny.webp" },
+    { "id": "twilight", "label": "Moonlight bow", "swatch": "#7961a8", "poppyAccessory": "./assets/costumes/poppy-twilight.webp", "cocoAccessory": "./assets/costumes/coco-twilight.webp" }
+  ],
+  "voice": {
+    "welcome": "Welcome to our tiny kindness theater! Choose a story for Poppy and Coco.",
+    "choose-costumes": "Choose a headpiece for each puppet, then open the curtain.",
+    "curtain-up": "Curtain up! Watch their faces, then choose what helps.",
+    "idle": "Which choice helps both friends feel safe and heard?",
+    "retry": "Let's rewind gently. Look at their faces, and choose the kind way.",
+    "take-a-bow": "Take a bow! You helped kindness shine.",
+    "another-story": "Choose another story, or play this one again.",
+    "greeting-prompt": "Coco is new to the playroom. Poppy wants to help her feel welcome. What can Poppy do first?",
+    "greeting-success": "A warm wave says, I'm happy to see you. Hello, Coco!",
+    "greeting-retry": "Turning away can feel lonely, and shouting can feel too big. Try the warm welcome.",
+    "asking-prompt": "Coco is using the red crayon. Poppy would like it next. What can Poppy do?",
+    "asking-success": "Poppy asks, May I use it when you're done? Kind asking leaves room for both friends.",
+    "asking-retry": "Grabbing and stomping make the crayon problem bigger. Try asking with open hands.",
+    "thanks-prompt": "Coco helped tidy the blocks. What can Poppy do now?",
+    "thanks-success": "Thank you, Coco! A thank-you lets a helper know their kindness mattered.",
+    "thanks-retry": "Walking away or asking for more can miss Coco's kind work. Try the grateful choice.",
+    "turns-prompt": "Coco is playing the drum. Poppy would like a turn. What can Poppy do while she waits?",
+    "turns-success": "Poppy waits by the little clock. My turn when you're finished? Waiting keeps the game friendly.",
+    "turns-retry": "Grabbing or pushing skips Coco's turn. Try the patient choice.",
+    "listening-prompt": "Coco is sharing a story. How can Poppy show she is listening?",
+    "listening-success": "Poppy looks, listens, and lets Coco finish. Listening says, your story matters.",
+    "listening-retry": "Talking over Coco or looking away can make the story feel lost. Try the listening choice.",
+    "apology-prompt": "Poppy bumped the block tower by accident. What can Poppy do to make it right?",
+    "apology-success": "I'm sorry. Can I help fix it? Poppy and Coco rebuild together.",
+    "apology-retry": "Hiding or blaming leaves Coco alone with the mess. Try the choice that repairs it together."
+  },
+  "scenarios": [
+    {
+      "id": "greeting",
+      "title": "Hello, Friend",
+      "shortTitle": "Hello",
+      "skill": "welcoming a new friend",
+      "prop": "welcome-mat",
+      "poppyPose": "wave",
+      "cocoPose": "wave",
+      "prompt": "greeting-prompt",
+      "success": "greeting-success",
+      "retry": "greeting-retry",
+      "choices": [
+        { "id": "kind", "label": "Wave and say hello", "art": "greeting-kind", "correct": true },
+        { "id": "turn-away", "label": "Turn away", "art": "greeting-turn-away" },
+        { "id": "shout", "label": "Shout loudly", "art": "greeting-shout" }
+      ]
+    },
+    {
+      "id": "asking",
+      "title": "Ask Kindly",
+      "shortTitle": "Please",
+      "skill": "asking before taking",
+      "prop": "red-crayon",
+      "poppyPose": "ask",
+      "cocoPose": "neutral",
+      "prompt": "asking-prompt",
+      "success": "asking-success",
+      "retry": "asking-retry",
+      "choices": [
+        { "id": "kind", "label": "Ask with open hands", "art": "asking-kind", "correct": true },
+        { "id": "grab", "label": "Grab it", "art": "asking-grab" },
+        { "id": "stomp", "label": "Stomp and demand", "art": "asking-stomp" }
+      ]
+    },
+    {
+      "id": "thanks",
+      "title": "Thank You",
+      "shortTitle": "Thanks",
+      "skill": "showing gratitude",
+      "prop": "stacked-blocks",
+      "poppyPose": "ask",
+      "cocoPose": "talk",
+      "prompt": "thanks-prompt",
+      "success": "thanks-success",
+      "retry": "thanks-retry",
+      "choices": [
+        { "id": "kind", "label": "Offer a warm thank-you", "art": "thanks-kind", "correct": true },
+        { "id": "walk-away", "label": "Walk away", "art": "thanks-walk-away" },
+        { "id": "demand", "label": "Demand more work", "art": "thanks-demand" }
+      ]
+    },
+    {
+      "id": "turns",
+      "title": "Taking Turns",
+      "shortTitle": "Turns",
+      "skill": "waiting for a turn",
+      "prop": "drum",
+      "secondaryProp": "wait-clock",
+      "poppyPose": "listen",
+      "cocoPose": "wait",
+      "prompt": "turns-prompt",
+      "success": "turns-success",
+      "retry": "turns-retry",
+      "choices": [
+        { "id": "kind", "label": "Wait and ask for next", "art": "turns-kind", "correct": true },
+        { "id": "grab", "label": "Grab the drum", "art": "turns-grab" },
+        { "id": "push", "label": "Push ahead", "art": "turns-push" }
+      ]
+    },
+    {
+      "id": "listening",
+      "title": "Listening Ears",
+      "shortTitle": "Listen",
+      "skill": "listening without interrupting",
+      "prop": "storybook",
+      "poppyPose": "listen",
+      "cocoPose": "talk",
+      "prompt": "listening-prompt",
+      "success": "listening-success",
+      "retry": "listening-retry",
+      "choices": [
+        { "id": "kind", "label": "Look and listen", "art": "listening-kind", "correct": true },
+        { "id": "interrupt", "label": "Talk over the story", "art": "listening-interrupt" },
+        { "id": "look-away", "label": "Look away", "art": "listening-look-away" }
+      ]
+    },
+    {
+      "id": "apology",
+      "title": "Make It Right",
+      "shortTitle": "Sorry",
+      "skill": "repairing after an accident",
+      "prop": "fallen-blocks",
+      "poppyPose": "sorry",
+      "cocoPose": "sad",
+      "prompt": "apology-prompt",
+      "success": "apology-success",
+      "retry": "apology-retry",
+      "choices": [
+        { "id": "kind", "label": "Say sorry and help", "art": "apology-kind", "correct": true },
+        { "id": "hide", "label": "Hide", "art": "apology-hide" },
+        { "id": "blame", "label": "Blame Coco", "art": "apology-blame" }
+      ]
+    }
+  ]
+}
