@@ -1,0 +1,97 @@
+{
+  "id": "plan-do-review",
+  "engine": "awesome-day",
+  "title": "My Awesome Day",
+  "mode": { "id": "awesome-day", "name": "Plan, Do, Review" },
+  "music": {
+    "src": "../../shared/assets/music/mug-and-sunbeam.mp3",
+    "key": "plan-do-review-mug-and-sunbeam",
+    "volume": 0.2
+  },
+  "voice": {
+    "manifest": "./assets/audio/manifest.json",
+    "lines": "./data/lines.json"
+  },
+  "backgrounds": {
+    "plan": "./assets/backgrounds/plan-room.webp",
+    "do": "./assets/backgrounds/do-room.webp",
+    "review": "./assets/backgrounds/review-room.webp"
+  },
+  "characters": {
+    "idle": "./assets/characters/barnaby-idle.webp",
+    "point": "./assets/characters/barnaby-point.webp",
+    "cheer": "./assets/characters/barnaby-cheer.webp"
+  },
+  "ui": {
+    "title": "./assets/ui/title.webp",
+    "planBoard": "./assets/ui/plan-board.webp",
+    "planCard": "./assets/ui/plan-card.webp",
+    "playButton": "./assets/ui/play-button.webp",
+    "startButton": "./assets/ui/start-button.webp",
+    "promptPlaque": "./assets/ui/prompt-plaque.webp",
+    "playMat": "./assets/ui/play-mat.webp",
+    "pieceTray": "./assets/ui/piece-tray.webp",
+    "progressRope": "./assets/ui/progress-rope.webp",
+    "jar": "./assets/ui/jar.webp",
+    "star": "./assets/ui/star.webp",
+    "sparkle": "./assets/ui/sparkle.webp",
+    "actionButton": "./assets/ui/action-button.webp",
+    "home": "./assets/ui/home.webp",
+    "back": "./assets/ui/back.webp",
+    "sound": "./assets/ui/sound.webp",
+    "soundOff": "./assets/ui/sound-off.webp",
+    "replay": "./assets/ui/replay.webp"
+  },
+  "activities": [
+    {
+      "id": "tower",
+      "label": "Build a Tower",
+      "shortLabel": "Tower",
+      "planVoice": "plan-tower",
+      "preview": "./assets/previews/tower-preview.webp",
+      "pieces": [
+        { "id": "tower-base", "label": "blue base", "art": "./assets/pieces/tower-base.webp", "x": 50, "y": 78, "size": 42 },
+        { "id": "tower-block", "label": "green block", "art": "./assets/pieces/tower-block.webp", "x": 50, "y": 57, "size": 34 },
+        { "id": "tower-arch", "label": "yellow arch", "art": "./assets/pieces/tower-arch.webp", "x": 50, "y": 36, "size": 34 },
+        { "id": "tower-roof", "label": "red roof", "art": "./assets/pieces/tower-roof.webp", "x": 50, "y": 17, "size": 35 }
+      ]
+    },
+    {
+      "id": "garden",
+      "label": "Grow a Garden",
+      "shortLabel": "Garden",
+      "planVoice": "plan-garden",
+      "preview": "./assets/previews/garden-preview.webp",
+      "pieces": [
+        { "id": "garden-pot", "label": "flower pot", "art": "./assets/pieces/garden-pot.webp", "x": 50, "y": 77, "size": 35 },
+        { "id": "garden-stem", "label": "green stem", "art": "./assets/pieces/garden-stem.webp", "x": 50, "y": 52, "size": 31 },
+        { "id": "garden-flower", "label": "coral flower", "art": "./assets/pieces/garden-flower.webp", "x": 50, "y": 27, "size": 31 },
+        { "id": "garden-sun", "label": "golden sun", "art": "./assets/pieces/garden-sun.webp", "x": 78, "y": 24, "size": 29 }
+      ]
+    },
+    {
+      "id": "picnic",
+      "label": "Pack a Picnic",
+      "shortLabel": "Picnic",
+      "planVoice": "plan-picnic",
+      "preview": "./assets/previews/picnic-preview.webp",
+      "pieces": [
+        { "id": "picnic-basket", "label": "picnic basket", "art": "./assets/pieces/picnic-basket.webp", "x": 50, "y": 66, "size": 47 },
+        { "id": "picnic-apple", "label": "red apple", "art": "./assets/pieces/picnic-apple.webp", "x": 28, "y": 34, "size": 25 },
+        { "id": "picnic-sandwich", "label": "sandwich", "art": "./assets/pieces/picnic-sandwich.webp", "x": 52, "y": 34, "size": 27 },
+        { "id": "picnic-drink", "label": "blue drink", "art": "./assets/pieces/picnic-drink.webp", "x": 75, "y": 36, "size": 21 }
+      ]
+    }
+  ],
+  "feelings": [
+    { "id": "happy", "label": "Happy", "art": "./assets/ui/emotion-happy.webp", "voice": "feeling-happy" },
+    { "id": "proud", "label": "Proud", "art": "./assets/ui/emotion-proud.webp", "voice": "feeling-proud" },
+    { "id": "challenged", "label": "Challenged", "art": "./assets/ui/emotion-challenged.webp", "voice": "feeling-challenged" },
+    { "id": "calm", "label": "Calm", "art": "./assets/ui/emotion-calm.webp", "voice": "feeling-calm" }
+  ],
+  "skills": [
+    { "id": "patience", "label": "Patience", "art": "./assets/ui/skill-patience.webp", "voice": "skill-patience" },
+    { "id": "problem-solving", "label": "Problem Solving", "art": "./assets/ui/skill-problem-solving.webp", "voice": "skill-problem-solving" },
+    { "id": "creativity", "label": "Creativity", "art": "./assets/ui/skill-creativity.webp", "voice": "skill-creativity" }
+  ]
+}

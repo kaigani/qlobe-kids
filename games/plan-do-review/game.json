@@ -1,34 +1,43 @@
 {
   "id": "plan-do-review",
-  "title": "Plan-Do-Review",
+  "title": "My Awesome Day",
   "category": "social-emotional",
   "path": "games/plan-do-review/",
-  "icon": "📋",
+  "icon": "⭐",
   "entry": "index.html",
-  "age": { "min": 5, "max": 6 },
-  "status": "in-design",
-  "accent": "#f4a83d",
-  "shareTitle": "Plan-Do-Review 📋 — Plan Play and Reflect",
-  "description": "Pick a plan, get sent off to try it in the real room, then come back and reflect on how it went. A gentle plan-do-review loop for ages 5–6 where joyful, okay, and tricky outcomes all count.",
+  "age": { "min": 3, "max": 6 },
+  "status": "beta",
+  "accent": "#713c78",
+  "shareTitle": "My Awesome Day — Plan, Do, Review",
+  "description": "Choose a cozy plan, complete a hands-on felt activity, name how it felt, and celebrate the learning power that helped.",
   "learningGoals": [
-    "Connect intention, action, and reflection",
-    "Practice naming a plan before starting work",
-    "Affirm that review can include joy, okay feelings, or trickiness"
+    "Connect an intention to action and reflection",
+    "Practice visual matching and part-to-whole planning",
+    "Name feelings and recognize patience, problem solving, or creativity"
   ],
-  "interactionModel": "choose-one tap an all-valid plan, action, review, or tell-someone card after a spoken prompt",
-  "feedbackModel": "Every card is accepted, sparkles, and plays an affirming spoken reflection line.",
+  "interactionModel": "Choose one of three plans, drag or tap four felt pieces to their matching places, then select one feeling and one learning power.",
+  "feedbackModel": "Correct placements land with a warm sound and raster sparkle; near misses return gently; every reflection choice receives an affirming response.",
   "uses": [
-    "shared/js/engines/choose-one.js",
-    "shared/js/speech.js",
+    "shared/js/stage/drag-to-slot-dom.js",
+    "shared/js/voice-clips.js",
+    "shared/js/audio-unlock.js",
+    "shared/js/bgm.js",
     "shared/js/sfx.js",
-    "shared/characters/"
+    "shared/js/tap.js",
+    "shared/js/timers.js",
+    "shared/js/preload.js",
+    "shared/js/debug-harness.js",
+    "shared/assets/music/mug-and-sunbeam.mp3"
   ],
   "modes": [
-    { "id": "loop", "title": "Plan It, Do It!", "skill": "intention action reflection loop" },
-    { "id": "tomorrow", "title": "Plan for Tomorrow", "skill": "future planning and sharing a plan" }
+    {
+      "id": "awesome-day",
+      "title": "Plan, Do, Review",
+      "skill": "Follow one complete intention, action, feeling, and reflection sequence"
+    }
   ],
   "license": { "code": "MIT", "assets": "CC-BY-4.0" },
-  "credits": "Emoji placeholder planning cards and shared character portraits. Built with Codex for QLOBE Kids.",
-  "characters": ["maya"],
+  "credits": "Original cozy-felt game art generated with GPT Image 2 for QLOBE Kids; Barnaby adapted from the supplied concept mockups; shared QLOBE Kids music and runtime modules.",
+  "characters": [],
   "conceptVideo": null
 }

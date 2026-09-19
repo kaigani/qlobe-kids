@@ -1,0 +1,382 @@
+{
+  "source": "games/plan-do-review/assets/source/gpt-image-2/ui-carriers-master.png",
+  "sourceSha256": "b00070b1dcf6b651e82df0d6de99af450c88b0644c9d9b7ee069051eb219c446",
+  "sourceSize": [
+    1536,
+    1024
+  ],
+  "detection": "alpha",
+  "sampledBackgroundRgb": null,
+  "padding": 18,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "plan-board",
+      "file": "plan-board.png",
+      "componentArea": 102154,
+      "foregroundBbox": [
+        39,
+        66,
+        419,
+        345
+      ],
+      "cropBbox": [
+        21,
+        48,
+        437,
+        363
+      ],
+      "cropXywh": [
+        21,
+        48,
+        416,
+        315
+      ],
+      "normalizedCropBbox": [
+        0.013672,
+        0.046875,
+        0.284505,
+        0.354492
+      ]
+    },
+    {
+      "index": 2,
+      "name": "plan-card",
+      "file": "plan-card.png",
+      "componentArea": 60252,
+      "foregroundBbox": [
+        492,
+        58,
+        709,
+        346
+      ],
+      "cropBbox": [
+        474,
+        40,
+        727,
+        364
+      ],
+      "cropXywh": [
+        474,
+        40,
+        253,
+        324
+      ],
+      "normalizedCropBbox": [
+        0.308594,
+        0.039062,
+        0.473307,
+        0.355469
+      ]
+    },
+    {
+      "index": 3,
+      "name": "play-button",
+      "file": "play-button.png",
+      "componentArea": 54778,
+      "foregroundBbox": [
+        791,
+        75,
+        1054,
+        340
+      ],
+      "cropBbox": [
+        773,
+        57,
+        1072,
+        358
+      ],
+      "cropXywh": [
+        773,
+        57,
+        299,
+        301
+      ],
+      "normalizedCropBbox": [
+        0.503255,
+        0.055664,
+        0.697917,
+        0.349609
+      ]
+    },
+    {
+      "index": 4,
+      "name": "start-button",
+      "file": "start-button.png",
+      "componentArea": 68848,
+      "foregroundBbox": [
+        1112,
+        122,
+        1512,
+        310
+      ],
+      "cropBbox": [
+        1094,
+        104,
+        1530,
+        328
+      ],
+      "cropXywh": [
+        1094,
+        104,
+        436,
+        224
+      ],
+      "normalizedCropBbox": [
+        0.71224,
+        0.101562,
+        0.996094,
+        0.320312
+      ]
+    },
+    {
+      "index": 5,
+      "name": "prompt-plaque",
+      "file": "prompt-plaque.png",
+      "componentArea": 43680,
+      "foregroundBbox": [
+        27,
+        442,
+        402,
+        569
+      ],
+      "cropBbox": [
+        9,
+        424,
+        420,
+        587
+      ],
+      "cropXywh": [
+        9,
+        424,
+        411,
+        163
+      ],
+      "normalizedCropBbox": [
+        0.005859,
+        0.414062,
+        0.273438,
+        0.573242
+      ]
+    },
+    {
+      "index": 6,
+      "name": "play-mat",
+      "file": "play-mat.png",
+      "componentArea": 72713,
+      "foregroundBbox": [
+        418,
+        377,
+        775,
+        630
+      ],
+      "cropBbox": [
+        400,
+        359,
+        793,
+        648
+      ],
+      "cropXywh": [
+        400,
+        359,
+        393,
+        289
+      ],
+      "normalizedCropBbox": [
+        0.260417,
+        0.350586,
+        0.516276,
+        0.632812
+      ]
+    },
+    {
+      "index": 7,
+      "name": "piece-tray",
+      "file": "piece-tray.png",
+      "componentArea": 48255,
+      "foregroundBbox": [
+        797,
+        414,
+        1084,
+        612
+      ],
+      "cropBbox": [
+        779,
+        396,
+        1102,
+        630
+      ],
+      "cropXywh": [
+        779,
+        396,
+        323,
+        234
+      ],
+      "normalizedCropBbox": [
+        0.507161,
+        0.386719,
+        0.717448,
+        0.615234
+      ]
+    },
+    {
+      "index": 8,
+      "name": "progress-rope",
+      "file": "progress-rope.png",
+      "componentArea": 41666,
+      "foregroundBbox": [
+        1111,
+        441,
+        1515,
+        588
+      ],
+      "cropBbox": [
+        1093,
+        423,
+        1533,
+        606
+      ],
+      "cropXywh": [
+        1093,
+        423,
+        440,
+        183
+      ],
+      "normalizedCropBbox": [
+        0.711589,
+        0.413086,
+        0.998047,
+        0.591797
+      ]
+    },
+    {
+      "index": 9,
+      "name": "jar",
+      "file": "jar.png",
+      "componentArea": 79307,
+      "foregroundBbox": [
+        69,
+        639,
+        357,
+        957
+      ],
+      "cropBbox": [
+        51,
+        621,
+        375,
+        975
+      ],
+      "cropXywh": [
+        51,
+        621,
+        324,
+        354
+      ],
+      "normalizedCropBbox": [
+        0.033203,
+        0.606445,
+        0.244141,
+        0.952148
+      ]
+    },
+    {
+      "index": 10,
+      "name": "star",
+      "file": "star.png",
+      "componentArea": 49346,
+      "foregroundBbox": [
+        446,
+        659,
+        733,
+        930
+      ],
+      "cropBbox": [
+        428,
+        641,
+        751,
+        948
+      ],
+      "cropXywh": [
+        428,
+        641,
+        323,
+        307
+      ],
+      "normalizedCropBbox": [
+        0.278646,
+        0.625977,
+        0.488932,
+        0.925781
+      ]
+    },
+    {
+      "index": 11,
+      "name": "sparkle",
+      "file": "sparkle.png",
+      "componentArea": 30081,
+      "foregroundBbox": [
+        800,
+        676,
+        1039,
+        909
+      ],
+      "cropBbox": [
+        782,
+        658,
+        1057,
+        927
+      ],
+      "cropXywh": [
+        782,
+        658,
+        275,
+        269
+      ],
+      "normalizedCropBbox": [
+        0.509115,
+        0.642578,
+        0.688151,
+        0.905273
+      ]
+    },
+    {
+      "index": 12,
+      "name": "action-button",
+      "file": "action-button.png",
+      "componentArea": 69886,
+      "foregroundBbox": [
+        1103,
+        712,
+        1511,
+        903
+      ],
+      "cropBbox": [
+        1085,
+        694,
+        1529,
+        921
+      ],
+      "cropXywh": [
+        1085,
+        694,
+        444,
+        227
+      ],
+      "normalizedCropBbox": [
+        0.70638,
+        0.677734,
+        0.995443,
+        0.899414
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 32,
+    "closeRadius": 0,
+    "minArea": 786,
+    "order": "reading"
+  }
+}

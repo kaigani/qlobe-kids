@@ -1,0 +1,172 @@
+{
+  "source": "games/plan-do-review/assets/source/gpt-image-2/garden-pieces-master.png",
+  "sourceSha256": "628dd807d1a695767222115e755490108dc4d848ec341e68ea266f70c6ab360b",
+  "sourceSize": [
+    2172,
+    724
+  ],
+  "detection": "alpha",
+  "sampledBackgroundRgb": null,
+  "padding": 18,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "garden-pot",
+      "file": "garden-pot.png",
+      "componentArea": 131748,
+      "foregroundBbox": [
+        42,
+        239,
+        450,
+        636
+      ],
+      "cropBbox": [
+        24,
+        221,
+        468,
+        654
+      ],
+      "cropXywh": [
+        24,
+        221,
+        444,
+        433
+      ],
+      "normalizedCropBbox": [
+        0.01105,
+        0.305249,
+        0.21547,
+        0.903315
+      ]
+    },
+    {
+      "index": 2,
+      "name": "garden-stem",
+      "file": "garden-stem.png",
+      "componentArea": 114185,
+      "foregroundBbox": [
+        481,
+        171,
+        859,
+        643
+      ],
+      "cropBbox": [
+        463,
+        153,
+        877,
+        661
+      ],
+      "cropXywh": [
+        463,
+        153,
+        414,
+        508
+      ],
+      "normalizedCropBbox": [
+        0.213168,
+        0.211326,
+        0.403775,
+        0.912983
+      ]
+    },
+    {
+      "index": 3,
+      "name": "garden-flower",
+      "file": "garden-flower.png",
+      "componentArea": 126219,
+      "foregroundBbox": [
+        870,
+        212,
+        1287,
+        624
+      ],
+      "cropBbox": [
+        852,
+        194,
+        1305,
+        642
+      ],
+      "cropXywh": [
+        852,
+        194,
+        453,
+        448
+      ],
+      "normalizedCropBbox": [
+        0.392265,
+        0.267956,
+        0.600829,
+        0.88674
+      ]
+    },
+    {
+      "index": 4,
+      "name": "garden-sun",
+      "file": "garden-sun.png",
+      "componentArea": 117783,
+      "foregroundBbox": [
+        1313,
+        210,
+        1721,
+        630
+      ],
+      "cropBbox": [
+        1295,
+        192,
+        1739,
+        648
+      ],
+      "cropXywh": [
+        1295,
+        192,
+        444,
+        456
+      ],
+      "normalizedCropBbox": [
+        0.596225,
+        0.265193,
+        0.800645,
+        0.895028
+      ]
+    },
+    {
+      "index": 5,
+      "name": "garden-preview",
+      "file": "garden-preview.png",
+      "componentArea": 163630,
+      "foregroundBbox": [
+        1779,
+        62,
+        2142,
+        680
+      ],
+      "cropBbox": [
+        1761,
+        44,
+        2160,
+        698
+      ],
+      "cropXywh": [
+        1761,
+        44,
+        399,
+        654
+      ],
+      "normalizedCropBbox": [
+        0.810773,
+        0.060773,
+        0.994475,
+        0.964088
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 96,
+    "closeRadius": 0,
+    "minArea": 786,
+    "order": "reading"
+  }
+}

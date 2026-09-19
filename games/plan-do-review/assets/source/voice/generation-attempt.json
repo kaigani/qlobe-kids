@@ -1,0 +1,36 @@
+{
+  "workflows": [
+    "qwen3-tts-voiceclone",
+    "whisper-stt"
+  ],
+  "reference": "shared/assets/refs/voice-teacher.wav",
+  "seeds": [
+    7,
+    8,
+    9
+  ],
+  "requested": 19,
+  "accepted": 0,
+  "failedKeys": [
+    "again",
+    "do-complete",
+    "do-nudge",
+    "do-prompt",
+    "feeling-calm",
+    "feeling-challenged",
+    "feeling-happy",
+    "feeling-prompt",
+    "feeling-proud",
+    "intro",
+    "plan-garden",
+    "plan-picnic",
+    "plan-prompt",
+    "plan-tower",
+    "reward",
+    "skill-creativity",
+    "skill-patience",
+    "skill-problem-solving",
+    "skill-prompt"
+  ],
+  "errorSummary": "Local wrapper callback failed before inference"
+}

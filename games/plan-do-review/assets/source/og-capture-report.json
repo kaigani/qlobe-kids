@@ -1,0 +1,25 @@
+{
+  "base": "http://127.0.0.1:8000",
+  "settle": 1200,
+  "counts": {
+    "total": 1,
+    "captured": 1,
+    "skipped": 0,
+    "failed": 0
+  },
+  "totalBytes": 181306,
+  "results": [
+    {
+      "id": "plan-do-review",
+      "status": "beta",
+      "ok": true,
+      "skipped": false,
+      "bytes": 181306,
+      "consoleErrors": 0,
+      "stddev": 32.67,
+      "mean": 120,
+      "quality": 82,
+      "consoleSample": []
+    }
+  ]
+}

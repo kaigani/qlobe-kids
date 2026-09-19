@@ -1,0 +1,176 @@
+{
+  "source": "games/plan-do-review/assets/source/gpt-image-2/picnic-pieces-master.png",
+  "sourceSha256": "729467e0e00c4b9e36ca95d5ea059d49fff6da62c00b9e1fa439d3cf99f96d4f",
+  "sourceSize": [
+    2048,
+    768
+  ],
+  "detection": "background-threshold",
+  "sampledBackgroundRgb": [
+    50,
+    46,
+    42
+  ],
+  "padding": 18,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "picnic-basket",
+      "file": "picnic-basket.png",
+      "componentArea": 110209,
+      "foregroundBbox": [
+        49,
+        166,
+        414,
+        585
+      ],
+      "cropBbox": [
+        31,
+        148,
+        432,
+        603
+      ],
+      "cropXywh": [
+        31,
+        148,
+        401,
+        455
+      ],
+      "normalizedCropBbox": [
+        0.015137,
+        0.192708,
+        0.210938,
+        0.785156
+      ]
+    },
+    {
+      "index": 2,
+      "name": "picnic-apple",
+      "file": "picnic-apple.png",
+      "componentArea": 90724,
+      "foregroundBbox": [
+        460,
+        192,
+        780,
+        584
+      ],
+      "cropBbox": [
+        442,
+        174,
+        798,
+        602
+      ],
+      "cropXywh": [
+        442,
+        174,
+        356,
+        428
+      ],
+      "normalizedCropBbox": [
+        0.21582,
+        0.226562,
+        0.389648,
+        0.783854
+      ]
+    },
+    {
+      "index": 3,
+      "name": "picnic-sandwich",
+      "file": "picnic-sandwich.png",
+      "componentArea": 83843,
+      "foregroundBbox": [
+        841,
+        244,
+        1189,
+        592
+      ],
+      "cropBbox": [
+        823,
+        226,
+        1207,
+        610
+      ],
+      "cropXywh": [
+        823,
+        226,
+        384,
+        384
+      ],
+      "normalizedCropBbox": [
+        0.401855,
+        0.294271,
+        0.589355,
+        0.794271
+      ]
+    },
+    {
+      "index": 4,
+      "name": "picnic-drink",
+      "file": "picnic-drink.png",
+      "componentArea": 72328,
+      "foregroundBbox": [
+        1255,
+        173,
+        1466,
+        593
+      ],
+      "cropBbox": [
+        1237,
+        155,
+        1484,
+        611
+      ],
+      "cropXywh": [
+        1237,
+        155,
+        247,
+        456
+      ],
+      "normalizedCropBbox": [
+        0.604004,
+        0.201823,
+        0.724609,
+        0.795573
+      ]
+    },
+    {
+      "index": 5,
+      "name": "picnic-preview",
+      "file": "picnic-preview.png",
+      "componentArea": 145213,
+      "foregroundBbox": [
+        1515,
+        189,
+        2011,
+        594
+      ],
+      "cropBbox": [
+        1497,
+        171,
+        2029,
+        612
+      ],
+      "cropXywh": [
+        1497,
+        171,
+        532,
+        441
+      ],
+      "normalizedCropBbox": [
+        0.730957,
+        0.222656,
+        0.990723,
+        0.796875
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 0,
+    "minArea": 786,
+    "order": "reading"
+  }
+}

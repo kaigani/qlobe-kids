@@ -1,0 +1,172 @@
+{
+  "source": "games/plan-do-review/assets/source/gpt-image-2/tower-pieces-master.png",
+  "sourceSha256": "4ffdaeed5cffa6f6b8aa1bc7d779fe811e1fe77f58496b62086c99d3b69ce477",
+  "sourceSize": [
+    2172,
+    724
+  ],
+  "detection": "alpha",
+  "sampledBackgroundRgb": null,
+  "padding": 18,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "tower-base",
+      "file": "tower-base.png",
+      "componentArea": 98626,
+      "foregroundBbox": [
+        49,
+        311,
+        469,
+        611
+      ],
+      "cropBbox": [
+        31,
+        293,
+        487,
+        629
+      ],
+      "cropXywh": [
+        31,
+        293,
+        456,
+        336
+      ],
+      "normalizedCropBbox": [
+        0.014273,
+        0.404696,
+        0.224217,
+        0.868785
+      ]
+    },
+    {
+      "index": 2,
+      "name": "tower-block",
+      "file": "tower-block.png",
+      "componentArea": 87570,
+      "foregroundBbox": [
+        512,
+        387,
+        925,
+        611
+      ],
+      "cropBbox": [
+        494,
+        369,
+        943,
+        629
+      ],
+      "cropXywh": [
+        494,
+        369,
+        449,
+        260
+      ],
+      "normalizedCropBbox": [
+        0.22744,
+        0.509669,
+        0.434162,
+        0.868785
+      ]
+    },
+    {
+      "index": 3,
+      "name": "tower-arch",
+      "file": "tower-arch.png",
+      "componentArea": 92488,
+      "foregroundBbox": [
+        965,
+        315,
+        1363,
+        609
+      ],
+      "cropBbox": [
+        947,
+        297,
+        1381,
+        627
+      ],
+      "cropXywh": [
+        947,
+        297,
+        434,
+        330
+      ],
+      "normalizedCropBbox": [
+        0.436004,
+        0.410221,
+        0.63582,
+        0.866022
+      ]
+    },
+    {
+      "index": 4,
+      "name": "tower-roof",
+      "file": "tower-roof.png",
+      "componentArea": 56454,
+      "foregroundBbox": [
+        1401,
+        362,
+        1775,
+        606
+      ],
+      "cropBbox": [
+        1383,
+        344,
+        1793,
+        624
+      ],
+      "cropXywh": [
+        1383,
+        344,
+        410,
+        280
+      ],
+      "normalizedCropBbox": [
+        0.63674,
+        0.475138,
+        0.825506,
+        0.861878
+      ]
+    },
+    {
+      "index": 5,
+      "name": "tower-preview",
+      "file": "tower-preview.png",
+      "componentArea": 123482,
+      "foregroundBbox": [
+        1817,
+        72,
+        2121,
+        630
+      ],
+      "cropBbox": [
+        1799,
+        54,
+        2139,
+        648
+      ],
+      "cropXywh": [
+        1799,
+        54,
+        340,
+        594
+      ],
+      "normalizedCropBbox": [
+        0.828269,
+        0.074586,
+        0.984807,
+        0.895028
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 64,
+    "closeRadius": 0,
+    "minArea": 786,
+    "order": "reading"
+  }
+}

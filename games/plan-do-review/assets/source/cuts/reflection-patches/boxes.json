@@ -1,0 +1,232 @@
+{
+  "source": "games/plan-do-review/assets/source/gpt-image-2/reflection-patches-master.png",
+  "sourceSha256": "64234ecbb9dbc2f092dcdcdfb1ec3063cc929c2ad6e0fdd47aea7fdecc302997",
+  "sourceSize": [
+    1536,
+    1024
+  ],
+  "detection": "alpha",
+  "sampledBackgroundRgb": null,
+  "padding": 18,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "emotion-happy",
+      "file": "emotion-happy.png",
+      "componentArea": 95033,
+      "foregroundBbox": [
+        33,
+        94,
+        383,
+        439
+      ],
+      "cropBbox": [
+        15,
+        76,
+        401,
+        457
+      ],
+      "cropXywh": [
+        15,
+        76,
+        386,
+        381
+      ],
+      "normalizedCropBbox": [
+        0.009766,
+        0.074219,
+        0.261068,
+        0.446289
+      ]
+    },
+    {
+      "index": 2,
+      "name": "emotion-proud",
+      "file": "emotion-proud.png",
+      "componentArea": 96976,
+      "foregroundBbox": [
+        407,
+        93,
+        761,
+        439
+      ],
+      "cropBbox": [
+        389,
+        75,
+        779,
+        457
+      ],
+      "cropXywh": [
+        389,
+        75,
+        390,
+        382
+      ],
+      "normalizedCropBbox": [
+        0.253255,
+        0.073242,
+        0.507161,
+        0.446289
+      ]
+    },
+    {
+      "index": 3,
+      "name": "emotion-challenged",
+      "file": "emotion-challenged.png",
+      "componentArea": 96416,
+      "foregroundBbox": [
+        780,
+        92,
+        1131,
+        440
+      ],
+      "cropBbox": [
+        762,
+        74,
+        1149,
+        458
+      ],
+      "cropXywh": [
+        762,
+        74,
+        387,
+        384
+      ],
+      "normalizedCropBbox": [
+        0.496094,
+        0.072266,
+        0.748047,
+        0.447266
+      ]
+    },
+    {
+      "index": 4,
+      "name": "emotion-calm",
+      "file": "emotion-calm.png",
+      "componentArea": 95970,
+      "foregroundBbox": [
+        1154,
+        93,
+        1503,
+        442
+      ],
+      "cropBbox": [
+        1136,
+        75,
+        1521,
+        460
+      ],
+      "cropXywh": [
+        1136,
+        75,
+        385,
+        385
+      ],
+      "normalizedCropBbox": [
+        0.739583,
+        0.073242,
+        0.990234,
+        0.449219
+      ]
+    },
+    {
+      "index": 5,
+      "name": "skill-patience",
+      "file": "skill-patience.png",
+      "componentArea": 128162,
+      "foregroundBbox": [
+        154,
+        473,
+        511,
+        924
+      ],
+      "cropBbox": [
+        136,
+        455,
+        529,
+        942
+      ],
+      "cropXywh": [
+        136,
+        455,
+        393,
+        487
+      ],
+      "normalizedCropBbox": [
+        0.088542,
+        0.444336,
+        0.344401,
+        0.919922
+      ]
+    },
+    {
+      "index": 6,
+      "name": "skill-problem-solving",
+      "file": "skill-problem-solving.png",
+      "componentArea": 130264,
+      "foregroundBbox": [
+        587,
+        473,
+        948,
+        926
+      ],
+      "cropBbox": [
+        569,
+        455,
+        966,
+        944
+      ],
+      "cropXywh": [
+        569,
+        455,
+        397,
+        489
+      ],
+      "normalizedCropBbox": [
+        0.370443,
+        0.444336,
+        0.628906,
+        0.921875
+      ]
+    },
+    {
+      "index": 7,
+      "name": "skill-creativity",
+      "file": "skill-creativity.png",
+      "componentArea": 128703,
+      "foregroundBbox": [
+        1024,
+        472,
+        1382,
+        924
+      ],
+      "cropBbox": [
+        1006,
+        454,
+        1400,
+        942
+      ],
+      "cropXywh": [
+        1006,
+        454,
+        394,
+        488
+      ],
+      "normalizedCropBbox": [
+        0.654948,
+        0.443359,
+        0.911458,
+        0.919922
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 0,
+    "minArea": 786,
+    "order": "reading"
+  }
+}

@@ -1,0 +1,172 @@
+{
+  "source": "games/plan-do-review/assets/source/gpt-image-2/hud-controls-master.png",
+  "sourceSha256": "c3fcd5d6e12607be0a1b3a2073fbff417f259ffd126a24ee3afaa5b5e89fb79b",
+  "sourceSize": [
+    2170,
+    725
+  ],
+  "detection": "alpha",
+  "sampledBackgroundRgb": null,
+  "padding": 18,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "hud-home",
+      "file": "hud-home.png",
+      "componentArea": 145212,
+      "foregroundBbox": [
+        24,
+        120,
+        443,
+        557
+      ],
+      "cropBbox": [
+        6,
+        102,
+        461,
+        575
+      ],
+      "cropXywh": [
+        6,
+        102,
+        455,
+        473
+      ],
+      "normalizedCropBbox": [
+        0.002765,
+        0.14069,
+        0.212442,
+        0.793103
+      ]
+    },
+    {
+      "index": 2,
+      "name": "hud-back",
+      "file": "hud-back.png",
+      "componentArea": 145160,
+      "foregroundBbox": [
+        451,
+        119,
+        867,
+        559
+      ],
+      "cropBbox": [
+        433,
+        101,
+        885,
+        577
+      ],
+      "cropXywh": [
+        433,
+        101,
+        452,
+        476
+      ],
+      "normalizedCropBbox": [
+        0.199539,
+        0.13931,
+        0.407834,
+        0.795862
+      ]
+    },
+    {
+      "index": 3,
+      "name": "hud-sound",
+      "file": "hud-sound.png",
+      "componentArea": 144926,
+      "foregroundBbox": [
+        874,
+        120,
+        1292,
+        559
+      ],
+      "cropBbox": [
+        856,
+        102,
+        1310,
+        577
+      ],
+      "cropXywh": [
+        856,
+        102,
+        454,
+        475
+      ],
+      "normalizedCropBbox": [
+        0.39447,
+        0.14069,
+        0.603687,
+        0.795862
+      ]
+    },
+    {
+      "index": 4,
+      "name": "hud-sound-off",
+      "file": "hud-sound-off.png",
+      "componentArea": 146433,
+      "foregroundBbox": [
+        1299,
+        119,
+        1718,
+        559
+      ],
+      "cropBbox": [
+        1281,
+        101,
+        1736,
+        577
+      ],
+      "cropXywh": [
+        1281,
+        101,
+        455,
+        476
+      ],
+      "normalizedCropBbox": [
+        0.590323,
+        0.13931,
+        0.8,
+        0.795862
+      ]
+    },
+    {
+      "index": 5,
+      "name": "hud-replay",
+      "file": "hud-replay.png",
+      "componentArea": 147528,
+      "foregroundBbox": [
+        1720,
+        119,
+        2145,
+        559
+      ],
+      "cropBbox": [
+        1702,
+        101,
+        2163,
+        577
+      ],
+      "cropXywh": [
+        1702,
+        101,
+        461,
+        476
+      ],
+      "normalizedCropBbox": [
+        0.784332,
+        0.13931,
+        0.996774,
+        0.795862
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 0,
+    "minArea": 787,
+    "order": "reading"
+  }
+}

@@ -1,0 +1,825 @@
+{
+  "game": "plan-do-review",
+  "model": "gpt-image-2 (Codex built-in)",
+  "pipeline": "cut-asset-sheet.py -> cutout_finalize.py -> WebP",
+  "assets": [
+    {
+      "name": "plan-room",
+      "source": "assets\\source\\gpt-image-2\\plan-room-master.png",
+      "runtime": "assets\\backgrounds\\plan-room.webp",
+      "size": [
+        1440,
+        1080
+      ],
+      "bytes": 302970,
+      "sha256": "ed4a5f3544b05d5e9c302235b9de4710c48d57d1bdf5b72f72ba7a5eb6212d4d"
+    },
+    {
+      "name": "do-room",
+      "source": "assets\\source\\gpt-image-2\\do-room-master.png",
+      "runtime": "assets\\backgrounds\\do-room.webp",
+      "size": [
+        1440,
+        1080
+      ],
+      "bytes": 279990,
+      "sha256": "7431dec4a4cd8f88223ad953e1106cda2407576a41dc3419a463c65fddcbd8d7"
+    },
+    {
+      "name": "review-room",
+      "source": "assets\\source\\gpt-image-2\\review-room-master.png",
+      "runtime": "assets\\backgrounds\\review-room.webp",
+      "size": [
+        1440,
+        1080
+      ],
+      "bytes": 269408,
+      "sha256": "d2113a4b5b064b726cf4a6e55131c26f09b0e3bf0391231de16a7ae21d12fbcb"
+    },
+    {
+      "name": "hub-tile",
+      "source": "assets\\source\\gpt-image-2\\hub-tile-master.png",
+      "runtime": "assets\\hub\\tiles\\plan-do-review.jpg",
+      "size": [
+        640,
+        533
+      ],
+      "bytes": 100050,
+      "sha256": "1f7b845110adc2b1f9f45ce2518d0b52c5f81eab6db83370cb970db67a16e4c3"
+    },
+    {
+      "name": "title",
+      "source": "assets\\source\\gpt-image-2\\title-master.png",
+      "png": "assets\\source\\finalized\\title.png",
+      "size": [
+        1100,
+        502
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "sha256": "deba69de6bdb4574159ac0678e81a74e0b47f91fc764896f7b7f62b9edff2792",
+      "bytes": 945583,
+      "runtime": "assets\\ui\\title.webp",
+      "runtime_bytes": 156218,
+      "runtime_sha256": "86cd6e73d20e02c4ce290648eca6f71ba2d68cceb222ce42d50d9c9b91465a61"
+    },
+    {
+      "name": "barnaby-idle",
+      "source": "assets\\source\\gpt-image-2\\barnaby-idle-master.png",
+      "png": "assets\\source\\finalized\\barnaby-idle.png",
+      "size": [
+        520,
+        900
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "sha256": "e17ec2b88357f10711a7861979fb91058e814c1c2d849bc99c0a6f70fb67866e",
+      "bytes": 594915,
+      "runtime": "assets\\characters\\barnaby-idle.webp",
+      "runtime_bytes": 106316,
+      "runtime_sha256": "0dff68b5522b8a83fd5fe08996434d7454fa47f213c08654b7e39ebc8a4a11f7"
+    },
+    {
+      "name": "barnaby-point",
+      "source": "assets\\source\\gpt-image-2\\barnaby-point-master.png",
+      "png": "assets\\source\\finalized\\barnaby-point.png",
+      "size": [
+        638,
+        900
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "sha256": "a7237e15ac4313810c31502a8249911272da4d755908fbb2dccd83cdb894e033",
+      "bytes": 682118,
+      "runtime": "assets\\characters\\barnaby-point.webp",
+      "runtime_bytes": 124508,
+      "runtime_sha256": "a86aeb04c64aab9c884c896b6a48ea5464929e1f39cc733d988bbd0c1a8b46f0"
+    },
+    {
+      "name": "barnaby-cheer",
+      "source": "assets\\source\\gpt-image-2\\barnaby-cheer-master.png",
+      "png": "assets\\source\\finalized\\barnaby-cheer.png",
+      "size": [
+        717,
+        900
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "sha256": "853cd4fabffc3e33327e99c340181539e1d4ae356af67ddc72f352ae57159bc6",
+      "bytes": 745584,
+      "runtime": "assets\\characters\\barnaby-cheer.webp",
+      "runtime_bytes": 140534,
+      "runtime_sha256": "11ec8f748837d54b524b97812a4bb59f39873b4f08a6f0573db2b6f0aff88835"
+    },
+    {
+      "name": "plan-board",
+      "source": "assets\\source\\cuts\\ui-carriers\\plan-board.png",
+      "png": "assets\\source\\finalized\\plan-board.png",
+      "size": [
+        412,
+        309
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "sha256": "8070c4092feb5d31aef54dc5e3d9965e9f289c2b78622b2039d284c4306ed77e",
+      "bytes": 213219,
+      "runtime": "assets\\ui\\plan-board.webp",
+      "runtime_bytes": 24194,
+      "runtime_sha256": "18c6a245d8e7a50ccd347c3f20af3db0a6d3bbdcbd9741517c93f37b4b6d98c1"
+    },
+    {
+      "name": "plan-card",
+      "source": "assets\\source\\cuts\\ui-carriers\\plan-card.png",
+      "png": "assets\\source\\finalized\\plan-card.png",
+      "size": [
+        249,
+        318
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "sha256": "a99d15c7de4c13929ca38eb2755cd0094dc564d4af4a83b97c65acfdb7ee046e",
+      "bytes": 135634,
+      "runtime": "assets\\ui\\plan-card.webp",
+      "runtime_bytes": 16962,
+      "runtime_sha256": "163112c199dff44afddf93bc05d38b2dfd8b4b804bb23c51c2a8b20952cbcf9a"
+    },
+    {
+      "name": "play-button",
+      "source": "assets\\source\\cuts\\ui-carriers\\play-button.png",
+      "png": "assets\\source\\finalized\\play-button.png",
+      "size": [
+        294,
+        295
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "sha256": "50f686d5f4fff6ecc40b577c02a42a52b3ef46057980f8f9c8fc320cbbc11851",
+      "bytes": 157863,
+      "runtime": "assets\\ui\\play-button.webp",
+      "runtime_bytes": 21408,
+      "runtime_sha256": "cde00632e831d7f7e8cabb8dbbf90605747b32f5bb5378659c688aed1cec9602"
+    },
+    {
+      "name": "start-button",
+      "source": "assets\\source\\cuts\\ui-carriers\\start-button.png",
+      "png": "assets\\source\\finalized\\start-button.png",
+      "size": [
+        430,
+        219
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "sha256": "bf4e9d77dc3e08351d4b513c7b4775363580a0f6eca5bd90e04742eed833d96f",
+      "bytes": 180288,
+      "runtime": "assets\\ui\\start-button.webp",
+      "runtime_bytes": 26602,
+      "runtime_sha256": "52eeba4d2ca8c83591347ca4a47f1040daab49e6bcfc3ac9d55544294c6c0c53"
+    },
+    {
+      "name": "prompt-plaque",
+      "source": "assets\\source\\cuts\\ui-carriers\\prompt-plaque.png",
+      "png": "assets\\source\\finalized\\prompt-plaque.png",
+      "size": [
+        406,
+        158
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "sha256": "b4e18e5d1a8508eec4a632e5453e9638dde871fbb2931479bfbff7b935a4ef5f",
+      "bytes": 103682,
+      "runtime": "assets\\ui\\prompt-plaque.webp",
+      "runtime_bytes": 13576,
+      "runtime_sha256": "c6cccc87b9b605ee8373d71deb3e121adf409571cf44f6c1397ae831ece860df"
+    },
+    {
+      "name": "play-mat",
+      "source": "assets\\source\\cuts\\ui-carriers\\play-mat.png",
+      "png": "assets\\source\\finalized\\play-mat.png",
+      "size": [
+        393,
+        283
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "sha256": "9b3e5558d1b9feb7d3ce11a4494642320bddef8f7106d40a87c3b21a82ccdccf",
+      "bytes": 176894,
+      "runtime": "assets\\ui\\play-mat.webp",
+      "runtime_bytes": 20488,
+      "runtime_sha256": "5c6ed48dc41a7fdfbc0e5cce8ed4a88a789a712cddfb539084b34a89faf12ab5"
+    },
+    {
+      "name": "piece-tray",
+      "source": "assets\\source\\cuts\\ui-carriers\\piece-tray.png",
+      "png": "assets\\source\\finalized\\piece-tray.png",
+      "size": [
+        322,
+        229
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "sha256": "388dfd654e79470d0e050c5f9bbd33165633a34013196e46c8587ca0de688b16",
+      "bytes": 131634,
+      "runtime": "assets\\ui\\piece-tray.webp",
+      "runtime_bytes": 19534,
+      "runtime_sha256": "21d6150a095bcca8c46d7460c37c853f4cdedf6ca0d94edc37341b5b476fe203"
+    },
+    {
+      "name": "progress-rope",
+      "source": "assets\\source\\cuts\\ui-carriers\\progress-rope.png",
+      "png": "assets\\source\\finalized\\progress-rope.png",
+      "size": [
+        434,
+        177
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "sha256": "c9c716701f8adaefeba4b651d4e8beeb459cfb142ef3d567c24ad34e811cf34b",
+      "bytes": 127788,
+      "runtime": "assets\\ui\\progress-rope.webp",
+      "runtime_bytes": 20564,
+      "runtime_sha256": "9505ce04c2240a9daccf11e3b2aebe66e9bec80a30a053d678d6172c4d83fb8a"
+    },
+    {
+      "name": "jar",
+      "source": "assets\\source\\cuts\\ui-carriers\\jar.png",
+      "png": "assets\\source\\finalized\\jar.png",
+      "size": [
+        319,
+        348
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "sha256": "6802bca194db15fd643b7cabe245433cc7094c335e5561fd9e1529b52691f306",
+      "bytes": 192420,
+      "runtime": "assets\\ui\\jar.webp",
+      "runtime_bytes": 24186,
+      "runtime_sha256": "942e3c8fde49b85f3d10f20f2777f69a74403f5319a7c88fa10945263c7eeb8c"
+    },
+    {
+      "name": "star",
+      "source": "assets\\source\\cuts\\ui-carriers\\star.png",
+      "png": "assets\\source\\finalized\\star.png",
+      "size": [
+        315,
+        301
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "sha256": "bcd42400db177aa99390e907ff3303bd5ec8234c777b7bd814a9e18cf26c48bb",
+      "bytes": 156176,
+      "runtime": "assets\\ui\\star.webp",
+      "runtime_bytes": 21508,
+      "runtime_sha256": "567fd0f8d7887bcc315331a462c4deb58203ac9bb0c23cdfc010b788e49f0921"
+    },
+    {
+      "name": "sparkle",
+      "source": "assets\\source\\cuts\\ui-carriers\\sparkle.png",
+      "png": "assets\\source\\finalized\\sparkle.png",
+      "size": [
+        266,
+        263
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "sha256": "a0bb696421a8739dc88167f7600ba626f5c493fe71a429fcdaa2644727243839",
+      "bytes": 111444,
+      "runtime": "assets\\ui\\sparkle.webp",
+      "runtime_bytes": 17680,
+      "runtime_sha256": "5391dedc9850ce2d419f291df65532c9e8c048343f98da7e217289b9aeb6c2af"
+    },
+    {
+      "name": "action-button",
+      "source": "assets\\source\\cuts\\ui-carriers\\action-button.png",
+      "png": "assets\\source\\finalized\\action-button.png",
+      "size": [
+        440,
+        222
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "sha256": "28c5c1b7de550adc7433c3e3b150146eac8415079e7d0ee7b0e89d09ae7eda5b",
+      "bytes": 181747,
+      "runtime": "assets\\ui\\action-button.webp",
+      "runtime_bytes": 26250,
+      "runtime_sha256": "b0973968219ba386f5a5f6269444bcc55908cd550580e9bb68cf3a0836466b9c"
+    },
+    {
+      "name": "emotion-happy",
+      "source": "assets\\source\\cuts\\reflection-patches\\emotion-happy.png",
+      "png": "assets\\source\\finalized\\emotion-happy.png",
+      "size": [
+        374,
+        369
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "sha256": "b4fec155146b433a2bd6ec05c332f36ed2d0715a764745d7fe5b73d7596e45d2",
+      "bytes": 268791,
+      "runtime": "assets\\ui\\emotion-happy.webp",
+      "runtime_bytes": 35104,
+      "runtime_sha256": "c09e653f541678e714c8db7b5b40e3a823e568cebf8436f1beb4789a825b7fd5"
+    },
+    {
+      "name": "emotion-proud",
+      "source": "assets\\source\\cuts\\reflection-patches\\emotion-proud.png",
+      "png": "assets\\source\\finalized\\emotion-proud.png",
+      "size": [
+        378,
+        370
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "sha256": "0768e71705c97bee95146ece47e03bf1fc956a402f6b5acbf6b2eef7c0ea9e78",
+      "bytes": 261168,
+      "runtime": "assets\\ui\\emotion-proud.webp",
+      "runtime_bytes": 33570,
+      "runtime_sha256": "2ed25fb8346b21ca7bf728f529819af9e8803ff2f1b419c8a04b9b9bb471d19f"
+    },
+    {
+      "name": "emotion-challenged",
+      "source": "assets\\source\\cuts\\reflection-patches\\emotion-challenged.png",
+      "png": "assets\\source\\finalized\\emotion-challenged.png",
+      "size": [
+        374,
+        372
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "sha256": "07fee804216bfd4530220be91ad4862041eadadae37142a320dadb793d2fe612",
+      "bytes": 267712,
+      "runtime": "assets\\ui\\emotion-challenged.webp",
+      "runtime_bytes": 35626,
+      "runtime_sha256": "3cd609a2f7606f27fd29dae1268e6373cbc7aea3c0ec0239ed0890a391d6c7f5"
+    },
+    {
+      "name": "emotion-calm",
+      "source": "assets\\source\\cuts\\reflection-patches\\emotion-calm.png",
+      "png": "assets\\source\\finalized\\emotion-calm.png",
+      "size": [
+        373,
+        373
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "sha256": "376f52d4e8a30aa3e9881989ff3833106f0fbae88fa1d0c06a572b078ed092f9",
+      "bytes": 271342,
+      "runtime": "assets\\ui\\emotion-calm.webp",
+      "runtime_bytes": 36000,
+      "runtime_sha256": "a66b205b5f0dbd26b8975e6ee9a83e91759270deba5fb80f2182e881643c2ffc"
+    },
+    {
+      "name": "skill-patience",
+      "source": "assets\\source\\cuts\\reflection-patches\\skill-patience.png",
+      "png": "assets\\source\\finalized\\skill-patience.png",
+      "size": [
+        381,
+        475
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "sha256": "1e52f672afe3e6d36e02cab7e127a6131f30d05e460893eb28ba35b8486bf083",
+      "bytes": 348383,
+      "runtime": "assets\\ui\\skill-patience.webp",
+      "runtime_bytes": 44504,
+      "runtime_sha256": "36fdad4253149b9424cf6f86d96ed0ac297c5f46cb4dbbd89fe5128c87f4a511"
+    },
+    {
+      "name": "skill-problem-solving",
+      "source": "assets\\source\\cuts\\reflection-patches\\skill-problem-solving.png",
+      "png": "assets\\source\\finalized\\skill-problem-solving.png",
+      "size": [
+        385,
+        476
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "sha256": "4f0bc5da0d2ffd0716352f902f71335195877eae667f5802ce0e95dd57265d9d",
+      "bytes": 359786,
+      "runtime": "assets\\ui\\skill-problem-solving.webp",
+      "runtime_bytes": 48130,
+      "runtime_sha256": "a82482e51e3236ab9de0ed3529ffb5c54c693aa746517749448b54576b1d687e"
+    },
+    {
+      "name": "skill-creativity",
+      "source": "assets\\source\\cuts\\reflection-patches\\skill-creativity.png",
+      "png": "assets\\source\\finalized\\skill-creativity.png",
+      "size": [
+        381,
+        476
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "sha256": "ba16ef055d19f34beef2c435caabaf9d5e6f74eb0b0d633a64681c399678cb3e",
+      "bytes": 345398,
+      "runtime": "assets\\ui\\skill-creativity.webp",
+      "runtime_bytes": 45952,
+      "runtime_sha256": "17bc2b9168f1b9b8e915ab5d220090c5daab79c78d750ba708a0effe18fd746b"
+    },
+    {
+      "name": "home",
+      "source": "assets\\source\\cuts\\hud-controls\\hud-home.png",
+      "png": "assets\\source\\finalized\\home.png",
+      "size": [
+        253,
+        260
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "sha256": "a30e39eef4ba77fc9309aaeec1b1ea09428b3427b39550682341509167bcf9e1",
+      "bytes": 120345,
+      "runtime": "assets\\ui\\home.webp",
+      "runtime_bytes": 23420,
+      "runtime_sha256": "1c08139f52edd998a587087f5e826093b34ef0ddfa6c4a84b8eaf6c96424372b"
+    },
+    {
+      "name": "back",
+      "source": "assets\\source\\cuts\\hud-controls\\hud-back.png",
+      "png": "assets\\source\\finalized\\back.png",
+      "size": [
+        254,
+        260
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "sha256": "d8130b5c15d690c10dd57637d0fe222a9720b0303b798c9c46ea297375fd6e90",
+      "bytes": 119800,
+      "runtime": "assets\\ui\\back.webp",
+      "runtime_bytes": 23818,
+      "runtime_sha256": "9d87bd184d010fb5634799abab515c1af205d0dbcd171714a76d0ea60c834a8f"
+    },
+    {
+      "name": "sound",
+      "source": "assets\\source\\cuts\\hud-controls\\hud-sound.png",
+      "png": "assets\\source\\finalized\\sound.png",
+      "size": [
+        255,
+        260
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "sha256": "80a8b30b13c091c25bb0fbfb6a6871cb5202b881d6a638c68dd8d7e7fa3f8cb7",
+      "bytes": 114870,
+      "runtime": "assets\\ui\\sound.webp",
+      "runtime_bytes": 22942,
+      "runtime_sha256": "d5937338c237029a64d1a82b793393ff13a4601b5f07be7282949406caf97638"
+    },
+    {
+      "name": "sound-off",
+      "source": "assets\\source\\cuts\\hud-controls\\hud-sound-off.png",
+      "png": "assets\\source\\finalized\\sound-off.png",
+      "size": [
+        255,
+        260
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "sha256": "058ba5ebf6a4d4b196a2b867c1ea0bb9f7ea5815c1bc31ddbb9fd6efda4b95df",
+      "bytes": 121110,
+      "runtime": "assets\\ui\\sound-off.webp",
+      "runtime_bytes": 23672,
+      "runtime_sha256": "2c30feb47dae1748fa9eed2dbf13ebfb23d315b51bcef275c7ff62bc74b2f8a0"
+    },
+    {
+      "name": "replay",
+      "source": "assets\\source\\cuts\\hud-controls\\hud-replay.png",
+      "png": "assets\\source\\finalized\\replay.png",
+      "size": [
+        256,
+        260
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "sha256": "0c1a3a9fb41519b2f44757746d164990efac89b5a4e71ac25b2e6f5778828e13",
+      "bytes": 122157,
+      "runtime": "assets\\ui\\replay.webp",
+      "runtime_bytes": 23472,
+      "runtime_sha256": "572033aa133633c80b031920fd4c6564fc50d95c4b17f6fb69247f14584a4442"
+    },
+    {
+      "name": "tower-base",
+      "source": "assets\\source\\cuts\\tower-pieces\\tower-base.png",
+      "png": "assets\\source\\finalized\\tower-base.png",
+      "size": [
+        453,
+        331
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "sha256": "88d60dacb809be2f1a8013969b36af56e39053273f06154ffd87e6c18b9fd88a",
+      "bytes": 276279,
+      "runtime": "assets\\pieces\\tower-base.webp",
+      "runtime_bytes": 53876,
+      "runtime_sha256": "bae472ed18ad033bbf2c10b356d9a1e332d481fdc3804d24be1066b1ffb98327"
+    },
+    {
+      "name": "tower-block",
+      "source": "assets\\source\\cuts\\tower-pieces\\tower-block.png",
+      "png": "assets\\source\\finalized\\tower-block.png",
+      "size": [
+        449,
+        255
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "sha256": "2836a42938dac446aad311307270e3b64a2ecb4f286313a6c780bd479092d899",
+      "bytes": 227362,
+      "runtime": "assets\\pieces\\tower-block.webp",
+      "runtime_bytes": 44028,
+      "runtime_sha256": "4370f9dd2de1305dc18623d8bd30bb14f81d0b07d3f2b7f1449d6c94c158de6c"
+    },
+    {
+      "name": "tower-arch",
+      "source": "assets\\source\\cuts\\tower-pieces\\tower-arch.png",
+      "png": "assets\\source\\finalized\\tower-arch.png",
+      "size": [
+        434,
+        326
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "sha256": "ae3aabc1b104a66de8bb3724c5f6839d596d99a0dba588d88441fce908e2a869",
+      "bytes": 253404,
+      "runtime": "assets\\pieces\\tower-arch.webp",
+      "runtime_bytes": 54884,
+      "runtime_sha256": "ed3308a6ca686df0152eeb9458271c0a9cc8b7b58c087063a434f61263348f3c"
+    },
+    {
+      "name": "tower-roof",
+      "source": "assets\\source\\cuts\\tower-pieces\\tower-roof.png",
+      "png": "assets\\source\\finalized\\tower-roof.png",
+      "size": [
+        410,
+        276
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "sha256": "eca22fb67be3398afeb97dee02b383187365bf9e63c6e2b0159bc9d48a5f95c0",
+      "bytes": 154321,
+      "runtime": "assets\\pieces\\tower-roof.webp",
+      "runtime_bytes": 30728,
+      "runtime_sha256": "7e085658a4a7b532786bff30daa362b45748dbb727d71934d3c7e6ef0bc0dc3a"
+    },
+    {
+      "name": "tower-preview",
+      "source": "assets\\source\\cuts\\tower-pieces\\tower-preview.png",
+      "png": "assets\\source\\finalized\\tower-preview.png",
+      "size": [
+        340,
+        590
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "sha256": "cea5ede67196f524b039ad0885017d4116eb8427cd1d028bcd120322150dfe37",
+      "bytes": 334687,
+      "runtime": "assets\\previews\\tower-preview.webp",
+      "runtime_bytes": 64202,
+      "runtime_sha256": "006b4b033c50c3eb3673274ceab37bb48641850386dc7c81a5cd3e490dc00f37"
+    },
+    {
+      "name": "garden-pot",
+      "source": "assets\\source\\cuts\\garden-pieces\\garden-pot.png",
+      "png": "assets\\source\\finalized\\garden-pot.png",
+      "size": [
+        444,
+        433
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "sha256": "5c10a2b1130c33ad2e64c23348b54038f758f5d8a0ce8cd8ea382d2b80cb536d",
+      "bytes": 356112,
+      "runtime": "assets\\pieces\\garden-pot.webp",
+      "runtime_bytes": 60012,
+      "runtime_sha256": "d6ff88526b6d6f01fe7cc5d33ef70b1083bd927685999ccad4b2a8ba4f8295bc"
+    },
+    {
+      "name": "garden-stem",
+      "source": "assets\\source\\cuts\\garden-pieces\\garden-stem.png",
+      "png": "assets\\source\\finalized\\garden-stem.png",
+      "size": [
+        414,
+        508
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "sha256": "c16792610638e649812bb1f7c638a66d5f5b8ab4fe49720125f98c5645df2b0e",
+      "bytes": 353637,
+      "runtime": "assets\\pieces\\garden-stem.webp",
+      "runtime_bytes": 60890,
+      "runtime_sha256": "63d938197370d80003d6a78f01f28ba3dbaeca7ba61ed59bceaa99d7583dd5fe"
+    },
+    {
+      "name": "garden-flower",
+      "source": "assets\\source\\cuts\\garden-pieces\\garden-flower.png",
+      "png": "assets\\source\\finalized\\garden-flower.png",
+      "size": [
+        453,
+        448
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "sha256": "5d8fca2b453439347172cccce95a22048cf48b54cc8ee83d1b4f1960f95d67b5",
+      "bytes": 375086,
+      "runtime": "assets\\pieces\\garden-flower.webp",
+      "runtime_bytes": 62276,
+      "runtime_sha256": "c7b10edb55a2efb313bd4927b1dfeba6e891e520ee12c27d96f6f414db7cece7"
+    },
+    {
+      "name": "garden-sun",
+      "source": "assets\\source\\cuts\\garden-pieces\\garden-sun.png",
+      "png": "assets\\source\\finalized\\garden-sun.png",
+      "size": [
+        444,
+        456
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "sha256": "4028af97fc5bf5d14acce9da8d6ee808a15b98a073fd2eeb98fc8bca5283c115",
+      "bytes": 355301,
+      "runtime": "assets\\pieces\\garden-sun.webp",
+      "runtime_bytes": 63112,
+      "runtime_sha256": "04727ea1cc3ff6e20c13ed2e6b9ad23ae95efcf7a337be4f039ab5207281ca79"
+    },
+    {
+      "name": "garden-preview",
+      "source": "assets\\source\\cuts\\garden-pieces\\garden-preview.png",
+      "png": "assets\\source\\finalized\\garden-preview.png",
+      "size": [
+        380,
+        620
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "sha256": "d5d9dd43088e9c757921f8b44532be3f7c70e436403060ab7bad7e175799b319",
+      "bytes": 401509,
+      "runtime": "assets\\previews\\garden-preview.webp",
+      "runtime_bytes": 70434,
+      "runtime_sha256": "699c5bbf995da6da166078336dae8f8f8cc6b233d01232edb3c1cd87fd8a3468"
+    },
+    {
+      "name": "picnic-basket",
+      "source": "assets\\source\\cuts\\picnic-pieces\\picnic-basket-alpha.png",
+      "png": "assets\\source\\finalized\\picnic-basket.png",
+      "size": [
+        396,
+        450
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "sha256": "8b4ec27f66e15291622a1d7519833f3e8b02196e3bd6eebbed82c3061357ce5c",
+      "bytes": 275033,
+      "runtime": "assets\\pieces\\picnic-basket.webp",
+      "runtime_bytes": 51298,
+      "runtime_sha256": "04b24516549669b05efcdae19d05fe5a3b3a8cb2905074543e479049437ddb08"
+    },
+    {
+      "name": "picnic-apple",
+      "source": "assets\\source\\cuts\\picnic-pieces\\picnic-apple-alpha.png",
+      "png": "assets\\source\\finalized\\picnic-apple.png",
+      "size": [
+        351,
+        423
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "sha256": "7de496dc2d420717d6b126dca25129be643ea9dc9ba26f79607e564b03374672",
+      "bytes": 228520,
+      "runtime": "assets\\pieces\\picnic-apple.webp",
+      "runtime_bytes": 46706,
+      "runtime_sha256": "52cce5b7c2a0ca1173580333d5b8d005ad9e028e4c74370108add58bbe93f6a2"
+    },
+    {
+      "name": "picnic-sandwich",
+      "source": "assets\\source\\cuts\\picnic-pieces\\picnic-sandwich-alpha.png",
+      "png": "assets\\source\\finalized\\picnic-sandwich.png",
+      "size": [
+        379,
+        378
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "sha256": "a5a2e0232a05301cbaa6859ec51ce5268e88581e059f526da7618489f4d26dc1",
+      "bytes": 215642,
+      "runtime": "assets\\pieces\\picnic-sandwich.webp",
+      "runtime_bytes": 41504,
+      "runtime_sha256": "3ffe598dfc4e37339e1165385d6909fa878f9f36afd6c1e62c9820b46378119a"
+    },
+    {
+      "name": "picnic-drink",
+      "source": "assets\\source\\cuts\\picnic-pieces\\picnic-drink-alpha.png",
+      "png": "assets\\source\\finalized\\picnic-drink.png",
+      "size": [
+        243,
+        450
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "sha256": "80518ba17784c48ceb9a79372d1e78f3be7dd2a679e06e273119c1b15520e646",
+      "bytes": 186796,
+      "runtime": "assets\\pieces\\picnic-drink.webp",
+      "runtime_bytes": 36980,
+      "runtime_sha256": "58ed49ad0ffca01c47b2c5efee696b13afcff956e375d724c98458d90e979f2f"
+    },
+    {
+      "name": "picnic-preview",
+      "source": "assets\\source\\cuts\\picnic-pieces\\picnic-preview-alpha.png",
+      "png": "assets\\source\\finalized\\picnic-preview.png",
+      "size": [
+        525,
+        433
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "sha256": "8eb0da77007967495ca3e11bb59908e71758a4b75e5cd6b154b56035310678ce",
+      "bytes": 369686,
+      "runtime": "assets\\previews\\picnic-preview.webp",
+      "runtime_bytes": 71904,
+      "runtime_sha256": "f3b7dad50e45f971f7800c60de92e1f3d2e6e20ce3ae70cafe7d1a85f46e894c"
+    }
+  ]
+}

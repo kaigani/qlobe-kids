@@ -3780,29 +3780,24 @@
     },
     {
       "id": "plan-do-review",
-      "title": "Plan-Do-Review",
+      "title": "My Awesome Day",
       "category": "social-emotional",
       "path": "games/plan-do-review/",
       "icon": "assets/hub/tiles/plan-do-review.jpg",
       "age": {
-        "min": 5,
+        "min": 3,
         "max": 6
       },
-      "status": "in-design",
-      "accent": "#f4a83d",
+      "status": "beta",
+      "accent": "#713c78",
       "modes": [
         {
-          "id": "loop",
-          "title": "Plan It, Do It!",
-          "skill": "intention action reflection loop"
-        },
-        {
-          "id": "tomorrow",
-          "title": "Plan for Tomorrow",
-          "skill": "future planning and sharing a plan"
+          "id": "awesome-day",
+          "title": "Plan, Do, Review",
+          "skill": "Follow one complete intention, action, feeling, and reflection sequence"
         }
       ],
-      "summary": "Choose a task, finish it, then reflect on it."
+      "summary": "Choose a cozy plan, complete a felt activity, reflect with Barnaby, and add a star to your Awesome Day jar."
     },
     {
       "id": "kindness-delivery",

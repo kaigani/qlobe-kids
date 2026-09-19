@@ -9,7 +9,7 @@
     "games/<id>/config.js",
     "games/<id>/js/**/*.js"
   ],
-  "generated": "2026-09-18T23:13:54.363Z",
+  "generated": "2026-09-19T00:43:58.664Z",
   "engines": {
     "coach-timer": {
       "count": 5,
@@ -22,11 +22,10 @@
       ]
     },
     "choose-one": {
-      "count": 4,
+      "count": 3,
       "games": [
         "grace-courtesy-theater",
         "mystery-letter-bag",
-        "plan-do-review",
         "problem-solving-puppets"
       ]
     },
@@ -2029,24 +2028,31 @@
       "packs": []
     },
     "plan-do-review": {
-      "engine": "choose-one",
-      "status": "in-design",
+      "engine": null,
+      "status": "beta",
       "category": "social-emotional",
-      "characters": [
-        "maya"
-      ],
+      "characters": [],
       "modules": [
         "shared/js/analytics.js",
-        "shared/js/engines/choose-one.js",
+        "shared/js/audio-unlock.js",
+        "shared/js/bgm.js",
+        "shared/js/debug-harness.js",
+        "shared/js/preload.js",
         "shared/js/sfx.js",
-        "shared/js/speech.js"
+        "shared/js/stage/drag-to-slot-dom.js",
+        "shared/js/tap.js",
+        "shared/js/timers.js",
+        "shared/js/voice-clips.js"
       ],
       "css": [
-        "shared/css/base.css",
-        "shared/css/engine-base.css",
-        "shared/css/screens.css"
+        "shared/css/base.css"
       ],
-      "assets": [],
+      "assets": [
+        "games/plan-do-review/assets/backgrounds/plan-room.webp",
+        "games/plan-do-review/assets/characters/barnaby-idle.webp",
+        "games/plan-do-review/assets/ui/title.webp",
+        "shared/assets/music/mug-and-sunbeam.mp3"
+      ],
       "packs": []
     },
     "plant-care-captain": {
@@ -3931,6 +3937,7 @@
         "pattern-bracelet-band",
         "pattern-train",
         "picture-word-match",
+        "plan-do-review",
         "plant-care-captain",
         "playdough-letter-factory",
         "post-office-letters",
@@ -3994,6 +4001,7 @@
         "pattern-bracelet-band",
         "pattern-train",
         "picture-word-match",
+        "plan-do-review",
         "post-office-letters",
         "pouring-station",
         "puzzle-map-match",
@@ -4157,6 +4165,7 @@
         "pattern-bracelet-band",
         "pattern-train",
         "picture-word-match",
+        "plan-do-review",
         "plant-care-captain",
         "playdough-letter-factory",
         "post-office-letters",
@@ -4219,7 +4228,6 @@
       "shared/js/engines/choose-one.js": [
         "grace-courtesy-theater",
         "mystery-letter-bag",
-        "plan-do-review",
         "problem-solving-puppets"
       ],
       "shared/js/engines/coach-timer.js": [
@@ -4495,6 +4503,7 @@
         "pattern-bracelet-band",
         "pattern-train",
         "picture-word-match",
+        "plan-do-review",
         "plant-care-captain",
         "post-office-letters",
         "pouring-station",
@@ -4792,7 +4801,6 @@
         "obstacle-course-builder",
         "pattern-bracelet-band",
         "picture-narration",
-        "plan-do-review",
         "playdough-letter-factory",
         "pouring-station",
         "problem-solving-puppets",
@@ -4848,6 +4856,7 @@
         "obstacle-course-builder",
         "pattern-bracelet-band",
         "picture-word-match",
+        "plan-do-review",
         "plant-care-captain",
         "post-office-letters",
         "puzzle-map-match",
@@ -4972,6 +4981,7 @@
         "pattern-bracelet-band",
         "pattern-train",
         "picture-word-match",
+        "plan-do-review",
         "playdough-letter-factory",
         "post-office-letters",
         "pouring-station",
@@ -5054,6 +5064,7 @@
         "pattern-bracelet-band",
         "pattern-train",
         "picture-word-match",
+        "plan-do-review",
         "plant-care-captain",
         "post-office-letters",
         "pouring-station",
@@ -5140,6 +5151,7 @@
         "pattern-bracelet-band",
         "pattern-train",
         "picture-word-match",
+        "plan-do-review",
         "plant-care-captain",
         "playdough-letter-factory",
         "post-office-letters",
@@ -5326,7 +5338,6 @@
         "neighborhood-map-walk",
         "number-line-jump",
         "picture-narration",
-        "plan-do-review",
         "problem-solving-puppets",
         "puppet-problem-solvers",
         "scissor-trail-safari",
@@ -5459,7 +5470,6 @@
         "pattern-train",
         "picture-narration",
         "picture-word-match",
-        "plan-do-review",
         "post-office-letters",
         "pouring-station",
         "problem-solving-puppets",
@@ -5611,7 +5621,6 @@
         "feelings-charades",
         "grace-courtesy-theater",
         "lunchbox-pack",
-        "plan-do-review",
         "pouring-station",
         "problem-solving-puppets",
         "question-ball",
@@ -6430,6 +6439,15 @@
       "games/picture-word-match/assets/words/cat.webp": [
         "picture-word-match"
       ],
+      "games/plan-do-review/assets/backgrounds/plan-room.webp": [
+        "plan-do-review"
+      ],
+      "games/plan-do-review/assets/characters/barnaby-idle.webp": [
+        "plan-do-review"
+      ],
+      "games/plan-do-review/assets/ui/title.webp": [
+        "plan-do-review"
+      ],
       "games/playdough-letter-factory/assets/ui/mascot.webp": [
         "playdough-letter-factory"
       ],
@@ -7001,6 +7019,7 @@
       ],
       "shared/assets/music/mug-and-sunbeam.mp3": [
         "family-story-interview",
+        "plan-do-review",
         "post-office-letters",
         "pouring-station",
         "snack-addition-stories"
@@ -7142,7 +7161,6 @@
         "feelings-charades",
         "grace-courtesy-theater",
         "lunchbox-pack",
-        "plan-do-review",
         "pouring-station",
         "problem-solving-puppets",
         "question-ball",

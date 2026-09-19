@@ -1,0 +1,35 @@
+{
+  "attemptedAt": "2026-09-18",
+  "approval": "Explicit LAN API approval supplied by the project owner",
+  "service": "QLOBE local workflow wrapper",
+  "health": {
+    "wrapperReachable": true,
+    "comfyUiReportedReachable": true
+  },
+  "attempts": [
+    {
+      "workflow": "krea2-turbo-t2i",
+      "purpose": "Generate the 640x533 catalog tableau",
+      "seed": 42,
+      "status": "failed-before-inference",
+      "error": "The wrapper's internal /free callback returned HTTP 404.",
+      "fallback": "Catalog tableau generated with GPT Image 2 and optimized locally."
+    },
+    {
+      "workflow": "qwen-image-layered",
+      "purpose": "Separate Barnaby from a plain concept-mockup background",
+      "seed": 42,
+      "status": "failed-before-inference",
+      "error": "The wrapper's internal image-upload callback returned HTTP 404.",
+      "fallback": "GPT Image 2 transparent extraction, then shared alpha QA finalizer."
+    },
+    {
+      "workflow": "qwen3-tts-voiceclone + whisper-stt",
+      "purpose": "Produce and verify 19 Barnaby narration lines from the approved teacher reference",
+      "seeds": [7, 8, 9],
+      "status": "failed-before-inference",
+      "error": "The wrapper's internal upload callback returned HTTP 404 for every requested take.",
+      "fallback": "Empty recorded-clip manifest intentionally activates voice-clips.js Web Speech delivery for all exact lines."
+    }
+  ]
+}
