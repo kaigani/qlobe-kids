@@ -3,32 +3,38 @@
   "title": "First, Next, Last",
   "category": "oral-storytelling",
   "path": "games/story-sequence/",
-  "icon": "📖",
+  "icon": "assets/art/decor/storybook.webp",
   "entry": "index.html",
-  "age": { "min": 5, "max": 6 },
-  "status": "in-design",
-  "accent": "#f25f5c",
-  "shareTitle": "First, Next, Last 📖 — Put the Story in Order",
-  "description": "Put picture cards in order, first, next, last, and hear the finished story told back aloud. A warm sequencing game for ages 5–6.",
+  "age": { "min": 2, "max": 6 },
+  "status": "beta",
+  "accent": "#5f9f43",
+  "shareTitle": "First, Next, Last — Put the Story in Order",
+  "description": "Choose a watercolor picture story, put its three moments in order, then hear the finished story told aloud. A warm sequencing game for ages 2–6.",
   "learningGoals": [
     "Practice narrative sequencing with first, next, and last",
     "Connect cause and effect across a short picture story",
     "Build oral-storytelling vocabulary through spoken narration"
   ],
-  "interactionModel": "tap-tap or drag picture cards into the story slots in order",
-  "feedbackModel": "correct placements sparkle with gentle praise; mismatches wiggle, speak a warm nudge, and return for another try; completed stories are narrated back",
+  "interactionModel": "tap-tap or drag picture cards into the first, next, and last story spaces",
+  "feedbackModel": "correct placements settle with a painted check and spoken sequence word; mismatches wiggle, speak a warm nudge, and return for another try; completed stories play back aloud",
   "uses": [
-    "shared/js/engines/sequence-order.js",
-    "shared/js/speech.js",
+    "games/story-sequence/js/main.js",
+    "games/story-sequence/assets/",
+    "shared/js/voice-clips.js",
     "shared/js/sfx.js",
+    "shared/js/debug-harness.js",
+    "shared/js/rng.js",
+    "shared/js/timers.js",
     "shared/fonts/fredoka-latin-600-normal.woff2"
   ],
   "modes": [
-    { "id": "stories", "title": "First, Next, Last", "skill": "narrative sequencing with first/next/last" },
-    { "id": "daily", "title": "My Day", "skill": "ordering daily routines" }
+    { "id": "slide", "title": "The Slide", "skill": "order an active play story" },
+    { "id": "bake", "title": "Warm Muffins", "skill": "order a safe kitchen story" },
+    { "id": "plant", "title": "Sunflower Surprise", "skill": "order a growth and care story" },
+    { "id": "brush", "title": "Sparkly Smile", "skill": "order a daily routine story" }
   ],
   "license": { "code": "MIT", "assets": "CC-BY-4.0" },
-  "credits": "Kaigani; emoji placeholder art only (see ASSETS.md). Built with Codex for QLOBE Kids.",
+  "credits": "Kaigani; original watercolor game art produced with GPT Image 2 and local Krea workflows; teacher voice produced with local Qwen TTS and Whisper QA. Built with Codex for QLOBE Kids.",
   "characters": [],
   "conceptVideo": null
 }

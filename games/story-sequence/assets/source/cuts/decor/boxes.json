@@ -1,0 +1,142 @@
+{
+  "source": "games/story-sequence/assets/source/gpt-image-2/decorations-sheet.png",
+  "sourceSha256": "b7a858ca37d0f2acc6f155883875d35916f4017a719dadc0fa5d817ff4288e18",
+  "sourceSize": [
+    2172,
+    724
+  ],
+  "detection": "alpha",
+  "sampledBackgroundRgb": null,
+  "padding": 12,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "storybook",
+      "file": "storybook.png",
+      "componentArea": 199983,
+      "foregroundBbox": [
+        31,
+        163,
+        635,
+        567
+      ],
+      "cropBbox": [
+        19,
+        151,
+        647,
+        579
+      ],
+      "cropXywh": [
+        19,
+        151,
+        628,
+        428
+      ],
+      "normalizedCropBbox": [
+        0.008748,
+        0.208564,
+        0.297882,
+        0.799724
+      ]
+    },
+    {
+      "index": 2,
+      "name": "storyteller-star",
+      "file": "storyteller-star.png",
+      "componentArea": 81604,
+      "foregroundBbox": [
+        728,
+        150,
+        1083,
+        565
+      ],
+      "cropBbox": [
+        716,
+        138,
+        1095,
+        577
+      ],
+      "cropXywh": [
+        716,
+        138,
+        379,
+        439
+      ],
+      "normalizedCropBbox": [
+        0.32965,
+        0.190608,
+        0.504144,
+        0.796961
+      ]
+    },
+    {
+      "index": 3,
+      "name": "correct-check",
+      "file": "correct-check.png",
+      "componentArea": 117755,
+      "foregroundBbox": [
+        1200,
+        171,
+        1625,
+        546
+      ],
+      "cropBbox": [
+        1188,
+        159,
+        1637,
+        558
+      ],
+      "cropXywh": [
+        1188,
+        159,
+        449,
+        399
+      ],
+      "normalizedCropBbox": [
+        0.546961,
+        0.219613,
+        0.753683,
+        0.770718
+      ]
+    },
+    {
+      "index": 4,
+      "name": "confetti",
+      "file": "confetti.png",
+      "componentArea": 93941,
+      "foregroundBbox": [
+        1718,
+        168,
+        2104,
+        537
+      ],
+      "cropBbox": [
+        1706,
+        156,
+        2116,
+        549
+      ],
+      "cropXywh": [
+        1706,
+        156,
+        410,
+        393
+      ],
+      "normalizedCropBbox": [
+        0.785451,
+        0.21547,
+        0.974217,
+        0.758287
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 0,
+    "minArea": 5000,
+    "order": "reading"
+  }
+}

@@ -1,0 +1,116 @@
+{
+  "source": "games/story-sequence/assets/source/gpt-image-2/bake-story-sheet.png",
+  "sourceSha256": "01aca280363e202203a886f949fffb3bbff40e3be5ec31bb86db33b33a0b1aac",
+  "sourceSize": [
+    1774,
+    887
+  ],
+  "detection": "background-threshold",
+  "sampledBackgroundRgb": [
+    56,
+    55,
+    55
+  ],
+  "padding": 12,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "bake-first",
+      "file": "bake-first.png",
+      "componentArea": 370064,
+      "foregroundBbox": [
+        39,
+        89,
+        571,
+        792
+      ],
+      "cropBbox": [
+        27,
+        77,
+        583,
+        804
+      ],
+      "cropXywh": [
+        27,
+        77,
+        556,
+        727
+      ],
+      "normalizedCropBbox": [
+        0.01522,
+        0.086809,
+        0.328636,
+        0.906426
+      ]
+    },
+    {
+      "index": 2,
+      "name": "bake-next",
+      "file": "bake-next.png",
+      "componentArea": 359134,
+      "foregroundBbox": [
+        623,
+        91,
+        1153,
+        792
+      ],
+      "cropBbox": [
+        611,
+        79,
+        1165,
+        804
+      ],
+      "cropXywh": [
+        611,
+        79,
+        554,
+        725
+      ],
+      "normalizedCropBbox": [
+        0.344419,
+        0.089064,
+        0.656708,
+        0.906426
+      ]
+    },
+    {
+      "index": 3,
+      "name": "bake-last",
+      "file": "bake-last.png",
+      "componentArea": 365873,
+      "foregroundBbox": [
+        1206,
+        91,
+        1738,
+        791
+      ],
+      "cropBbox": [
+        1194,
+        79,
+        1750,
+        803
+      ],
+      "cropXywh": [
+        1194,
+        79,
+        556,
+        724
+      ],
+      "normalizedCropBbox": [
+        0.673055,
+        0.089064,
+        0.986471,
+        0.905299
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 0,
+    "minArea": 787,
+    "order": "reading"
+  }
+}

@@ -1,113 +1,128 @@
-export default {
-  id: 'story-sequence',
-  engine: 'sequence-order',
-  title: 'First, Next, Last',
-  splashEmoji: 'emoji:📖',
-  voice: {
-    intro: 'Put the story pictures in order. First, next, last.',
-    nudge: 'Hmm, that story part goes in a different spot.',
-    cheer: 'You told the stories in order!',
-    yums: [
-      'Good first part.',
-      'That comes next.',
-      'Nice story order.',
+export const sequenceLabels = ['FIRST', 'NEXT', 'LAST'];
+
+export const stories = [
+  {
+    id: 'slide',
+    title: 'The Slide',
+    menuLabel: 'SLIDE',
+    menuPrompt: 'Climb, zoom, cheer!',
+    coverStep: 'last',
+    steps: [
+      {
+        id: 'slide-first',
+        caption: 'Climb the ladder',
+        narration: 'First, Kai climbs up the slide ladder.',
+      },
+      {
+        id: 'slide-next',
+        caption: 'Zoom down',
+        narration: 'Next, he zooms down the slide.',
+      },
+      {
+        id: 'slide-last',
+        caption: 'Cheer at the bottom',
+        narration: 'Last, Kai cheers at the bottom. Whee!',
+      },
     ],
   },
-  modes: [
-    {
-      id: 'stories',
-      title: 'First, Next, Last',
-      rounds: 5,
-      slotLabels: ['first', 'next', 'last'],
-      prompt: 'Put the story pictures in order. First, next, last.',
-      sets: [
-        {
-          say: 'First a seed, then a sprout, then a flower!',
-          items: [
-            { art: 'emoji:🌱', alt: 'seed' },
-            { art: 'emoji:🌿', alt: 'sprout' },
-            { art: 'emoji:🌻', alt: 'flower' },
-          ],
-        },
-        {
-          say: 'First an egg, then a chick, then a hen!',
-          items: [
-            { art: 'emoji:🥚', alt: 'egg' },
-            { art: 'emoji:🐣', alt: 'chick' },
-            { art: 'emoji:🐔', alt: 'hen' },
-          ],
-        },
-        {
-          say: 'First a caterpillar, then a cocoon, then a butterfly!',
-          items: [
-            { art: 'emoji:🐛', alt: 'caterpillar' },
-            { art: 'emoji:🧶', alt: 'cocoon' },
-            { art: 'emoji:🦋', alt: 'butterfly' },
-          ],
-        },
-        {
-          say: 'First a cloud, then rain, then a rainbow!',
-          items: [
-            { art: 'emoji:☁️', alt: 'cloud' },
-            { art: 'emoji:🌧️', alt: 'rain' },
-            { art: 'emoji:🌈', alt: 'rainbow' },
-          ],
-        },
-        {
-          say: 'First mixing, then baking, then cake!',
-          items: [
-            { art: 'emoji:🥣', alt: 'mixing bowl' },
-            { art: 'emoji:🔥', alt: 'baking' },
-            { art: 'emoji:🎂', alt: 'cake' },
-          ],
-        },
-      ],
-    },
-    {
-      id: 'daily',
-      title: 'My Day',
-      rounds: 4,
-      difficultyRamp: true,
-      slotLabels: ['first', 'next', 'next', 'last'],
-      prompt: 'Put the day pictures in order. What happens first?',
-      sets: [
-        {
-          say: 'Morning steps, one after another!',
-          items: [
-            { art: 'emoji:🛏️', alt: 'wake up' },
-            { art: 'emoji:👕', alt: 'get dressed' },
-            { art: 'emoji:🥣', alt: 'eat breakfast' },
-            { art: 'emoji:🎒', alt: 'school bag' },
-          ],
-        },
-        {
-          say: 'Play, wash up, eat dinner, then sleep.',
-          items: [
-            { art: 'emoji:⚽', alt: 'play' },
-            { art: 'emoji:🛁', alt: 'wash' },
-            { art: 'emoji:🍽️', alt: 'dinner' },
-            { art: 'emoji:😴', alt: 'sleep' },
-          ],
-        },
-        {
-          say: 'Brush teeth, put on pajamas, hear a story, then sleep.',
-          items: [
-            { art: 'emoji:🪥', alt: 'brush teeth' },
-            { art: 'emoji:🧸', alt: 'pajamas' },
-            { art: 'emoji:📖', alt: 'story time' },
-            { art: 'emoji:😴', alt: 'sleep' },
-          ],
-        },
-        {
-          say: 'Arrive at school, play, clean up, then go home.',
-          items: [
-            { art: 'emoji:🎒', alt: 'arrive at school' },
-            { art: 'emoji:🧩', alt: 'play' },
-            { art: 'emoji:🧹', alt: 'clean up' },
-            { art: 'emoji:🏠', alt: 'home' },
-          ],
-        },
-      ],
-    },
-  ],
+  {
+    id: 'bake',
+    title: 'Warm Muffins',
+    menuLabel: 'BAKE',
+    menuPrompt: 'Mix, bake, share!',
+    coverStep: 'last',
+    steps: [
+      {
+        id: 'bake-first',
+        caption: 'Mix the batter',
+        narration: 'First, Maya mixes the blueberry batter.',
+      },
+      {
+        id: 'bake-next',
+        caption: 'A grown-up bakes',
+        narration: 'Next, a grown-up bakes the muffins safely.',
+      },
+      {
+        id: 'bake-last',
+        caption: 'Share warm muffins',
+        narration: 'Last, Maya shares six warm muffins. Yum!',
+      },
+    ],
+  },
+  {
+    id: 'plant',
+    title: 'Sunflower Surprise',
+    menuLabel: 'PLANT',
+    menuPrompt: 'Plant, water, bloom!',
+    coverStep: 'last',
+    steps: [
+      {
+        id: 'plant-first',
+        caption: 'Tuck in the seed',
+        narration: 'First, Nia tucks a sunflower seed into the soil.',
+      },
+      {
+        id: 'plant-next',
+        caption: 'Water the sprout',
+        narration: 'Next, she gives the little sprout a drink.',
+      },
+      {
+        id: 'plant-last',
+        caption: 'A sunflower blooms',
+        narration: 'Last, a bright sunflower blooms. Hello, sunshine!',
+      },
+    ],
+  },
+  {
+    id: 'brush',
+    title: 'Sparkly Smile',
+    menuLabel: 'BRUSH',
+    menuPrompt: 'Paste, brush, sparkle!',
+    coverStep: 'last',
+    steps: [
+      {
+        id: 'brush-first',
+        caption: 'Add toothpaste',
+        narration: 'First, Leo puts a little toothpaste on his brush.',
+      },
+      {
+        id: 'brush-next',
+        caption: 'Brush in circles',
+        narration: 'Next, he brushes every tooth in gentle circles.',
+      },
+      {
+        id: 'brush-last',
+        caption: 'A clean smile',
+        narration: "Last, Leo's clean smile sparkles. All done!",
+      },
+    ],
+  },
+];
+
+export const voiceLines = {
+  welcome: 'Welcome, storyteller! Choose a little story.',
+  'select-story': 'Choose a story to put in order.',
+  'prompt-first': 'What happens first?',
+  'wrong-slot': 'Almost! Try that picture in a different story spot.',
+  'correct-first': 'Yes! That happens first.',
+  'correct-next': 'Nice thinking! That happens next.',
+  'correct-last': 'You found the last part.',
+  'story-ready': 'Your story is ready. Tap Watch My Story!',
+  'great-story': 'You did it! What a great story!',
+  'all-stories': 'Four wonderful stories! You are a Storyteller Star!',
 };
+
+for (const story of stories) {
+  for (const step of story.steps) voiceLines[step.id] = step.narration;
+}
+
+export const assets = {
+  library: './assets/art/backdrops/library.webp',
+  meadow: './assets/art/backdrops/meadow.webp',
+  storybook: './assets/art/decor/storybook.webp',
+  star: './assets/art/decor/storyteller-star.webp',
+  check: './assets/art/decor/correct-check.webp',
+  confetti: './assets/art/decor/confetti.webp',
+};
+
+export const storageKey = 'qlobe:first-next-last:v1';

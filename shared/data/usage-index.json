@@ -9,7 +9,7 @@
     "games/<id>/config.js",
     "games/<id>/js/**/*.js"
   ],
-  "generated": "2026-09-19T01:55:20.652Z",
+  "generated": "2026-09-19T19:12:05.800Z",
   "engines": {
     "coach-timer": {
       "count": 4,
@@ -39,12 +39,6 @@
       "count": 1,
       "games": [
         "blend-train"
-      ]
-    },
-    "sequence-order": {
-      "count": 1,
-      "games": [
-        "story-sequence"
       ]
     },
     "tap-count": {
@@ -3226,22 +3220,22 @@
       "packs": []
     },
     "story-sequence": {
-      "engine": "sequence-order",
-      "status": "in-design",
+      "engine": null,
+      "status": "beta",
       "category": "oral-storytelling",
       "characters": [],
       "modules": [
         "shared/js/analytics.js",
-        "shared/js/engines/sequence-order.js",
+        "shared/js/debug-harness.js",
+        "shared/js/rng.js",
         "shared/js/sfx.js",
-        "shared/js/speech.js"
+        "shared/js/timers.js",
+        "shared/js/voice-clips.js"
       ],
-      "css": [
-        "shared/css/base.css",
-        "shared/css/engine-base.css",
-        "shared/css/screens.css"
+      "css": [],
+      "assets": [
+        "games/story-sequence/assets"
       ],
-      "assets": [],
       "packs": []
     },
     "story-stones": {
@@ -4213,6 +4207,7 @@
         "sound-painting",
         "sticker-line-challenge",
         "story-repair-shop",
+        "story-sequence",
         "story-stones",
         "subtraction-picnic",
         "sweep-the-trail",
@@ -4266,9 +4261,6 @@
       ],
       "shared/js/engines/puppet-theater.js": [
         "puppet-problem-solvers"
-      ],
-      "shared/js/engines/sequence-order.js": [
-        "story-sequence"
       ],
       "shared/js/engines/story-stones.js": [
         "story-stones"
@@ -4612,6 +4604,7 @@
         "sound-cylinder-match",
         "sticker-line-challenge",
         "story-repair-shop",
+        "story-sequence",
         "subtraction-picnic",
         "sweep-the-trail",
         "table-setting-mission",
@@ -4840,7 +4833,6 @@
         "sound-basket",
         "sound-painting",
         "sound-sprouts",
-        "story-sequence",
         "subtraction-picnic",
         "sweep-the-trail",
         "tangram-tales",
@@ -5111,6 +5103,7 @@
         "sound-hopscotch",
         "sticker-line-challenge",
         "story-repair-shop",
+        "story-sequence",
         "subtraction-picnic",
         "sweep-the-trail",
         "table-setting-mission",
@@ -5208,6 +5201,7 @@
         "sound-sprouts",
         "sticker-line-challenge",
         "story-repair-shop",
+        "story-sequence",
         "story-stones",
         "subtraction-picnic",
         "sweep-the-trail",
@@ -5333,7 +5327,6 @@
         "sound-painting",
         "sticker-line-challenge",
         "story-repair-shop",
-        "story-sequence",
         "story-stones",
         "subtraction-picnic",
         "sweep-the-trail",
@@ -5366,7 +5359,6 @@
         "puppet-problem-solvers",
         "scissor-trail-safari",
         "shelf-reset-game",
-        "story-sequence",
         "story-stones",
         "then-now-sort",
         "waiting-muscle-game"
@@ -5521,7 +5513,6 @@
         "sound-painting",
         "sticker-line-challenge",
         "story-repair-shop",
-        "story-sequence",
         "story-stones",
         "subtraction-picnic",
         "sweep-the-trail",
@@ -6902,6 +6893,9 @@
       "games/story-repair-shop/assets/ui/workshop-backdrop.webp": [
         "story-repair-shop"
       ],
+      "games/story-sequence/assets": [
+        "story-sequence"
+      ],
       "games/sweep-the-trail/assets/art/backgrounds/leaf-lane.webp": [
         "sweep-the-trail"
       ],
@@ -7292,6 +7286,7 @@
   "zeroConsumers": {
     "modules": [
       "shared/js/engines/pattern-continue.js",
+      "shared/js/engines/sequence-order.js",
       "shared/js/engines/sort-into-bins.js",
       "shared/js/stage/puppet-builder.js",
       "shared/js/studio/studio.js",

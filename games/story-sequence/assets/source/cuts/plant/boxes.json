@@ -1,0 +1,116 @@
+{
+  "source": "games/story-sequence/assets/source/gpt-image-2/plant-story-sheet.png",
+  "sourceSha256": "815b7e1ad4989deb3834f4c85b96cafb189484346bf531cfd86be9a9e2a1645b",
+  "sourceSize": [
+    1774,
+    887
+  ],
+  "detection": "background-threshold",
+  "sampledBackgroundRgb": [
+    56,
+    56,
+    56
+  ],
+  "padding": 12,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "plant-first",
+      "file": "plant-first.png",
+      "componentArea": 368384,
+      "foregroundBbox": [
+        39,
+        91,
+        568,
+        794
+      ],
+      "cropBbox": [
+        27,
+        79,
+        580,
+        806
+      ],
+      "cropXywh": [
+        27,
+        79,
+        553,
+        727
+      ],
+      "normalizedCropBbox": [
+        0.01522,
+        0.089064,
+        0.326945,
+        0.908681
+      ]
+    },
+    {
+      "index": 2,
+      "name": "plant-next",
+      "file": "plant-next.png",
+      "componentArea": 367779,
+      "foregroundBbox": [
+        624,
+        91,
+        1152,
+        794
+      ],
+      "cropBbox": [
+        612,
+        79,
+        1164,
+        806
+      ],
+      "cropXywh": [
+        612,
+        79,
+        552,
+        727
+      ],
+      "normalizedCropBbox": [
+        0.344983,
+        0.089064,
+        0.656144,
+        0.908681
+      ]
+    },
+    {
+      "index": 3,
+      "name": "plant-last",
+      "file": "plant-last.png",
+      "componentArea": 369190,
+      "foregroundBbox": [
+        1209,
+        91,
+        1738,
+        794
+      ],
+      "cropBbox": [
+        1197,
+        79,
+        1750,
+        806
+      ],
+      "cropXywh": [
+        1197,
+        79,
+        553,
+        727
+      ],
+      "normalizedCropBbox": [
+        0.674746,
+        0.089064,
+        0.986471,
+        0.908681
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 0,
+    "minArea": 787,
+    "order": "reading"
+  }
+}

@@ -315,29 +315,44 @@
       "path": "games/story-sequence/",
       "icon": "assets/hub/tiles/story-sequence.jpg",
       "age": {
-        "min": 5,
+        "min": 2,
         "max": 6
       },
-      "status": "in-design",
-      "accent": "#f25f5c",
+      "status": "beta",
+      "accent": "#5f9f43",
       "uses": [
+        "games/story-sequence/js/main.js",
+        "games/story-sequence/assets/",
         "shared/js/voice-clips.js",
         "shared/js/sfx.js",
-        "shared/assets/objects/"
+        "shared/js/debug-harness.js",
+        "shared/js/rng.js",
+        "shared/js/timers.js",
+        "shared/fonts/fredoka-latin-600-normal.woff2"
       ],
       "modes": [
         {
-          "id": "stories",
-          "title": "First, Next, Last",
-          "skill": "narrative sequencing with first/next/last"
+          "id": "slide",
+          "title": "The Slide",
+          "skill": "order an active play story"
         },
         {
-          "id": "daily",
-          "title": "My Day",
-          "skill": "ordering daily routines"
+          "id": "bake",
+          "title": "Warm Muffins",
+          "skill": "order a safe kitchen story"
+        },
+        {
+          "id": "plant",
+          "title": "Sunflower Surprise",
+          "skill": "order a growth and care story"
+        },
+        {
+          "id": "brush",
+          "title": "Sparkly Smile",
+          "skill": "order a daily routine story"
         }
       ],
-      "summary": "Sequence simple picture stories in order."
+      "summary": "Build four watercolor picture stories, then hear each one narrated aloud."
     },
     {
       "id": "feelings-charades",

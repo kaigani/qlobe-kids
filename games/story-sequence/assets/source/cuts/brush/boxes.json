@@ -1,0 +1,116 @@
+{
+  "source": "games/story-sequence/assets/source/gpt-image-2/brush-story-sheet.png",
+  "sourceSha256": "eb908a7a632e059fc6e2daeb66e7dd4147202d38bf24a10f624f9820738a1a37",
+  "sourceSize": [
+    1774,
+    887
+  ],
+  "detection": "background-threshold",
+  "sampledBackgroundRgb": [
+    51,
+    51,
+    51
+  ],
+  "padding": 12,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "brush-first",
+      "file": "brush-first.png",
+      "componentArea": 369480,
+      "foregroundBbox": [
+        39,
+        90,
+        566,
+        794
+      ],
+      "cropBbox": [
+        27,
+        78,
+        578,
+        806
+      ],
+      "cropXywh": [
+        27,
+        78,
+        551,
+        728
+      ],
+      "normalizedCropBbox": [
+        0.01522,
+        0.087937,
+        0.325817,
+        0.908681
+      ]
+    },
+    {
+      "index": 2,
+      "name": "brush-next",
+      "file": "brush-next.png",
+      "componentArea": 365483,
+      "foregroundBbox": [
+        626,
+        90,
+        1149,
+        794
+      ],
+      "cropBbox": [
+        614,
+        78,
+        1161,
+        806
+      ],
+      "cropXywh": [
+        614,
+        78,
+        547,
+        728
+      ],
+      "normalizedCropBbox": [
+        0.34611,
+        0.087937,
+        0.654453,
+        0.908681
+      ]
+    },
+    {
+      "index": 3,
+      "name": "brush-last",
+      "file": "brush-last.png",
+      "componentArea": 368933,
+      "foregroundBbox": [
+        1210,
+        90,
+        1736,
+        794
+      ],
+      "cropBbox": [
+        1198,
+        78,
+        1748,
+        806
+      ],
+      "cropXywh": [
+        1198,
+        78,
+        550,
+        728
+      ],
+      "normalizedCropBbox": [
+        0.67531,
+        0.087937,
+        0.985344,
+        0.908681
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 0,
+    "minArea": 787,
+    "order": "reading"
+  }
+}
