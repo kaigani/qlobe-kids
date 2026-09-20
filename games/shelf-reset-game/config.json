@@ -1,0 +1,96 @@
+{
+  "id": "shelf-reset-game",
+  "title": "Shelf Reset",
+  "world": "toy",
+  "music": {
+    "track": "../../shared/assets/music/mug-and-sunbeam.mp3",
+    "volume": 0.12
+  },
+  "shelves": [
+    {
+      "id": "art",
+      "title": "Art Shelf",
+      "promptKey": "art-prompt",
+      "cheerKey": "art-cheer",
+      "card": "./assets/cards/art.webp",
+      "bins": [
+        { "id": "brushes", "asset": "./assets/objects/home-brushes.webp", "voiceKey": "brushes-home" },
+        { "id": "paints", "asset": "./assets/objects/home-paints.webp", "voiceKey": "paints-home" },
+        { "id": "art-tools", "asset": "./assets/objects/home-tools.webp", "voiceKey": "art-tools-home" }
+      ],
+      "items": [
+        { "id": "blue-brush", "home": "brushes", "asset": "./assets/objects/art-brush-blue.webp", "name": "blue brush" },
+        { "id": "red-brush", "home": "brushes", "asset": "./assets/objects/art-brush-red.webp", "name": "red brush" },
+        { "id": "red-paint", "home": "paints", "asset": "./assets/objects/art-paint-red.webp", "name": "red paint" },
+        { "id": "blue-paint", "home": "paints", "asset": "./assets/objects/art-paint-blue.webp", "name": "blue paint" },
+        { "id": "palette", "home": "art-tools", "asset": "./assets/objects/art-palette.webp", "name": "paint palette" },
+        { "id": "crayons", "home": "art-tools", "asset": "./assets/objects/art-crayons.webp", "name": "crayons" }
+      ]
+    },
+    {
+      "id": "blocks",
+      "title": "Blocks Shelf",
+      "promptKey": "blocks-prompt",
+      "cheerKey": "blocks-cheer",
+      "card": "./assets/cards/blocks.webp",
+      "bins": [
+        { "id": "arches", "asset": "./assets/objects/home-arches.webp", "voiceKey": "arches-home" },
+        { "id": "cubes", "asset": "./assets/objects/home-cubes.webp", "voiceKey": "cubes-home" },
+        { "id": "cylinders", "asset": "./assets/objects/home-cylinders.webp", "voiceKey": "cylinders-home" }
+      ],
+      "items": [
+        { "id": "red-arch", "home": "arches", "asset": "./assets/objects/block-arch-red.webp", "name": "red arch" },
+        { "id": "yellow-arch", "home": "arches", "asset": "./assets/objects/block-arch-yellow.webp", "name": "yellow arch" },
+        { "id": "blue-cube", "home": "cubes", "asset": "./assets/objects/block-cube-blue.webp", "name": "blue cube" },
+        { "id": "wood-cube", "home": "cubes", "asset": "./assets/objects/block-cube-wood.webp", "name": "wood cube" },
+        { "id": "green-cylinder", "home": "cylinders", "asset": "./assets/objects/block-cylinder-green.webp", "name": "green cylinder" },
+        { "id": "yellow-cylinder", "home": "cylinders", "asset": "./assets/objects/block-cylinder-yellow.webp", "name": "yellow cylinder" }
+      ]
+    },
+    {
+      "id": "nature",
+      "title": "Nature Shelf",
+      "promptKey": "nature-prompt",
+      "cheerKey": "nature-cheer",
+      "card": "./assets/cards/nature.webp",
+      "bins": [
+        { "id": "leaves", "asset": "./assets/objects/home-leaves.webp", "voiceKey": "leaves-home" },
+        { "id": "pinecones", "asset": "./assets/objects/home-pinecones.webp", "voiceKey": "pinecones-home" },
+        { "id": "treasures", "asset": "./assets/objects/home-treasures.webp", "voiceKey": "treasures-home" }
+      ],
+      "items": [
+        { "id": "oak-leaf", "home": "leaves", "asset": "./assets/objects/nature-leaf-oak.webp", "name": "oak leaf" },
+        { "id": "maple-leaf", "home": "leaves", "asset": "./assets/objects/nature-leaf-maple.webp", "name": "maple leaf" },
+        { "id": "tall-pinecone", "home": "pinecones", "asset": "./assets/objects/nature-pinecone-tall.webp", "name": "tall pinecone" },
+        { "id": "round-pinecone", "home": "pinecones", "asset": "./assets/objects/nature-pinecone-round.webp", "name": "round pinecone" },
+        { "id": "gray-stone", "home": "treasures", "asset": "./assets/objects/nature-stone-gray.webp", "name": "smooth stone" },
+        { "id": "acorn", "home": "treasures", "asset": "./assets/objects/nature-acorn.webp", "name": "acorn" }
+      ]
+    }
+  ],
+  "voice": {
+    "welcome": "Sunny needs your helping hands. Choose a shelf to reset.",
+    "choose-another": "Choose a shelf. Art, blocks, or nature.",
+    "art-prompt": "The art shelf is mixed up. Match each tool to its picture home.",
+    "blocks-prompt": "The blocks tumbled out. Match every shape to its picture home.",
+    "nature-prompt": "The nature treasures wandered. Match each treasure to its picture home.",
+    "brushes-home": "Brushes stand together in the brush cup.",
+    "paints-home": "Paint jars sit with the paint colors.",
+    "art-tools-home": "The palette and crayons go with the art tools.",
+    "arches-home": "Arch blocks go with the arches.",
+    "cubes-home": "Cube blocks go with the cubes.",
+    "cylinders-home": "Round cylinders go with the cylinders.",
+    "leaves-home": "Leaves rest with the leaves.",
+    "pinecones-home": "Pinecones belong with the pinecones.",
+    "treasures-home": "The stone and acorn share the treasure home.",
+    "wrong-home": "Almost! That picture is different. Try the matching home.",
+    "praise-one": "Click! Right where it belongs.",
+    "praise-two": "You found its home!",
+    "praise-three": "Tidy and ready!",
+    "halfway": "Halfway tidy. Three more little things.",
+    "art-cheer": "Art shelf ready! Every tool is home.",
+    "blocks-cheer": "Blocks shelf ready! Every shape is home.",
+    "nature-cheer": "Nature shelf ready! Every treasure is home.",
+    "sparkling": "Look at that neat shelf. Sunny is so proud of you."
+  }
+}

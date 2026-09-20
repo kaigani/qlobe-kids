@@ -1,38 +1,74 @@
-# Shelf Reset Game Assets
+# Shelf Reset assets
 
-All current art is emoji placeholder art rendered by the `coach-timer` engine on soft rounded cards. No image files, generated art, downloaded art, recorded clips, or network assets are used. The Storybook Rooms background at `assets/bg.jpg` is intentionally not included; the reviewer supplies it.
+Shelf Reset uses original raster production art and recorded dialogue. It has no downloaded third-party art and makes no model or LAN request at runtime. Game-owned assets are released under the repository's CC BY 4.0 asset license; shared platform media retains its repository license.
 
-## Assets needed
+## Runtime art
 
-Art:
+| Runtime group | Source / tool | Production notes |
+|---|---|---|
+| `assets/art/room.webp` | Built-in GPT Image 2 | Empty 4:3 sunlit Montessori playroom, resized to 1600×1200 WebP. |
+| `assets/art/shelf-frame.webp` | Built-in GPT Image 2 → local Qwen Image Edit → imagegen chroma helper | Complete three-cubby maple shelf with lower drawers; flat-key extraction, deterministic key-shadow cleanup, cutout finalization. |
+| `assets/art/{title-plaque,progress-pill,tray}.webp` | Built-in GPT Image 2 coordinated UI sheet → local Qwen Image Edit → repository cutter | Blank wood/fabric carriers intentionally use live HTML text for exact spelling and accessibility. |
+| `assets/art/helper-{neutral,point,cheer}.webp` | Built-in GPT Image 2 coordinated helper sheet → local Qwen Image Edit → repository cutter | Three identity-consistent Sunny poses, preserving skin tone, yarn hair, rainbow overalls, and Toy materials. |
+| `assets/cards/{art,blocks,nature}.webp` | Built-in GPT Image 2 card sheet → local Qwen Image Edit → repository cutter | Wordless wooden choice cards with blank coloured nameplates and live labels. |
+| `assets/objects/home-*.webp` | Built-in GPT Image 2 category sheets → local Qwen Image Edit → repository cutter | Nine round maple picture-home medallions, three per shelf. |
+| `assets/objects/{art,block,nature}-*.webp` | Built-in GPT Image 2 category sheets → local Qwen Image Edit → repository cutter | Eighteen large tactile loose objects, exactly two for every picture home. |
 
-- Wooden trays: low, child-sized trays with clear places for a few work pieces.
-- Low shelf: a warm wooden classroom shelf with distinct tray homes.
-- Work rug: a simple rolled and unrolled rug defining one calm work spot.
+The immutable masters and complete built-in GPT Image 2 prompt record are in `assets/source/gpt-image-2/`. No API key was stored; generation used the built-in image tool. Local intermediates are in `assets/source/local-api/` and never contain the private LAN host.
 
-Voice lines:
+## Separation, cutter, and alpha QA
 
-- Choose calmly, work with care, and leave the shelf ready for the next person.
-- Quiet, careful work. You are finishing what you started.
-- The shelf is ready again. That is the whole work cycle, beautifully finished.
-- One full cycle complete. The next friend will find everything ready.
-- Walk the shelf slowly and choose one tray.
-- Carry the tray with two hands to your work spot.
-- Use the work with your whole attention.
-- Your attention stayed with one work. Now the reset begins.
-- Put every piece back on the tray, exactly as you found it.
-- Every piece has a place. The tray is ready to return.
-- Return the tray to its exact shelf home. The next friend will find it perfect.
-- Inspection complete. The shelf is peaceful, ordered, and ready.
-- Choose one messy spot on the shelf to inspect.
-- Sort what belongs here and what wandered from another home.
-- You noticed what belongs and what wandered.
-- Walk the wanderers back to their exact homes.
-- Every wanderer found its home.
-- Stand back quietly and admire the shelf you reset.
+The first whole-sheet `qwen-image-layered` experiment was rejected: although the service returned syntactically valid PNG layers, it omitted disconnected subjects (for example, only two of six UI elements). Those outputs are retained under `assets/source/local-api/layers-rejected/` as failure evidence and are not used by the game.
 
-## Link preview (og:image)
+The accepted fallback used local `qwen-image-edit`, seed 42, with a background-only instruction. It preserved every subject while replacing the dark studio sweep with a flat magenta key. The imagegen skill's `remove_chroma_key.py` created alpha. A narrow deterministic hue rule removed remaining magenta cast-shadow pixels without changing surviving source colours.
 
-| Asset | Source | Creator | License | Attribution required | Modifications |
-|---|---|---|---|---|---|
-| `assets/og-image.jpg` | Generated screenshot of this game's own splash screen (1200×630), captured by `tools/pipeline/capture_og_images.mjs` | QLOBE Kids | CC BY 4.0 | No | Regenerate with the tool rather than editing by hand |
+The required repository cutter then enforced exact reading-order counts:
+
+```powershell
+python games\shelf-reset-game\tools\process-assets.py
+```
+
+That reproducible script calls `tools/cut-asset-sheet.py` for:
+
+- UI/helper sheet: 6 expected assets;
+- art sheet: 9 expected assets;
+- blocks sheet: 9 expected assets;
+- nature sheet: 9 expected assets;
+- mode-card sheet: 3 expected assets.
+
+`boxes.json`, debug masks, opaque source cuts, normalized PNGs, and magenta QA composites are retained under `assets/source/`. `assets/source/processing.json` records the 38 runtime derivatives, dimensions, byte sizes, model/workflow choices, and accepted processing path.
+
+## Hub and link preview
+
+| Asset | Source | Notes |
+|---|---|---|
+| `../../assets/hub/tiles/shelf-reset-game.jpg` | Existing original QLOBE Kids Toy-world art | Retained after visual review: close-up child hands returning colourful objects to a warm wooden shelf; 640×533 catalog crop. |
+| `assets/og-image.jpg` | Screenshot of the real production splash | 1200×630 JPEG regenerated with `tools/pipeline/capture_og_images.mjs`; regenerate rather than hand-edit. |
+
+## Voice
+
+The 23 lines in `assets/audio/lines.json` are generated by `tools/generate-voice.py` with local `qwen3-tts-voiceclone`, the approved `shared/assets/refs/voice-teacher.wav`, and a 7 → 8 → 9 retry ladder. Calls are grouped by model: all TTS candidates first, then all local Whisper STT checks. Only clips with normalized transcript similarity of at least 0.8 ship.
+
+| Asset group | Source | QA / provenance |
+|---|---|---|
+| `assets/audio/*.m4a` | Local Qwen3 TTS voice clone | AAC/M4A teacher clips; duration, checksum, and text hash in `manifest.json`. |
+| `assets/audio/qa.json` | Local Whisper STT | Intended text, heard transcript, similarity, seed, and acceptance result for every line. |
+| `assets/audio/lines.json` | Production script | Exact fallback text and source for all 23 clips. |
+
+The private API base resolves from an argument, environment variable, or ignored Studio state and is never written to source control:
+
+```powershell
+python games\shelf-reset-game\tools\generate-voice.py
+```
+
+## Shared platform media
+
+| Asset | Source / license | Use |
+|---|---|---|
+| `shared/assets/music/mug-and-sunbeam.mp3` | Existing QLOBE Kids shared music library | Quiet looping acoustic/marimba-style bed through `bgm.js`. |
+| `shared/assets/ui/btn-{home,back,sound,play}.png` | Existing QLOBE Kids shared UI library | Raster navigation, prompt replay, and replay controls. |
+| Shared procedural SFX | Existing QLOBE Kids `sfx.js` | Tick, pop, whoosh, silly recovery, sparkle, and celebration sounds. |
+
+## Non-shipping concept references
+
+`01-game-concepts/shelf-reset/brief.md` and its four UI mockups set the Toy art world, warm Montessori room, three shelf choices, tray-to-cubby interaction, progress treatment, and full-shelf reward. They are design references, not copied runtime assets.

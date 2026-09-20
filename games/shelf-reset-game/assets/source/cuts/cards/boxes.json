@@ -1,0 +1,112 @@
+{
+  "source": "cards-layer2.png",
+  "sourceSha256": "9a47019eb41f854457d01bb96d2b77335925c824e7e7277efa9c44dea9f2d46e",
+  "sourceSize": [
+    1456,
+    720
+  ],
+  "detection": "alpha",
+  "sampledBackgroundRgb": null,
+  "padding": 16,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "art",
+      "file": "art.png",
+      "componentArea": 226928,
+      "foregroundBbox": [
+        59,
+        84,
+        486,
+        624
+      ],
+      "cropBbox": [
+        43,
+        68,
+        502,
+        640
+      ],
+      "cropXywh": [
+        43,
+        68,
+        459,
+        572
+      ],
+      "normalizedCropBbox": [
+        0.029533,
+        0.094444,
+        0.34478,
+        0.888889
+      ]
+    },
+    {
+      "index": 2,
+      "name": "blocks",
+      "file": "blocks.png",
+      "componentArea": 225757,
+      "foregroundBbox": [
+        522,
+        83,
+        946,
+        624
+      ],
+      "cropBbox": [
+        506,
+        67,
+        962,
+        640
+      ],
+      "cropXywh": [
+        506,
+        67,
+        456,
+        573
+      ],
+      "normalizedCropBbox": [
+        0.347527,
+        0.093056,
+        0.660714,
+        0.888889
+      ]
+    },
+    {
+      "index": 3,
+      "name": "nature",
+      "file": "nature.png",
+      "componentArea": 225469,
+      "foregroundBbox": [
+        982,
+        83,
+        1405,
+        624
+      ],
+      "cropBbox": [
+        966,
+        67,
+        1421,
+        640
+      ],
+      "cropXywh": [
+        966,
+        67,
+        455,
+        573
+      ],
+      "normalizedCropBbox": [
+        0.663462,
+        0.093056,
+        0.975962,
+        0.888889
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 3,
+    "minArea": 3000,
+    "order": "reading"
+  }
+}

@@ -1,0 +1,292 @@
+{
+  "source": "nature-layer2.png",
+  "sourceSha256": "fcb9efb28012c1ca2cc17fb5d81b6f5f521b0581c9d2c5131bd0b3956eb21903",
+  "sourceSize": [
+    1248,
+    832
+  ],
+  "detection": "alpha",
+  "sampledBackgroundRgb": null,
+  "padding": 16,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "home-leaves",
+      "file": "home-leaves.png",
+      "componentArea": 56969,
+      "foregroundBbox": [
+        67,
+        42,
+        397,
+        293
+      ],
+      "cropBbox": [
+        51,
+        26,
+        413,
+        309
+      ],
+      "cropXywh": [
+        51,
+        26,
+        362,
+        283
+      ],
+      "normalizedCropBbox": [
+        0.040865,
+        0.03125,
+        0.330929,
+        0.371394
+      ]
+    },
+    {
+      "index": 2,
+      "name": "home-pinecones",
+      "file": "home-pinecones.png",
+      "componentArea": 57456,
+      "foregroundBbox": [
+        476,
+        42,
+        784,
+        292
+      ],
+      "cropBbox": [
+        460,
+        26,
+        800,
+        308
+      ],
+      "cropXywh": [
+        460,
+        26,
+        340,
+        282
+      ],
+      "normalizedCropBbox": [
+        0.36859,
+        0.03125,
+        0.641026,
+        0.370192
+      ]
+    },
+    {
+      "index": 3,
+      "name": "home-treasures",
+      "file": "home-treasures.png",
+      "componentArea": 56170,
+      "foregroundBbox": [
+        875,
+        42,
+        1194,
+        292
+      ],
+      "cropBbox": [
+        859,
+        26,
+        1210,
+        308
+      ],
+      "cropXywh": [
+        859,
+        26,
+        351,
+        282
+      ],
+      "normalizedCropBbox": [
+        0.688301,
+        0.03125,
+        0.969551,
+        0.370192
+      ]
+    },
+    {
+      "index": 4,
+      "name": "nature-leaf-oak",
+      "file": "nature-leaf-oak.png",
+      "componentArea": 23912,
+      "foregroundBbox": [
+        148,
+        345,
+        319,
+        559
+      ],
+      "cropBbox": [
+        132,
+        329,
+        335,
+        575
+      ],
+      "cropXywh": [
+        132,
+        329,
+        203,
+        246
+      ],
+      "normalizedCropBbox": [
+        0.105769,
+        0.395433,
+        0.268429,
+        0.691106
+      ]
+    },
+    {
+      "index": 5,
+      "name": "nature-leaf-maple",
+      "file": "nature-leaf-maple.png",
+      "componentArea": 27544,
+      "foregroundBbox": [
+        520,
+        336,
+        739,
+        550
+      ],
+      "cropBbox": [
+        504,
+        320,
+        755,
+        566
+      ],
+      "cropXywh": [
+        504,
+        320,
+        251,
+        246
+      ],
+      "normalizedCropBbox": [
+        0.403846,
+        0.384615,
+        0.604968,
+        0.680288
+      ]
+    },
+    {
+      "index": 6,
+      "name": "nature-pinecone-tall",
+      "file": "nature-pinecone-tall.png",
+      "componentArea": 25525,
+      "foregroundBbox": [
+        949,
+        327,
+        1097,
+        563
+      ],
+      "cropBbox": [
+        933,
+        311,
+        1113,
+        579
+      ],
+      "cropXywh": [
+        933,
+        311,
+        180,
+        268
+      ],
+      "normalizedCropBbox": [
+        0.747596,
+        0.373798,
+        0.891827,
+        0.695913
+      ]
+    },
+    {
+      "index": 7,
+      "name": "nature-pinecone-round",
+      "file": "nature-pinecone-round.png",
+      "componentArea": 27807,
+      "foregroundBbox": [
+        135,
+        601,
+        329,
+        796
+      ],
+      "cropBbox": [
+        119,
+        585,
+        345,
+        812
+      ],
+      "cropXywh": [
+        119,
+        585,
+        226,
+        227
+      ],
+      "normalizedCropBbox": [
+        0.095353,
+        0.703125,
+        0.276442,
+        0.975962
+      ]
+    },
+    {
+      "index": 8,
+      "name": "nature-stone-gray",
+      "file": "nature-stone-gray.png",
+      "componentArea": 30605,
+      "foregroundBbox": [
+        513,
+        626,
+        747,
+        795
+      ],
+      "cropBbox": [
+        497,
+        610,
+        763,
+        811
+      ],
+      "cropXywh": [
+        497,
+        610,
+        266,
+        201
+      ],
+      "normalizedCropBbox": [
+        0.398237,
+        0.733173,
+        0.611378,
+        0.97476
+      ]
+    },
+    {
+      "index": 9,
+      "name": "nature-acorn",
+      "file": "nature-acorn.png",
+      "componentArea": 23328,
+      "foregroundBbox": [
+        952,
+        596,
+        1114,
+        798
+      ],
+      "cropBbox": [
+        936,
+        580,
+        1130,
+        814
+      ],
+      "cropXywh": [
+        936,
+        580,
+        194,
+        234
+      ],
+      "normalizedCropBbox": [
+        0.75,
+        0.697115,
+        0.905449,
+        0.978365
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 3,
+    "minArea": 3000,
+    "order": "reading"
+  }
+}

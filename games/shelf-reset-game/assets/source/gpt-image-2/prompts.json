@@ -1,0 +1,23 @@
+{
+  "model": "gpt-image-2",
+  "transport": "Codex imagegen built-in transport",
+  "referenceImages": [
+    "../../../../../../01-game-concepts/shelf-reset/output/ui-mockups/01-shelf-select.png",
+    "../../../../../../01-game-concepts/shelf-reset/output/ui-mockups/02-sort-objects.png",
+    "../../../../../../01-game-concepts/shelf-reset/output/ui-mockups/03-shelf-reset.png"
+  ],
+  "prompts": {
+    "room-master.png": "Use case: stylized-concept. Asset type: 4:3 children's game environment background. Empty warm Montessori playroom in the supplied Toy-world style: sage wood-panel wall, honey-oak floor, cream woven rug, plants in far corners, broad completely empty center for runtime furniture. Premium tactile miniature-diorama raster art, straight-on 4:3, warm diffuse morning light. No shelf, furniture, toys, people, title, text, or UI.",
+    "shelf-master.png": "Use case: stylized-concept. One standalone front-facing honey-oak child-height storage shelf with exactly three empty upper cubbies and exactly three lower drawers in sage, blue, sage. Premium tactile Toy-world raster sprite, rounded rails and visible wood grain, complete object with generous border. No objects, labels, text, people, or extra furniture.",
+    "ui-helper-sheet-master.png": "Use case: stylized-concept. Strict 3x2 coordinated contact sheet: blank rainbow-topped wood title plaque; blank purple stitched progress pill; empty oval wood tray; Sunny neutral; identical Sunny pointing; identical Sunny cheering. Sunny is a warm-brown-skinned handmade cloth doll with puff pigtails, mustard shirt, rainbow-striped overalls. Exactly six isolated connected assets, no text or extra props.",
+    "art-sheet-master.png": "Use case: stylized-concept. Strict 3x3 Shelf Reset art-shelf sheet in reading order: brush home medallion, paint-jar home medallion, palette/crayon home medallion, blue round brush, red flat brush, red paint jar, blue paint jar, round palette, tied crayon bundle. Premium tactile painted-wood Toy art; exactly nine isolated assets, no text.",
+    "blocks-sheet-master.png": "Use case: stylized-concept. Strict 3x3 Shelf Reset block-shelf sheet in reading order: arch home medallion, cube home medallion, cylinder home medallion, red arch, yellow arch, blue cube, natural-wood cube, green cylinder, yellow cylinder. Premium tactile painted-wood Toy art; exactly nine isolated assets, no text.",
+    "nature-sheet-master.png": "Use case: stylized-concept. Strict 3x3 Shelf Reset nature-shelf sheet in reading order: leaf home medallion, pinecone home medallion, stone/acorn home medallion, green oak leaf, orange maple leaf, tall pinecone, round pinecone, gray stone, brown acorn. Premium tactile classroom-treasure Toy art; exactly nine isolated assets, no text.",
+    "mode-cards-sheet-master.png": "Use case: stylized-concept. Strict three-card contact sheet: identical tall honey-oak picture cards showing art materials, block set, and nature treasures; blank coral, blue, and sage nameplates. Premium tactile Toy-world raster art, complete connected cards with generous gutters. Exactly three cards, no text or extra objects."
+  },
+  "constraints": [
+    "Primary art is raster; runtime text is overlaid as accessible HTML.",
+    "Generated sheets contain no baked labels.",
+    "All sheet finals are cut with tools/cut-asset-sheet.py after accepted Qwen Image Edit background normalization and alpha matting; the incomplete whole-sheet Qwen Image Layered trial is retained as rejected evidence."
+  ]
+}

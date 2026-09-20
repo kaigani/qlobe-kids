@@ -1,0 +1,202 @@
+{
+  "source": "ui-layer2.png",
+  "sourceSha256": "132401108e7ae37bf0101f6f271540a3f7ff64a839f0e129811058b2f6e03618",
+  "sourceSize": [
+    1248,
+    832
+  ],
+  "detection": "alpha",
+  "sampledBackgroundRgb": null,
+  "padding": 16,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "title-plaque",
+      "file": "title-plaque.png",
+      "componentArea": 67041,
+      "foregroundBbox": [
+        19,
+        60,
+        412,
+        278
+      ],
+      "cropBbox": [
+        3,
+        44,
+        428,
+        294
+      ],
+      "cropXywh": [
+        3,
+        44,
+        425,
+        250
+      ],
+      "normalizedCropBbox": [
+        0.002404,
+        0.052885,
+        0.342949,
+        0.353365
+      ]
+    },
+    {
+      "index": 2,
+      "name": "progress-pill",
+      "file": "progress-pill.png",
+      "componentArea": 44082,
+      "foregroundBbox": [
+        441,
+        131,
+        825,
+        254
+      ],
+      "cropBbox": [
+        425,
+        115,
+        841,
+        270
+      ],
+      "cropXywh": [
+        425,
+        115,
+        416,
+        155
+      ],
+      "normalizedCropBbox": [
+        0.340545,
+        0.138221,
+        0.673878,
+        0.324519
+      ]
+    },
+    {
+      "index": 3,
+      "name": "tray",
+      "file": "tray.png",
+      "componentArea": 68434,
+      "foregroundBbox": [
+        849,
+        88,
+        1248,
+        294
+      ],
+      "cropBbox": [
+        833,
+        72,
+        1248,
+        310
+      ],
+      "cropXywh": [
+        833,
+        72,
+        415,
+        238
+      ],
+      "normalizedCropBbox": [
+        0.667468,
+        0.086538,
+        1.0,
+        0.372596
+      ]
+    },
+    {
+      "index": 4,
+      "name": "helper-neutral",
+      "file": "helper-neutral.png",
+      "componentArea": 79759,
+      "foregroundBbox": [
+        61,
+        330,
+        372,
+        776
+      ],
+      "cropBbox": [
+        45,
+        314,
+        388,
+        792
+      ],
+      "cropXywh": [
+        45,
+        314,
+        343,
+        478
+      ],
+      "normalizedCropBbox": [
+        0.036058,
+        0.377404,
+        0.310897,
+        0.951923
+      ]
+    },
+    {
+      "index": 5,
+      "name": "helper-point",
+      "file": "helper-point.png",
+      "componentArea": 78526,
+      "foregroundBbox": [
+        489,
+        327,
+        803,
+        776
+      ],
+      "cropBbox": [
+        473,
+        311,
+        819,
+        792
+      ],
+      "cropXywh": [
+        473,
+        311,
+        346,
+        481
+      ],
+      "normalizedCropBbox": [
+        0.379006,
+        0.373798,
+        0.65625,
+        0.951923
+      ]
+    },
+    {
+      "index": 6,
+      "name": "helper-cheer",
+      "file": "helper-cheer.png",
+      "componentArea": 75927,
+      "foregroundBbox": [
+        895,
+        334,
+        1202,
+        783
+      ],
+      "cropBbox": [
+        879,
+        318,
+        1218,
+        799
+      ],
+      "cropXywh": [
+        879,
+        318,
+        339,
+        481
+      ],
+      "normalizedCropBbox": [
+        0.704327,
+        0.382212,
+        0.975962,
+        0.960337
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 8,
+    "minArea": 3000,
+    "order": "reading"
+  }
+}

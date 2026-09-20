@@ -1,0 +1,292 @@
+{
+  "source": "blocks-layer2.png",
+  "sourceSha256": "0e1a90bf43b441e572f72a9356f7cb60e22b2b87f9c34969004a7d8a3878f7fc",
+  "sourceSize": [
+    1248,
+    832
+  ],
+  "detection": "alpha",
+  "sampledBackgroundRgb": null,
+  "padding": 16,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "home-arches",
+      "file": "home-arches.png",
+      "componentArea": 52553,
+      "foregroundBbox": [
+        81,
+        33,
+        389,
+        269
+      ],
+      "cropBbox": [
+        65,
+        17,
+        405,
+        285
+      ],
+      "cropXywh": [
+        65,
+        17,
+        340,
+        268
+      ],
+      "normalizedCropBbox": [
+        0.052083,
+        0.020433,
+        0.324519,
+        0.342548
+      ]
+    },
+    {
+      "index": 2,
+      "name": "home-cubes",
+      "file": "home-cubes.png",
+      "componentArea": 50686,
+      "foregroundBbox": [
+        495,
+        31,
+        763,
+        269
+      ],
+      "cropBbox": [
+        479,
+        15,
+        779,
+        285
+      ],
+      "cropXywh": [
+        479,
+        15,
+        300,
+        270
+      ],
+      "normalizedCropBbox": [
+        0.383814,
+        0.018029,
+        0.624199,
+        0.342548
+      ]
+    },
+    {
+      "index": 3,
+      "name": "home-cylinders",
+      "file": "home-cylinders.png",
+      "componentArea": 52870,
+      "foregroundBbox": [
+        885,
+        32,
+        1156,
+        270
+      ],
+      "cropBbox": [
+        869,
+        16,
+        1172,
+        286
+      ],
+      "cropXywh": [
+        869,
+        16,
+        303,
+        270
+      ],
+      "normalizedCropBbox": [
+        0.696314,
+        0.019231,
+        0.939103,
+        0.34375
+      ]
+    },
+    {
+      "index": 4,
+      "name": "block-arch-red",
+      "file": "block-arch-red.png",
+      "componentArea": 26998,
+      "foregroundBbox": [
+        125,
+        354,
+        344,
+        519
+      ],
+      "cropBbox": [
+        109,
+        338,
+        360,
+        535
+      ],
+      "cropXywh": [
+        109,
+        338,
+        251,
+        197
+      ],
+      "normalizedCropBbox": [
+        0.08734,
+        0.40625,
+        0.288462,
+        0.643029
+      ]
+    },
+    {
+      "index": 5,
+      "name": "block-arch-yellow",
+      "file": "block-arch-yellow.png",
+      "componentArea": 26361,
+      "foregroundBbox": [
+        517,
+        353,
+        730,
+        518
+      ],
+      "cropBbox": [
+        501,
+        337,
+        746,
+        534
+      ],
+      "cropXywh": [
+        501,
+        337,
+        245,
+        197
+      ],
+      "normalizedCropBbox": [
+        0.401442,
+        0.405048,
+        0.597756,
+        0.641827
+      ]
+    },
+    {
+      "index": 6,
+      "name": "block-cube-blue",
+      "file": "block-cube-blue.png",
+      "componentArea": 30678,
+      "foregroundBbox": [
+        925,
+        344,
+        1114,
+        529
+      ],
+      "cropBbox": [
+        909,
+        328,
+        1130,
+        545
+      ],
+      "cropXywh": [
+        909,
+        328,
+        221,
+        217
+      ],
+      "normalizedCropBbox": [
+        0.728365,
+        0.394231,
+        0.905449,
+        0.655048
+      ]
+    },
+    {
+      "index": 7,
+      "name": "block-cube-wood",
+      "file": "block-cube-wood.png",
+      "componentArea": 32504,
+      "foregroundBbox": [
+        137,
+        593,
+        329,
+        786
+      ],
+      "cropBbox": [
+        121,
+        577,
+        345,
+        802
+      ],
+      "cropXywh": [
+        121,
+        577,
+        224,
+        225
+      ],
+      "normalizedCropBbox": [
+        0.096955,
+        0.69351,
+        0.276442,
+        0.963942
+      ]
+    },
+    {
+      "index": 8,
+      "name": "block-cylinder-green",
+      "file": "block-cylinder-green.png",
+      "componentArea": 29276,
+      "foregroundBbox": [
+        541,
+        601,
+        712,
+        786
+      ],
+      "cropBbox": [
+        525,
+        585,
+        728,
+        802
+      ],
+      "cropXywh": [
+        525,
+        585,
+        203,
+        217
+      ],
+      "normalizedCropBbox": [
+        0.420673,
+        0.703125,
+        0.583333,
+        0.963942
+      ]
+    },
+    {
+      "index": 9,
+      "name": "block-cylinder-yellow",
+      "file": "block-cylinder-yellow.png",
+      "componentArea": 28638,
+      "foregroundBbox": [
+        937,
+        596,
+        1102,
+        785
+      ],
+      "cropBbox": [
+        921,
+        580,
+        1118,
+        801
+      ],
+      "cropXywh": [
+        921,
+        580,
+        197,
+        221
+      ],
+      "normalizedCropBbox": [
+        0.737981,
+        0.697115,
+        0.895833,
+        0.96274
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 3,
+    "minArea": 3000,
+    "order": "reading"
+  }
+}

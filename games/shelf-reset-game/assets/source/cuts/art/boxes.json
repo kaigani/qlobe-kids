@@ -1,0 +1,292 @@
+{
+  "source": "art-layer2.png",
+  "sourceSha256": "94be360687a96586a7cb0fb70bf26b9e1be8991c55589281da63c7999aa2786b",
+  "sourceSize": [
+    1248,
+    832
+  ],
+  "detection": "alpha",
+  "sampledBackgroundRgb": null,
+  "padding": 16,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "home-brushes",
+      "file": "home-brushes.png",
+      "componentArea": 53886,
+      "foregroundBbox": [
+        107,
+        20,
+        370,
+        273
+      ],
+      "cropBbox": [
+        91,
+        4,
+        386,
+        289
+      ],
+      "cropXywh": [
+        91,
+        4,
+        295,
+        285
+      ],
+      "normalizedCropBbox": [
+        0.072917,
+        0.004808,
+        0.309295,
+        0.347356
+      ]
+    },
+    {
+      "index": 2,
+      "name": "home-paints",
+      "file": "home-paints.png",
+      "componentArea": 54302,
+      "foregroundBbox": [
+        494,
+        18,
+        758,
+        272
+      ],
+      "cropBbox": [
+        478,
+        2,
+        774,
+        288
+      ],
+      "cropXywh": [
+        478,
+        2,
+        296,
+        286
+      ],
+      "normalizedCropBbox": [
+        0.383013,
+        0.002404,
+        0.620192,
+        0.346154
+      ]
+    },
+    {
+      "index": 3,
+      "name": "home-tools",
+      "file": "home-tools.png",
+      "componentArea": 54351,
+      "foregroundBbox": [
+        877,
+        18,
+        1143,
+        273
+      ],
+      "cropBbox": [
+        861,
+        2,
+        1159,
+        289
+      ],
+      "cropXywh": [
+        861,
+        2,
+        298,
+        287
+      ],
+      "normalizedCropBbox": [
+        0.689904,
+        0.002404,
+        0.928686,
+        0.347356
+      ]
+    },
+    {
+      "index": 4,
+      "name": "art-brush-blue",
+      "file": "art-brush-blue.png",
+      "componentArea": 14900,
+      "foregroundBbox": [
+        199,
+        285,
+        275,
+        539
+      ],
+      "cropBbox": [
+        183,
+        269,
+        291,
+        555
+      ],
+      "cropXywh": [
+        183,
+        269,
+        108,
+        286
+      ],
+      "normalizedCropBbox": [
+        0.146635,
+        0.323317,
+        0.233173,
+        0.667067
+      ]
+    },
+    {
+      "index": 5,
+      "name": "art-brush-red",
+      "file": "art-brush-red.png",
+      "componentArea": 25185,
+      "foregroundBbox": [
+        556,
+        293,
+        699,
+        540
+      ],
+      "cropBbox": [
+        540,
+        277,
+        715,
+        556
+      ],
+      "cropXywh": [
+        540,
+        277,
+        175,
+        279
+      ],
+      "normalizedCropBbox": [
+        0.432692,
+        0.332933,
+        0.572917,
+        0.668269
+      ]
+    },
+    {
+      "index": 6,
+      "name": "art-paint-red",
+      "file": "art-paint-red.png",
+      "componentArea": 29819,
+      "foregroundBbox": [
+        926,
+        341,
+        1106,
+        521
+      ],
+      "cropBbox": [
+        910,
+        325,
+        1122,
+        537
+      ],
+      "cropXywh": [
+        910,
+        325,
+        212,
+        212
+      ],
+      "normalizedCropBbox": [
+        0.729167,
+        0.390625,
+        0.899038,
+        0.645433
+      ]
+    },
+    {
+      "index": 7,
+      "name": "art-paint-blue",
+      "file": "art-paint-blue.png",
+      "componentArea": 33893,
+      "foregroundBbox": [
+        149,
+        579,
+        334,
+        778
+      ],
+      "cropBbox": [
+        133,
+        563,
+        350,
+        794
+      ],
+      "cropXywh": [
+        133,
+        563,
+        217,
+        231
+      ],
+      "normalizedCropBbox": [
+        0.106571,
+        0.676683,
+        0.280449,
+        0.954327
+      ]
+    },
+    {
+      "index": 8,
+      "name": "art-palette",
+      "file": "art-palette.png",
+      "componentArea": 53777,
+      "foregroundBbox": [
+        487,
+        552,
+        770,
+        803
+      ],
+      "cropBbox": [
+        471,
+        536,
+        786,
+        819
+      ],
+      "cropXywh": [
+        471,
+        536,
+        315,
+        283
+      ],
+      "normalizedCropBbox": [
+        0.377404,
+        0.644231,
+        0.629808,
+        0.984375
+      ]
+    },
+    {
+      "index": 9,
+      "name": "art-crayons",
+      "file": "art-crayons.png",
+      "componentArea": 37090,
+      "foregroundBbox": [
+        923,
+        562,
+        1108,
+        789
+      ],
+      "cropBbox": [
+        907,
+        546,
+        1124,
+        805
+      ],
+      "cropXywh": [
+        907,
+        546,
+        217,
+        259
+      ],
+      "normalizedCropBbox": [
+        0.726763,
+        0.65625,
+        0.900641,
+        0.967548
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 3,
+    "minArea": 3000,
+    "order": "reading"
+  }
+}

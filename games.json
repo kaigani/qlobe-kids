@@ -1912,29 +1912,34 @@
     },
     {
       "id": "shelf-reset-game",
-      "title": "Shelf Reset Game",
+      "title": "Shelf Reset",
       "category": "practical-life",
       "path": "games/shelf-reset-game/",
       "icon": "assets/hub/tiles/shelf-reset-game.jpg",
       "age": {
-        "min": 5,
-        "max": 6
+        "min": 2,
+        "max": 5
       },
-      "status": "in-design",
-      "accent": "#d69e67",
+      "status": "beta",
+      "accent": "#87966a",
       "modes": [
         {
-          "id": "cycle",
-          "title": "One Full Cycle",
-          "skill": "choose, use, reset, and return one tray"
+          "id": "art",
+          "title": "Art Shelf",
+          "skill": "match brushes, paint jars, and art tools"
         },
         {
-          "id": "inspector",
-          "title": "Shelf Inspector",
-          "skill": "sort misplaced materials and restore shelf order"
+          "id": "blocks",
+          "title": "Blocks Shelf",
+          "skill": "match arches, cubes, and cylinders"
+        },
+        {
+          "id": "nature",
+          "title": "Nature Shelf",
+          "skill": "match leaves, pinecones, and small nature treasures"
         }
       ],
-      "summary": "Choose a tray, use it, then return it neatly."
+      "summary": "Help Sunny sort six tactile treasures into their picture-marked homes and make the Montessori shelf neat and ready again."
     },
     {
       "id": "lunchbox-pack",

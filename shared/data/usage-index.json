@@ -9,7 +9,7 @@
     "games/<id>/config.js",
     "games/<id>/js/**/*.js"
   ],
-  "generated": "2026-09-20T02:05:14.948Z",
+  "generated": "2026-09-20T05:08:08.866Z",
   "engines": {
     "choose-one": {
       "count": 2,
@@ -23,13 +23,6 @@
       "games": [
         "letter-road-driving",
         "scissor-trail-safari"
-      ]
-    },
-    "coach-timer": {
-      "count": 2,
-      "games": [
-        "shelf-reset-game",
-        "waiting-muscle-game"
       ]
     },
     "build-assemble": {
@@ -54,6 +47,12 @@
       "count": 1,
       "games": [
         "then-now-sort"
+      ]
+    },
+    "coach-timer": {
+      "count": 1,
+      "games": [
+        "waiting-muscle-game"
       ]
     },
     "puppet-theater": {
@@ -2264,6 +2263,39 @@
       "assets": [],
       "packs": []
     },
+    "puppet-patience-theater": {
+      "engine": null,
+      "status": "live",
+      "category": "social-emotional",
+      "characters": [],
+      "modules": [
+        "shared/js/analytics.js",
+        "shared/js/audio-unlock.js",
+        "shared/js/bgm.js",
+        "shared/js/celebrate.js",
+        "shared/js/debug-harness.js",
+        "shared/js/dom.js",
+        "shared/js/hud.js",
+        "shared/js/idle-nudge.js",
+        "shared/js/narrator.js",
+        "shared/js/preload.js",
+        "shared/js/rng.js",
+        "shared/js/screens.js",
+        "shared/js/sfx.js",
+        "shared/js/tap.js",
+        "shared/js/timers.js",
+        "shared/js/voice-clips.js"
+      ],
+      "css": [
+        "shared/css/base.css",
+        "shared/css/hud.css",
+        "shared/css/screens.css"
+      ],
+      "assets": [
+        "shared/assets/music/cozy-starlight-lullaby.mp3"
+      ],
+      "packs": []
+    },
     "puppet-problem-solvers": {
       "engine": "puppet-theater",
       "status": "live",
@@ -2767,22 +2799,38 @@
       "packs": []
     },
     "shelf-reset-game": {
-      "engine": "coach-timer",
-      "status": "in-design",
+      "engine": null,
+      "status": "beta",
       "category": "practical-life",
       "characters": [],
       "modules": [
         "shared/js/analytics.js",
-        "shared/js/engines/coach-timer.js",
+        "shared/js/audio-unlock.js",
+        "shared/js/bgm.js",
+        "shared/js/celebrate.js",
+        "shared/js/debug-harness.js",
+        "shared/js/hud.js",
+        "shared/js/idle-nudge.js",
+        "shared/js/narrator.js",
+        "shared/js/preload.js",
+        "shared/js/rng.js",
+        "shared/js/screens.js",
         "shared/js/sfx.js",
-        "shared/js/speech.js"
+        "shared/js/speech.js",
+        "shared/js/stage/drag-to-slot-dom.js",
+        "shared/js/tap.js",
+        "shared/js/timers.js",
+        "shared/js/voice-clips.js"
       ],
       "css": [
         "shared/css/base.css",
-        "shared/css/engine-base.css",
+        "shared/css/hud.css",
         "shared/css/screens.css"
       ],
-      "assets": [],
+      "assets": [
+        "shared/assets/music/mug-and-sunbeam.mp3",
+        "shared/assets/refs/voice-teacher.wav"
+      ],
       "packs": []
     },
     "silly-sentence-builder": {
@@ -3734,7 +3782,7 @@
     },
     "waiting-muscle-game": {
       "engine": "coach-timer",
-      "status": "beta",
+      "status": "archived",
       "category": "social-emotional",
       "characters": [],
       "modules": [
@@ -3877,6 +3925,7 @@
         "post-office-letters",
         "pouring-station",
         "problem-solving-puppets",
+        "puppet-patience-theater",
         "puppet-problem-solvers",
         "puppet-retell",
         "puzzle-map-match",
@@ -3982,6 +4031,7 @@
         "playdough-letter-factory",
         "post-office-letters",
         "pouring-station",
+        "puppet-patience-theater",
         "puppet-retell",
         "puzzle-map-match",
         "question-ball",
@@ -3994,6 +4044,7 @@
         "shadow-chase",
         "shape-detective",
         "shape-to-picture",
+        "shelf-reset-game",
         "silly-sentence-builder",
         "silly-swap-words",
         "sink-or-float",
@@ -4047,6 +4098,7 @@
         "plan-do-review",
         "post-office-letters",
         "pouring-station",
+        "puppet-patience-theater",
         "puzzle-map-match",
         "question-ball",
         "sandpaper-number-match",
@@ -4054,6 +4106,7 @@
         "secret-message-copy",
         "shadow-chase",
         "shape-detective",
+        "shelf-reset-game",
         "silly-sentence-builder",
         "silly-swap-words",
         "smell-jars",
@@ -4115,6 +4168,7 @@
         "picture-word-match",
         "post-office-letters",
         "pouring-station",
+        "puppet-patience-theater",
         "puppet-retell",
         "question-ball",
         "rhythm-copycat",
@@ -4122,6 +4176,7 @@
         "sandpaper-number-match",
         "secret-message-copy",
         "shape-to-picture",
+        "shelf-reset-game",
         "silly-swap-words",
         "sink-or-float",
         "smell-jars",
@@ -4222,6 +4277,7 @@
         "playdough-letter-factory",
         "post-office-letters",
         "pouring-station",
+        "puppet-patience-theater",
         "puppet-retell",
         "puzzle-map-match",
         "question-ball",
@@ -4234,6 +4290,7 @@
         "shadow-chase",
         "shape-detective",
         "shape-to-picture",
+        "shelf-reset-game",
         "silly-sentence-builder",
         "silly-swap-words",
         "sink-or-float",
@@ -4267,6 +4324,7 @@
         "family-story-interview",
         "family-timeline",
         "grace-courtesy-theater",
+        "puppet-patience-theater",
         "puppet-retell",
         "sandpaper-number-match",
         "shadow-chase",
@@ -4284,7 +4342,6 @@
         "problem-solving-puppets"
       ],
       "shared/js/engines/coach-timer.js": [
-        "shelf-reset-game",
         "waiting-muscle-game"
       ],
       "shared/js/engines/match-pairs.js": [
@@ -4355,10 +4412,12 @@
         "plant-care-captain",
         "post-office-letters",
         "pouring-station",
+        "puppet-patience-theater",
         "question-ball",
         "red-green-light",
         "secret-message-copy",
         "shape-to-picture",
+        "shelf-reset-game",
         "silly-swap-words",
         "smell-jars",
         "sticker-line-challenge",
@@ -4404,12 +4463,14 @@
         "picture-word-match",
         "plant-care-captain",
         "post-office-letters",
+        "puppet-patience-theater",
         "question-ball",
         "sandpaper-number-match",
         "secret-message-copy",
         "shadow-chase",
         "shape-detective",
         "shape-to-picture",
+        "shelf-reset-game",
         "silly-sentence-builder",
         "silly-swap-words",
         "sink-or-float",
@@ -4500,10 +4561,12 @@
         "obstacle-course-builder",
         "pattern-train",
         "post-office-letters",
+        "puppet-patience-theater",
         "sand-tray-letters",
         "sandpaper-number-match",
         "secret-message-copy",
         "shape-to-picture",
+        "shelf-reset-game",
         "silly-swap-words",
         "sink-or-float",
         "smell-jars",
@@ -4564,12 +4627,14 @@
         "plant-care-captain",
         "post-office-letters",
         "pouring-station",
+        "puppet-patience-theater",
         "puzzle-map-match",
         "question-ball",
         "sandpaper-number-match",
         "secret-message-copy",
         "shape-detective",
         "shape-to-picture",
+        "shelf-reset-game",
         "silly-sentence-builder",
         "silly-swap-words",
         "smell-jars",
@@ -4634,6 +4699,7 @@
         "plant-care-captain",
         "playdough-letter-factory",
         "post-office-letters",
+        "puppet-patience-theater",
         "question-ball",
         "red-green-light",
         "rhythm-copycat",
@@ -4643,6 +4709,7 @@
         "shadow-chase",
         "shape-detective",
         "shape-to-picture",
+        "shelf-reset-game",
         "silly-sentence-builder",
         "sink-or-float",
         "smell-jars",
@@ -4702,12 +4769,14 @@
         "picture-word-match",
         "post-office-letters",
         "pouring-station",
+        "puppet-patience-theater",
         "question-ball",
         "sandpaper-number-match",
         "secret-message-copy",
         "shadow-chase",
         "shape-detective",
         "shape-to-picture",
+        "shelf-reset-game",
         "silly-sentence-builder",
         "silly-swap-words",
         "smell-jars",
@@ -4792,6 +4861,7 @@
         "post-office-letters",
         "pouring-station",
         "problem-solving-puppets",
+        "puppet-patience-theater",
         "puppet-problem-solvers",
         "puppet-retell",
         "puzzle-map-match",
@@ -4921,6 +4991,7 @@
         "post-office-letters",
         "puzzle-map-match",
         "shape-to-picture",
+        "shelf-reset-game",
         "silly-sentence-builder",
         "smell-jars",
         "snack-chef",
@@ -5049,6 +5120,7 @@
         "playdough-letter-factory",
         "post-office-letters",
         "pouring-station",
+        "puppet-patience-theater",
         "puppet-retell",
         "puzzle-map-match",
         "question-ball",
@@ -5061,6 +5133,7 @@
         "shadow-chase",
         "shape-detective",
         "shape-to-picture",
+        "shelf-reset-game",
         "silly-sentence-builder",
         "silly-swap-words",
         "sink-or-float",
@@ -5137,6 +5210,7 @@
         "plant-care-captain",
         "post-office-letters",
         "pouring-station",
+        "puppet-patience-theater",
         "puppet-retell",
         "puzzle-map-match",
         "question-ball",
@@ -5148,6 +5222,7 @@
         "shadow-chase",
         "shape-detective",
         "shape-to-picture",
+        "shelf-reset-game",
         "silly-sentence-builder",
         "silly-swap-words",
         "smell-jars",
@@ -5231,6 +5306,7 @@
         "playdough-letter-factory",
         "post-office-letters",
         "pouring-station",
+        "puppet-patience-theater",
         "puppet-problem-solvers",
         "puppet-retell",
         "puzzle-map-match",
@@ -5245,6 +5321,7 @@
         "shadow-chase",
         "shape-detective",
         "shape-to-picture",
+        "shelf-reset-game",
         "silly-sentence-builder",
         "silly-swap-words",
         "sink-or-float",
@@ -5358,6 +5435,7 @@
         "post-office-letters",
         "pouring-station",
         "problem-solving-puppets",
+        "puppet-patience-theater",
         "puppet-problem-solvers",
         "puppet-retell",
         "puzzle-map-match",
@@ -5411,7 +5489,6 @@
         "problem-solving-puppets",
         "puppet-problem-solvers",
         "scissor-trail-safari",
-        "shelf-reset-game",
         "story-stones",
         "then-now-sort",
         "waiting-muscle-game"
@@ -5461,6 +5538,7 @@
         "plant-care-captain",
         "post-office-letters",
         "pouring-station",
+        "puppet-patience-theater",
         "question-ball",
         "red-green-light",
         "rhythm-copycat",
@@ -5469,6 +5547,7 @@
         "shadow-chase",
         "shape-detective",
         "shape-to-picture",
+        "shelf-reset-game",
         "silly-swap-words",
         "smell-jars",
         "snack-addition-stories",
@@ -5543,6 +5622,7 @@
         "post-office-letters",
         "pouring-station",
         "problem-solving-puppets",
+        "puppet-patience-theater",
         "puppet-problem-solvers",
         "puppet-retell",
         "question-ball",
@@ -7099,7 +7179,8 @@
       ],
       "shared/assets/music/cozy-starlight-lullaby.mp3": [
         "calm-corner-cards",
-        "momma-bear-storybook"
+        "momma-bear-storybook",
+        "puppet-patience-theater"
       ],
       "shared/assets/music/gentle-country-morning.mp3": [
         "family-timeline",
@@ -7115,6 +7196,7 @@
         "plan-do-review",
         "post-office-letters",
         "pouring-station",
+        "shelf-reset-game",
         "snack-addition-stories"
       ],
       "shared/assets/music/quirky-forest-adventure.mp3": [
@@ -7160,6 +7242,7 @@
       ],
       "shared/assets/refs/voice-teacher.wav": [
         "neighborhood-map-walk",
+        "shelf-reset-game",
         "sweep-the-trail"
       ],
       "shared/assets/storybook": [

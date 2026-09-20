@@ -1,0 +1,1094 @@
+{
+  "format": "qlobe-shelf-reset-processing",
+  "formatVersion": 1,
+  "gptModel": "gpt-image-2",
+  "extraction": {
+    "workflow": "qwen-image-edit",
+    "seed": 42,
+    "edit": "flat #FF00FF background only",
+    "matte": "imagegen/scripts/remove_chroma_key.py; border sampled, hard tolerance 44",
+    "keyShadowCleanup": "deterministic alpha-only narrow magenta hue rule",
+    "rejectedTrial": "qwen-image-layered omitted disconnected assets"
+  },
+  "cutter": "tools/cut-asset-sheet.py",
+  "assets": {
+    "room": {
+      "runtime": "assets/art/room.webp",
+      "size": [
+        1600,
+        1200
+      ]
+    },
+    "shelf-frame": {
+      "pass": true,
+      "reason": null,
+      "flags": [],
+      "alpha": {
+        "transparentPct": 30.104,
+        "opaquePct": 68.542,
+        "partialPct": 1.353
+      },
+      "bbox": [
+        14,
+        119,
+        1243,
+        732
+      ],
+      "sourceSize": [
+        1248,
+        832
+      ],
+      "finalSize": [
+        1248,
+        641
+      ],
+      "alphaFloor": 4,
+      "runtime": "assets\\art\\shelf-frame.webp",
+      "bytes": 51730
+    },
+    "title-plaque": {
+      "pass": true,
+      "reason": null,
+      "flags": [
+        "alpha-partial-band>2%"
+      ],
+      "alpha": {
+        "transparentPct": 36.262,
+        "opaquePct": 59.866,
+        "partialPct": 3.872
+      },
+      "bbox": [
+        15,
+        15,
+        410,
+        235
+      ],
+      "sourceSize": [
+        425,
+        250
+      ],
+      "finalSize": [
+        423,
+        248
+      ],
+      "alphaFloor": 4,
+      "runtime": "assets\\art\\title-plaque.webp",
+      "bytes": 9066
+    },
+    "progress-pill": {
+      "pass": true,
+      "reason": null,
+      "flags": [
+        "alpha-partial-band>2%"
+      ],
+      "alpha": {
+        "transparentPct": 31.126,
+        "opaquePct": 63.88,
+        "partialPct": 4.994
+      },
+      "bbox": [
+        15,
+        15,
+        401,
+        140
+      ],
+      "sourceSize": [
+        416,
+        155
+      ],
+      "finalSize": [
+        414,
+        153
+      ],
+      "alphaFloor": 4,
+      "runtime": "assets\\art\\progress-pill.webp",
+      "bytes": 6994
+    },
+    "tray": {
+      "pass": true,
+      "reason": null,
+      "flags": [
+        "alpha-partial-band>2%"
+      ],
+      "alpha": {
+        "transparentPct": 30.557,
+        "opaquePct": 65.601,
+        "partialPct": 3.842
+      },
+      "bbox": [
+        15,
+        15,
+        411,
+        223
+      ],
+      "sourceSize": [
+        415,
+        238
+      ],
+      "finalSize": [
+        414,
+        236
+      ],
+      "alphaFloor": 4,
+      "runtime": "assets\\art\\tray.webp",
+      "bytes": 9642
+    },
+    "helper-neutral": {
+      "pass": true,
+      "reason": null,
+      "flags": [
+        "alpha-partial-band>2%"
+      ],
+      "alpha": {
+        "transparentPct": 52.011,
+        "opaquePct": 43.151,
+        "partialPct": 4.838
+      },
+      "bbox": [
+        15,
+        15,
+        328,
+        463
+      ],
+      "sourceSize": [
+        343,
+        478
+      ],
+      "finalSize": [
+        341,
+        476
+      ],
+      "alphaFloor": 4,
+      "runtime": "assets\\art\\helper-neutral.webp",
+      "bytes": 24036
+    },
+    "helper-point": {
+      "pass": true,
+      "reason": null,
+      "flags": [
+        "alpha-partial-band>2%"
+      ],
+      "alpha": {
+        "transparentPct": 53.526,
+        "opaquePct": 41.715,
+        "partialPct": 4.759
+      },
+      "bbox": [
+        15,
+        16,
+        331,
+        466
+      ],
+      "sourceSize": [
+        346,
+        481
+      ],
+      "finalSize": [
+        344,
+        478
+      ],
+      "alphaFloor": 4,
+      "runtime": "assets\\art\\helper-point.webp",
+      "bytes": 24096
+    },
+    "helper-cheer": {
+      "pass": true,
+      "reason": null,
+      "flags": [
+        "alpha-partial-band>2%"
+      ],
+      "alpha": {
+        "transparentPct": 54.371,
+        "opaquePct": 41.088,
+        "partialPct": 4.541
+      },
+      "bbox": [
+        15,
+        15,
+        324,
+        466
+      ],
+      "sourceSize": [
+        339,
+        481
+      ],
+      "finalSize": [
+        337,
+        479
+      ],
+      "alphaFloor": 4,
+      "runtime": "assets\\art\\helper-cheer.webp",
+      "bytes": 23140
+    },
+    "home-brushes": {
+      "pass": true,
+      "reason": null,
+      "flags": [
+        "alpha-partial-band>2%"
+      ],
+      "alpha": {
+        "transparentPct": 35.402,
+        "opaquePct": 60.892,
+        "partialPct": 3.706
+      },
+      "bbox": [
+        15,
+        15,
+        280,
+        285
+      ],
+      "sourceSize": [
+        295,
+        285
+      ],
+      "finalSize": [
+        293,
+        284
+      ],
+      "alphaFloor": 4,
+      "runtime": "assets\\objects\\home-brushes.webp",
+      "bytes": 11554
+    },
+    "home-paints": {
+      "pass": true,
+      "reason": null,
+      "flags": [
+        "alpha-partial-band>2%"
+      ],
+      "alpha": {
+        "transparentPct": 35.416,
+        "opaquePct": 60.948,
+        "partialPct": 3.636
+      },
+      "bbox": [
+        15,
+        15,
+        281,
+        271
+      ],
+      "sourceSize": [
+        296,
+        286
+      ],
+      "finalSize": [
+        294,
+        284
+      ],
+      "alphaFloor": 4,
+      "runtime": "assets\\objects\\home-paints.webp",
+      "bytes": 11408
+    },
+    "home-tools": {
+      "pass": true,
+      "reason": null,
+      "flags": [
+        "alpha-partial-band>2%"
+      ],
+      "alpha": {
+        "transparentPct": 36.045,
+        "opaquePct": 60.37,
+        "partialPct": 3.585
+      },
+      "bbox": [
+        15,
+        15,
+        283,
+        272
+      ],
+      "sourceSize": [
+        298,
+        287
+      ],
+      "finalSize": [
+        296,
+        285
+      ],
+      "alphaFloor": 4,
+      "runtime": "assets\\objects\\home-tools.webp",
+      "bytes": 13518
+    },
+    "art-brush-blue": {
+      "pass": true,
+      "reason": null,
+      "flags": [
+        "alpha-partial-band>2%"
+      ],
+      "alpha": {
+        "transparentPct": 49.938,
+        "opaquePct": 41.579,
+        "partialPct": 8.482
+      },
+      "bbox": [
+        14,
+        0,
+        96,
+        271
+      ],
+      "sourceSize": [
+        108,
+        286
+      ],
+      "finalSize": [
+        108,
+        285
+      ],
+      "alphaFloor": 4,
+      "runtime": "assets\\objects\\art-brush-blue.webp",
+      "bytes": 5754
+    },
+    "art-brush-red": {
+      "pass": true,
+      "reason": null,
+      "flags": [
+        "alpha-partial-band>2%"
+      ],
+      "alpha": {
+        "transparentPct": 47.05,
+        "opaquePct": 46.499,
+        "partialPct": 6.452
+      },
+      "bbox": [
+        15,
+        15,
+        160,
+        279
+      ],
+      "sourceSize": [
+        175,
+        279
+      ],
+      "finalSize": [
+        173,
+        278
+      ],
+      "alphaFloor": 4,
+      "runtime": "assets\\objects\\art-brush-red.webp",
+      "bytes": 7228
+    },
+    "art-paint-red": {
+      "pass": true,
+      "reason": null,
+      "flags": [
+        "alpha-partial-band>2%"
+      ],
+      "alpha": {
+        "transparentPct": 32.816,
+        "opaquePct": 61.737,
+        "partialPct": 5.447
+      },
+      "bbox": [
+        15,
+        15,
+        197,
+        197
+      ],
+      "sourceSize": [
+        212,
+        212
+      ],
+      "finalSize": [
+        210,
+        210
+      ],
+      "alphaFloor": 4,
+      "runtime": "assets\\objects\\art-paint-red.webp",
+      "bytes": 5332
+    },
+    "art-paint-blue": {
+      "pass": true,
+      "reason": null,
+      "flags": [
+        "alpha-partial-band>2%"
+      ],
+      "alpha": {
+        "transparentPct": 31.751,
+        "opaquePct": 63.259,
+        "partialPct": 4.989
+      },
+      "bbox": [
+        15,
+        15,
+        202,
+        216
+      ],
+      "sourceSize": [
+        217,
+        231
+      ],
+      "finalSize": [
+        215,
+        229
+      ],
+      "alphaFloor": 4,
+      "runtime": "assets\\objects\\art-paint-blue.webp",
+      "bytes": 5264
+    },
+    "art-palette": {
+      "pass": true,
+      "reason": null,
+      "flags": [
+        "alpha-partial-band>2%"
+      ],
+      "alpha": {
+        "transparentPct": 39.133,
+        "opaquePct": 56.64,
+        "partialPct": 4.227
+      },
+      "bbox": [
+        15,
+        0,
+        300,
+        268
+      ],
+      "sourceSize": [
+        315,
+        283
+      ],
+      "finalSize": [
+        313,
+        282
+      ],
+      "alphaFloor": 4,
+      "runtime": "assets\\objects\\art-palette.webp",
+      "bytes": 12390
+    },
+    "art-crayons": {
+      "pass": true,
+      "reason": null,
+      "flags": [
+        "alpha-partial-band>2%"
+      ],
+      "alpha": {
+        "transparentPct": 33.313,
+        "opaquePct": 60.783,
+        "partialPct": 5.904
+      },
+      "bbox": [
+        15,
+        15,
+        202,
+        244
+      ],
+      "sourceSize": [
+        217,
+        259
+      ],
+      "finalSize": [
+        215,
+        257
+      ],
+      "alphaFloor": 4,
+      "runtime": "assets\\objects\\art-crayons.webp",
+      "bytes": 11152
+    },
+    "home-arches": {
+      "pass": true,
+      "reason": null,
+      "flags": [
+        "alpha-partial-band>2%"
+      ],
+      "alpha": {
+        "transparentPct": 41.779,
+        "opaquePct": 53.9,
+        "partialPct": 4.321
+      },
+      "bbox": [
+        15,
+        15,
+        325,
+        252
+      ],
+      "sourceSize": [
+        340,
+        268
+      ],
+      "finalSize": [
+        338,
+        265
+      ],
+      "alphaFloor": 4,
+      "runtime": "assets\\objects\\home-arches.webp",
+      "bytes": 11452
+    },
+    "home-cubes": {
+      "pass": true,
+      "reason": null,
+      "flags": [
+        "alpha-partial-band>2%"
+      ],
+      "alpha": {
+        "transparentPct": 36.995,
+        "opaquePct": 59.046,
+        "partialPct": 3.959
+      },
+      "bbox": [
+        15,
+        15,
+        285,
+        255
+      ],
+      "sourceSize": [
+        300,
+        270
+      ],
+      "finalSize": [
+        298,
+        268
+      ],
+      "alphaFloor": 4,
+      "runtime": "assets\\objects\\home-cubes.webp",
+      "bytes": 10142
+    },
+    "home-cylinders": {
+      "pass": true,
+      "reason": null,
+      "flags": [
+        "alpha-partial-band>2%"
+      ],
+      "alpha": {
+        "transparentPct": 34.886,
+        "opaquePct": 61.101,
+        "partialPct": 4.013
+      },
+      "bbox": [
+        15,
+        15,
+        288,
+        255
+      ],
+      "sourceSize": [
+        303,
+        270
+      ],
+      "finalSize": [
+        301,
+        268
+      ],
+      "alphaFloor": 4,
+      "runtime": "assets\\objects\\home-cylinders.webp",
+      "bytes": 9936
+    },
+    "block-arch-red": {
+      "pass": true,
+      "reason": null,
+      "flags": [
+        "alpha-partial-band>2%"
+      ],
+      "alpha": {
+        "transparentPct": 44.597,
+        "opaquePct": 49.692,
+        "partialPct": 5.711
+      },
+      "bbox": [
+        15,
+        15,
+        236,
+        182
+      ],
+      "sourceSize": [
+        251,
+        197
+      ],
+      "finalSize": [
+        249,
+        195
+      ],
+      "alphaFloor": 4,
+      "runtime": "assets\\objects\\block-arch-red.webp",
+      "bytes": 5918
+    },
+    "block-arch-yellow": {
+      "pass": true,
+      "reason": null,
+      "flags": [
+        "alpha-partial-band>2%"
+      ],
+      "alpha": {
+        "transparentPct": 44.523,
+        "opaquePct": 49.624,
+        "partialPct": 5.853
+      },
+      "bbox": [
+        15,
+        15,
+        230,
+        182
+      ],
+      "sourceSize": [
+        245,
+        197
+      ],
+      "finalSize": [
+        243,
+        195
+      ],
+      "alphaFloor": 4,
+      "runtime": "assets\\objects\\block-arch-yellow.webp",
+      "bytes": 5864
+    },
+    "block-cube-blue": {
+      "pass": true,
+      "reason": null,
+      "flags": [
+        "alpha-partial-band>2%"
+      ],
+      "alpha": {
+        "transparentPct": 35.434,
+        "opaquePct": 59.628,
+        "partialPct": 4.938
+      },
+      "bbox": [
+        15,
+        15,
+        206,
+        202
+      ],
+      "sourceSize": [
+        221,
+        217
+      ],
+      "finalSize": [
+        219,
+        215
+      ],
+      "alphaFloor": 4,
+      "runtime": "assets\\objects\\block-cube-blue.webp",
+      "bytes": 5252
+    },
+    "block-cube-wood": {
+      "pass": true,
+      "reason": null,
+      "flags": [
+        "alpha-partial-band>2%"
+      ],
+      "alpha": {
+        "transparentPct": 34.714,
+        "opaquePct": 60.234,
+        "partialPct": 5.052
+      },
+      "bbox": [
+        15,
+        15,
+        209,
+        210
+      ],
+      "sourceSize": [
+        224,
+        225
+      ],
+      "finalSize": [
+        222,
+        223
+      ],
+      "alphaFloor": 4,
+      "runtime": "assets\\objects\\block-cube-wood.webp",
+      "bytes": 5942
+    },
+    "block-cylinder-green": {
+      "pass": true,
+      "reason": null,
+      "flags": [
+        "alpha-partial-band>2%"
+      ],
+      "alpha": {
+        "transparentPct": 32.78,
+        "opaquePct": 61.917,
+        "partialPct": 5.303
+      },
+      "bbox": [
+        15,
+        15,
+        188,
+        202
+      ],
+      "sourceSize": [
+        203,
+        217
+      ],
+      "finalSize": [
+        201,
+        215
+      ],
+      "alphaFloor": 4,
+      "runtime": "assets\\objects\\block-cylinder-green.webp",
+      "bytes": 4704
+    },
+    "block-cylinder-yellow": {
+      "pass": true,
+      "reason": null,
+      "flags": [
+        "alpha-partial-band>2%"
+      ],
+      "alpha": {
+        "transparentPct": 33.271,
+        "opaquePct": 61.254,
+        "partialPct": 5.476
+      },
+      "bbox": [
+        15,
+        15,
+        182,
+        206
+      ],
+      "sourceSize": [
+        197,
+        221
+      ],
+      "finalSize": [
+        195,
+        219
+      ],
+      "alphaFloor": 4,
+      "runtime": "assets\\objects\\block-cylinder-yellow.webp",
+      "bytes": 4752
+    },
+    "home-leaves": {
+      "pass": true,
+      "reason": null,
+      "flags": [
+        "alpha-partial-band>2%"
+      ],
+      "alpha": {
+        "transparentPct": 44.528,
+        "opaquePct": 51.999,
+        "partialPct": 3.473
+      },
+      "bbox": [
+        15,
+        15,
+        347,
+        268
+      ],
+      "sourceSize": [
+        362,
+        283
+      ],
+      "finalSize": [
+        360,
+        281
+      ],
+      "alphaFloor": 4,
+      "runtime": "assets\\objects\\home-leaves.webp",
+      "bytes": 14094
+    },
+    "home-pinecones": {
+      "pass": true,
+      "reason": null,
+      "flags": [
+        "alpha-partial-band>2%"
+      ],
+      "alpha": {
+        "transparentPct": 40.496,
+        "opaquePct": 56.027,
+        "partialPct": 3.476
+      },
+      "bbox": [
+        15,
+        15,
+        325,
+        267
+      ],
+      "sourceSize": [
+        340,
+        282
+      ],
+      "finalSize": [
+        338,
+        280
+      ],
+      "alphaFloor": 4,
+      "runtime": "assets\\objects\\home-pinecones.webp",
+      "bytes": 16406
+    },
+    "home-treasures": {
+      "pass": true,
+      "reason": null,
+      "flags": [
+        "alpha-partial-band>2%"
+      ],
+      "alpha": {
+        "transparentPct": 43.401,
+        "opaquePct": 53.363,
+        "partialPct": 3.236
+      },
+      "bbox": [
+        15,
+        15,
+        336,
+        267
+      ],
+      "sourceSize": [
+        351,
+        282
+      ],
+      "finalSize": [
+        349,
+        280
+      ],
+      "alphaFloor": 4,
+      "runtime": "assets\\objects\\home-treasures.webp",
+      "bytes": 13466
+    },
+    "nature-leaf-oak": {
+      "pass": true,
+      "reason": null,
+      "flags": [
+        "alpha-partial-band>2%"
+      ],
+      "alpha": {
+        "transparentPct": 52.019,
+        "opaquePct": 42.903,
+        "partialPct": 5.078
+      },
+      "bbox": [
+        15,
+        15,
+        188,
+        231
+      ],
+      "sourceSize": [
+        203,
+        246
+      ],
+      "finalSize": [
+        201,
+        244
+      ],
+      "alphaFloor": 4,
+      "runtime": "assets\\objects\\nature-leaf-oak.webp",
+      "bytes": 7376
+    },
+    "nature-leaf-maple": {
+      "pass": true,
+      "reason": null,
+      "flags": [
+        "alpha-partial-band>2%"
+      ],
+      "alpha": {
+        "transparentPct": 55.285,
+        "opaquePct": 40.059,
+        "partialPct": 4.656
+      },
+      "bbox": [
+        15,
+        15,
+        236,
+        231
+      ],
+      "sourceSize": [
+        251,
+        246
+      ],
+      "finalSize": [
+        249,
+        244
+      ],
+      "alphaFloor": 4,
+      "runtime": "assets\\objects\\nature-leaf-maple.webp",
+      "bytes": 8658
+    },
+    "nature-pinecone-tall": {
+      "pass": true,
+      "reason": null,
+      "flags": [
+        "alpha-partial-band>2%"
+      ],
+      "alpha": {
+        "transparentPct": 47.751,
+        "opaquePct": 46.598,
+        "partialPct": 5.651
+      },
+      "bbox": [
+        15,
+        15,
+        165,
+        253
+      ],
+      "sourceSize": [
+        180,
+        268
+      ],
+      "finalSize": [
+        178,
+        266
+      ],
+      "alphaFloor": 4,
+      "runtime": "assets\\objects\\nature-pinecone-tall.webp",
+      "bytes": 9584
+    },
+    "nature-pinecone-round": {
+      "pass": true,
+      "reason": null,
+      "flags": [
+        "alpha-partial-band>2%"
+      ],
+      "alpha": {
+        "transparentPct": 46.055,
+        "opaquePct": 49.431,
+        "partialPct": 4.514
+      },
+      "bbox": [
+        15,
+        15,
+        211,
+        212
+      ],
+      "sourceSize": [
+        226,
+        227
+      ],
+      "finalSize": [
+        224,
+        225
+      ],
+      "alphaFloor": 4,
+      "runtime": "assets\\objects\\nature-pinecone-round.webp",
+      "bytes": 9078
+    },
+    "nature-stone-gray": {
+      "pass": true,
+      "reason": null,
+      "flags": [
+        "alpha-partial-band>2%"
+      ],
+      "alpha": {
+        "transparentPct": 42.902,
+        "opaquePct": 53.322,
+        "partialPct": 3.776
+      },
+      "bbox": [
+        15,
+        15,
+        250,
+        186
+      ],
+      "sourceSize": [
+        266,
+        201
+      ],
+      "finalSize": [
+        263,
+        199
+      ],
+      "alphaFloor": 4,
+      "runtime": "assets\\objects\\nature-stone-gray.webp",
+      "bytes": 7230
+    },
+    "nature-acorn": {
+      "pass": true,
+      "reason": null,
+      "flags": [
+        "alpha-partial-band>2%"
+      ],
+      "alpha": {
+        "transparentPct": 48.44,
+        "opaquePct": 46.914,
+        "partialPct": 4.646
+      },
+      "bbox": [
+        15,
+        15,
+        179,
+        219
+      ],
+      "sourceSize": [
+        194,
+        234
+      ],
+      "finalSize": [
+        192,
+        232
+      ],
+      "alphaFloor": 4,
+      "runtime": "assets\\objects\\nature-acorn.webp",
+      "bytes": 7090
+    },
+    "card-art": {
+      "pass": true,
+      "reason": null,
+      "flags": [
+        "alpha-partial-band>2%"
+      ],
+      "alpha": {
+        "transparentPct": 12.98,
+        "opaquePct": 84.275,
+        "partialPct": 2.745
+      },
+      "bbox": [
+        15,
+        15,
+        444,
+        557
+      ],
+      "sourceSize": [
+        459,
+        572
+      ],
+      "finalSize": [
+        457,
+        570
+      ],
+      "alphaFloor": 4,
+      "runtime": "assets\\cards\\art.webp",
+      "bytes": 25650
+    },
+    "card-blocks": {
+      "pass": true,
+      "reason": null,
+      "flags": [
+        "alpha-partial-band>2%"
+      ],
+      "alpha": {
+        "transparentPct": 13.049,
+        "opaquePct": 84.206,
+        "partialPct": 2.746
+      },
+      "bbox": [
+        15,
+        15,
+        441,
+        558
+      ],
+      "sourceSize": [
+        456,
+        573
+      ],
+      "finalSize": [
+        454,
+        571
+      ],
+      "alphaFloor": 4,
+      "runtime": "assets\\cards\\blocks.webp",
+      "bytes": 23448
+    },
+    "card-nature": {
+      "pass": true,
+      "reason": null,
+      "flags": [
+        "alpha-partial-band>2%"
+      ],
+      "alpha": {
+        "transparentPct": 12.946,
+        "opaquePct": 84.291,
+        "partialPct": 2.763
+      },
+      "bbox": [
+        15,
+        15,
+        440,
+        558
+      ],
+      "sourceSize": [
+        455,
+        573
+      ],
+      "finalSize": [
+        453,
+        571
+      ],
+      "alphaFloor": 4,
+      "runtime": "assets\\cards\\nature.webp",
+      "bytes": 29708
+    }
+  }
+}
