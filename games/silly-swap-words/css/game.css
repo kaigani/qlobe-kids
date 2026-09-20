@@ -381,8 +381,11 @@ button:focus-visible {
   position: relative;
   display: grid;
   place-items: center;
+  flex-shrink: 0;
   width: clamp(96px, 14vmin, 142px);
   height: clamp(96px, 14vmin, 142px);
+  min-width: 96px;
+  min-height: 96px;
   padding: 0;
   border: 0;
   background: transparent;
