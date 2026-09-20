@@ -9,16 +9,8 @@
     "games/<id>/config.js",
     "games/<id>/js/**/*.js"
   ],
-  "generated": "2026-09-19T22:31:52.182Z",
+  "generated": "2026-09-20T00:47:51.130Z",
   "engines": {
-    "coach-timer": {
-      "count": 3,
-      "games": [
-        "neighborhood-map-walk",
-        "shelf-reset-game",
-        "waiting-muscle-game"
-      ]
-    },
     "choose-one": {
       "count": 2,
       "games": [
@@ -31,6 +23,13 @@
       "games": [
         "letter-road-driving",
         "scissor-trail-safari"
+      ]
+    },
+    "coach-timer": {
+      "count": 2,
+      "games": [
+        "shelf-reset-game",
+        "waiting-muscle-game"
       ]
     },
     "build-assemble": {
@@ -1240,7 +1239,7 @@
     },
     "land-water-tray": {
       "engine": null,
-      "status": "in-design",
+      "status": "beta",
       "category": "culture-geography",
       "characters": [],
       "modules": [
@@ -1790,22 +1789,27 @@
       "packs": []
     },
     "neighborhood-map-walk": {
-      "engine": "coach-timer",
-      "status": "in-design",
+      "engine": null,
+      "status": "beta",
       "category": "culture-geography",
       "characters": [],
       "modules": [
         "shared/js/analytics.js",
-        "shared/js/engines/coach-timer.js",
+        "shared/js/audio-unlock.js",
+        "shared/js/celebrate.js",
+        "shared/js/debug-harness.js",
+        "shared/js/preload.js",
         "shared/js/sfx.js",
-        "shared/js/speech.js"
+        "shared/js/tap.js",
+        "shared/js/timers.js",
+        "shared/js/voice-clips.js"
       ],
       "css": [
-        "shared/css/base.css",
-        "shared/css/engine-base.css",
-        "shared/css/screens.css"
+        "shared/css/base.css"
       ],
-      "assets": [],
+      "assets": [
+        "shared/assets/refs/voice-teacher.wav"
+      ],
       "packs": []
     },
     "number-line-jump": {
@@ -3968,6 +3972,7 @@
         "mountain-seasons-wheel",
         "name-puzzle",
         "nature-scavenger-hunt",
+        "neighborhood-map-walk",
         "number-sense-kitchen",
         "obstacle-course-builder",
         "pattern-bracelet-band",
@@ -4105,6 +4110,7 @@
         "mountain-seasons-wheel",
         "name-puzzle",
         "nature-scavenger-hunt",
+        "neighborhood-map-walk",
         "obstacle-course-builder",
         "pattern-bracelet-band",
         "picture-word-match",
@@ -4205,6 +4211,7 @@
         "mountain-seasons-wheel",
         "name-puzzle",
         "nature-scavenger-hunt",
+        "neighborhood-map-walk",
         "number-sense-kitchen",
         "obstacle-course-builder",
         "pattern-bracelet-band",
@@ -4277,7 +4284,6 @@
         "problem-solving-puppets"
       ],
       "shared/js/engines/coach-timer.js": [
-        "neighborhood-map-walk",
         "shelf-reset-game",
         "waiting-muscle-game"
       ],
@@ -4550,6 +4556,7 @@
         "monster-opera",
         "mountain-seasons-wheel",
         "nature-scavenger-hunt",
+        "neighborhood-map-walk",
         "number-sense-kitchen",
         "obstacle-course-builder",
         "pattern-bracelet-band",
@@ -4851,7 +4858,6 @@
         "lunchbox-pack",
         "mystery-letter-bag",
         "name-puzzle",
-        "neighborhood-map-walk",
         "number-line-jump",
         "number-sense-kitchen",
         "obstacle-course-builder",
@@ -5035,6 +5041,7 @@
         "mountain-seasons-wheel",
         "name-puzzle",
         "nature-scavenger-hunt",
+        "neighborhood-map-walk",
         "number-sense-kitchen",
         "obstacle-course-builder",
         "pattern-bracelet-band",
@@ -5121,6 +5128,7 @@
         "mountain-seasons-wheel",
         "name-puzzle",
         "nature-scavenger-hunt",
+        "neighborhood-map-walk",
         "number-sense-kitchen",
         "obstacle-course-builder",
         "pattern-bracelet-band",
@@ -5212,6 +5220,7 @@
         "my-puppet-band",
         "name-puzzle",
         "nature-scavenger-hunt",
+        "neighborhood-map-walk",
         "number-sense-kitchen",
         "obstacle-course-builder",
         "pattern-bracelet-band",
@@ -5398,7 +5407,6 @@
         "letter-road-driving",
         "my-puppet-band",
         "mystery-letter-bag",
-        "neighborhood-map-walk",
         "number-line-jump",
         "picture-narration",
         "problem-solving-puppets",
@@ -5527,7 +5535,6 @@
         "mystery-letter-bag",
         "name-puzzle",
         "nature-scavenger-hunt",
-        "neighborhood-map-walk",
         "number-line-jump",
         "number-sense-kitchen",
         "obstacle-course-builder",
@@ -7151,6 +7158,7 @@
         "sound-basket"
       ],
       "shared/assets/refs/voice-teacher.wav": [
+        "neighborhood-map-walk",
         "sweep-the-trail"
       ],
       "shared/assets/storybook": [

@@ -1,0 +1,266 @@
+{
+  "source": "landmarks-sheet.png",
+  "sourceSha256": "65c2a3d07d0e6a7c7e8f3ce098fa387637eb9612142791f077d99d03ef5243b6",
+  "sourceSize": [
+    1536,
+    1024
+  ],
+  "detection": "background-threshold",
+  "sampledBackgroundRgb": [
+    7,
+    24,
+    47
+  ],
+  "padding": 20,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "house",
+      "file": "house.png",
+      "componentArea": 99765,
+      "foregroundBbox": [
+        21,
+        127,
+        400,
+        495
+      ],
+      "cropBbox": [
+        1,
+        107,
+        420,
+        515
+      ],
+      "cropXywh": [
+        1,
+        107,
+        419,
+        408
+      ],
+      "normalizedCropBbox": [
+        0.000651,
+        0.104492,
+        0.273438,
+        0.50293
+      ]
+    },
+    {
+      "index": 2,
+      "name": "tree",
+      "file": "tree.png",
+      "componentArea": 78948,
+      "foregroundBbox": [
+        395,
+        105,
+        726,
+        495
+      ],
+      "cropBbox": [
+        375,
+        85,
+        746,
+        515
+      ],
+      "cropXywh": [
+        375,
+        85,
+        371,
+        430
+      ],
+      "normalizedCropBbox": [
+        0.244141,
+        0.083008,
+        0.485677,
+        0.50293
+      ]
+    },
+    {
+      "index": 3,
+      "name": "park",
+      "file": "park.png",
+      "componentArea": 76808,
+      "foregroundBbox": [
+        735,
+        153,
+        1114,
+        494
+      ],
+      "cropBbox": [
+        715,
+        133,
+        1134,
+        514
+      ],
+      "cropXywh": [
+        715,
+        133,
+        419,
+        381
+      ],
+      "normalizedCropBbox": [
+        0.465495,
+        0.129883,
+        0.738281,
+        0.501953
+      ]
+    },
+    {
+      "index": 4,
+      "name": "library",
+      "file": "library.png",
+      "componentArea": 98310,
+      "foregroundBbox": [
+        1132,
+        155,
+        1514,
+        493
+      ],
+      "cropBbox": [
+        1112,
+        135,
+        1534,
+        513
+      ],
+      "cropXywh": [
+        1112,
+        135,
+        422,
+        378
+      ],
+      "normalizedCropBbox": [
+        0.723958,
+        0.131836,
+        0.998698,
+        0.500977
+      ]
+    },
+    {
+      "index": 5,
+      "name": "pond",
+      "file": "pond.png",
+      "componentArea": 78040,
+      "foregroundBbox": [
+        21,
+        623,
+        413,
+        904
+      ],
+      "cropBbox": [
+        1,
+        603,
+        433,
+        924
+      ],
+      "cropXywh": [
+        1,
+        603,
+        432,
+        321
+      ],
+      "normalizedCropBbox": [
+        0.000651,
+        0.588867,
+        0.281901,
+        0.902344
+      ]
+    },
+    {
+      "index": 6,
+      "name": "shop",
+      "file": "shop.png",
+      "componentArea": 92742,
+      "foregroundBbox": [
+        435,
+        550,
+        775,
+        902
+      ],
+      "cropBbox": [
+        415,
+        530,
+        795,
+        922
+      ],
+      "cropXywh": [
+        415,
+        530,
+        380,
+        392
+      ],
+      "normalizedCropBbox": [
+        0.270182,
+        0.517578,
+        0.517578,
+        0.900391
+      ]
+    },
+    {
+      "index": 7,
+      "name": "car",
+      "file": "car.png",
+      "componentArea": 42548,
+      "foregroundBbox": [
+        809,
+        686,
+        1116,
+        885
+      ],
+      "cropBbox": [
+        789,
+        666,
+        1136,
+        905
+      ],
+      "cropXywh": [
+        789,
+        666,
+        347,
+        239
+      ],
+      "normalizedCropBbox": [
+        0.513672,
+        0.650391,
+        0.739583,
+        0.883789
+      ]
+    },
+    {
+      "index": 8,
+      "name": "flowers",
+      "file": "flowers.png",
+      "componentArea": 59677,
+      "foregroundBbox": [
+        1164,
+        614,
+        1504,
+        906
+      ],
+      "cropBbox": [
+        1144,
+        594,
+        1524,
+        926
+      ],
+      "cropXywh": [
+        1144,
+        594,
+        380,
+        332
+      ],
+      "normalizedCropBbox": [
+        0.744792,
+        0.580078,
+        0.992188,
+        0.904297
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 42,
+    "chromaThreshold": 24,
+    "alphaThreshold": 8,
+    "closeRadius": 0,
+    "minArea": 6000,
+    "order": "reading"
+  }
+}

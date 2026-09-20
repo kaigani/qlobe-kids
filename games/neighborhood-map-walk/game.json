@@ -1,34 +1,43 @@
 {
   "id": "neighborhood-map-walk",
-  "title": "Neighborhood Map Walk",
+  "title": "Neighborhood Explorer",
   "category": "culture-geography",
   "path": "games/neighborhood-map-walk/",
-  "icon": "🗺️",
+  "icon": "map",
   "entry": "index.html",
-  "age": { "min": 5, "max": 6 },
-  "status": "in-design",
-  "accent": "#e07a5f",
-  "shareTitle": "Neighborhood Map Walk 🧭 — Drawing a Personal Map",
-  "description": "Spot landmarks on a real walk or from a window, then draw your own neighborhood map, where every street is right. An expedition-style mapmaking game for ages 5–6.",
+  "age": { "min": 3, "max": 6 },
+  "status": "beta",
+  "accent": "#287bc1",
+  "shareTitle": "Neighborhood Explorer — Draw a World of Your Own",
+  "description": "Draw a home, wind a road through the grass, place favorite community landmarks, and watch a personal watercolor town come alive.",
   "learningGoals": [
-    "Develop spatial thinking around home and nearby streets",
-    "Remember and represent familiar landmarks",
-    "Use simple drawings as map symbols",
-    "Connect a personal place to a wider neighborhood"
+    "Practice controlled freehand drawing and path-making",
+    "Represent familiar places with simple map symbols",
+    "Explore spatial relationships among home, routes, nature, and community places",
+    "Make and revisit an open-ended neighborhood composition"
   ],
-  "interactionModel": "tap the large done step after each real-world drawing or spotting mission; timers create roomy observation and mapmaking periods",
-  "feedbackModel": "warm expedition-leader speech with sparkle, tick, and tada SFX; the child's map is treated as authoritative and has no wrong streets",
+  "interactionModel": "draw a home and road with one finger, choose illustrated landmarks, then tap the watercolor map to place them",
+  "feedbackModel": "warm recorded guidance, tactile sound cues, drawing-to-house magic, placement sparkles, and a living-world finale",
   "uses": [
-    "shared/js/engines/coach-timer.js",
-    "shared/js/speech.js",
-    "shared/js/sfx.js"
+    "shared/js/audio-unlock.js",
+    "shared/js/celebrate.js",
+    "shared/js/debug-harness.js",
+    "shared/js/preload.js",
+    "shared/js/sfx.js",
+    "shared/js/tap.js",
+    "shared/js/timers.js",
+    "shared/js/voice-clips.js",
+    "shared/assets/refs/voice-teacher.wav"
   ],
   "modes": [
-    { "id": "map", "title": "Make Your Map", "skill": "draw landmarks and routes as a personal map" },
-    { "id": "walk", "title": "Walk and Spot", "skill": "observe and remember neighborhood features" }
+    {
+      "id": "build",
+      "title": "Build a Neighborhood",
+      "skill": "draw routes and place familiar landmarks"
+    }
   ],
   "license": { "code": "MIT", "assets": "CC-BY-4.0" },
-  "credits": "Kaigani; emoji placeholder art only (see ASSETS.md). Built with Codex for QLOBE Kids.",
+  "credits": "Kaigani; watercolor production art created with GPT Image 2 and local Qwen layered extraction; teacher narration created with Qwen voice clone and checked with Whisper. Built with Codex for QLOBE Kids.",
   "characters": [],
   "conceptVideo": null
 }

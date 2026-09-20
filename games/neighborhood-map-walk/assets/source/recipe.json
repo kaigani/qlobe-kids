@@ -1,0 +1,60 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "asset": "neighborhood-explorer-production-family",
+  "artDirection": "Watercolor / Storybook",
+  "steps": [
+    {
+      "workflow": "gpt-image-2",
+      "role": "open watercolor world plate and eight-object landmark contact sheet",
+      "references": [
+        "01-game-concepts/neighborhood-explorer/output/ui-mockups/01-title.png",
+        "01-game-concepts/neighborhood-explorer/output/ui-mockups/03-neighborhood-alive.png"
+      ],
+      "seed": null
+    },
+    {
+      "tool": "tools/cut-asset-sheet.py",
+      "source": "gpt-image-2/landmarks-sheet.png",
+      "expectedCount": 8,
+      "resultCount": 8
+    },
+    {
+      "workflow": "qwen-image-layered",
+      "role": "true-alpha separation of the eight approved contact-sheet crops",
+      "seed": 42,
+      "output": "layer_2"
+    },
+    {
+      "tool": "tools/pipeline/cutout_finalize.py",
+      "role": "alpha statistics, magenta review, trim, and 480 px finalization",
+      "accepted": ["car"],
+      "rejectedNearEmpty": ["house", "tree", "park", "library", "pond", "shop", "flowers"]
+    },
+    {
+      "tool": "border-connected chroma matte",
+      "role": "preserve source RGB while removing only edge-connected #07182F ground",
+      "accepted": ["house", "tree", "park", "library", "pond", "shop", "flowers"],
+      "featherPx": 0.8
+    },
+    {
+      "workflow": "qwen3-tts-voiceclone",
+      "role": "six teacher-voice guidance lines from shared approved reference",
+      "seed": 7
+    },
+    {
+      "workflow": "whisper-stt",
+      "role": "transcript verification against the verbatim lines",
+      "accepted": 6,
+      "total": 6,
+      "minimumSimilarity": 1.0
+    }
+  ],
+  "qa": {
+    "status": "accepted-after-runtime-and-adversarial-art-review",
+    "cutCount": 8,
+    "voiceAccepted": 6,
+    "viewports": ["1180x820", "820x1180", "1180x560"],
+    "runtimeChecks": "30/30"
+  }
+}
