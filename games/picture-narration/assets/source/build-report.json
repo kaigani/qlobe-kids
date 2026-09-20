@@ -1,0 +1,414 @@
+{
+  "format": "qlobe-asset-build",
+  "formatVersion": 1,
+  "game": "picture-narration",
+  "sources": {
+    "characters-vocab-sheet.png": {
+      "sha256": "873cb8a80f86f65f4576c887b8421f01fce58eb0d6fc2889c4c32760cfcba47c",
+      "bytes": 2215716
+    },
+    "choices-sheet.png": {
+      "sha256": "9dab252a622250d9020484fd2eaff5b8cbd5fdf973dfbe28cf3184ebf042e9a3",
+      "bytes": 2871110
+    },
+    "forest-master.png": {
+      "sha256": "6256610df338d9eea0deeb634f0113b755990ac2a021a36b18481ed2663aa525",
+      "bytes": 3238001
+    },
+    "moon-master.png": {
+      "sha256": "a361749074df521c7d521847f845ab381e42f96291146d6a320eb2c4e86855e6",
+      "bytes": 3154300
+    },
+    "ocean-master.png": {
+      "sha256": "cb1603c2a68425365e47ccbb30f05f2135544dc8a9047a1cec33edf47e0da07d",
+      "bytes": 2977795
+    },
+    "splash-master.png": {
+      "sha256": "7a3c620b888b92900eab7cb8ac890ce3b53f073a759c5088b1971efaef5e9f54",
+      "bytes": 3340404
+    },
+    "title-master.png": {
+      "sha256": "007fd59f0ba6d71c34debce8808e01de037d72fe4ea124e6268e10efe8e5746b",
+      "bytes": 1729029
+    },
+    "ui-sheet.png": {
+      "sha256": "4f86c8b492ff78e597bd5550dcd1a3859893f161ac353b3deec8cd40870acea7",
+      "bytes": 2072438
+    }
+  },
+  "outputs": [
+    {
+      "path": "assets/art/splash.webp",
+      "width": 1448,
+      "height": 1086,
+      "mode": "RGB",
+      "bytes": 434052,
+      "sha256": "a8c839cbea48a1122f27e7a115bc52065686402c9987c291391c97cde9950d37"
+    },
+    {
+      "path": "assets/art/forest.webp",
+      "width": 1448,
+      "height": 1086,
+      "mode": "RGB",
+      "bytes": 395850,
+      "sha256": "29e3c7644d2c1ac9813bacc3c432933eccf8bc0abd195247b7bb9cc9ae10e4ac"
+    },
+    {
+      "path": "assets/art/ocean.webp",
+      "width": 1448,
+      "height": 1086,
+      "mode": "RGB",
+      "bytes": 316966,
+      "sha256": "ccc7d8527f3740f94dbe6e14ec71a3ed2a37bffadc33db5bdb0bcba9687a78f5"
+    },
+    {
+      "path": "assets/art/moon.webp",
+      "width": 1448,
+      "height": 1086,
+      "mode": "RGB",
+      "bytes": 351280,
+      "sha256": "1563ca0f72f83ea2547865b9fee5c98acfe91ca010359b7df492dc1629745feb"
+    },
+    {
+      "path": "assets/ui/title.webp",
+      "width": 1200,
+      "height": 500,
+      "mode": "RGBA",
+      "bytes": 202682,
+      "sha256": "95ceab7e86871b5a10b0844fe2609b4a8915a4a9daeb04275f4318e986596bba"
+    },
+    {
+      "path": "assets/ui/home.webp",
+      "width": 320,
+      "height": 320,
+      "mode": "RGBA",
+      "bytes": 42040,
+      "sha256": "933f1e8caa225325047192ca15629ced8ea4f94d0b752ee74138e475e1b853b7"
+    },
+    {
+      "path": "assets/ui/back.webp",
+      "width": 320,
+      "height": 320,
+      "mode": "RGBA",
+      "bytes": 33644,
+      "sha256": "0a0de8c86639779a2449c9c49f7c72f0dd755f996770424f84d7be5f14b24450"
+    },
+    {
+      "path": "assets/ui/sound.webp",
+      "width": 320,
+      "height": 320,
+      "mode": "RGBA",
+      "bytes": 35858,
+      "sha256": "b582353353d4355f04750b9eaa6fb08d10998156f14360ed96072420f57a5354"
+    },
+    {
+      "path": "assets/ui/sound-off.webp",
+      "width": 320,
+      "height": 320,
+      "mode": "RGBA",
+      "bytes": 35234,
+      "sha256": "92071f141a2aa0565afe75cd3aab5489d59e341ccd40adffa1a8aaa04baa2bcb"
+    },
+    {
+      "path": "assets/ui/mic.webp",
+      "width": 360,
+      "height": 360,
+      "mode": "RGBA",
+      "bytes": 44692,
+      "sha256": "52fd5cb3cc8b89fad13000b0e77bcc6c9e9a9bc3216bb6bb312003670fb6a3ef"
+    },
+    {
+      "path": "assets/ui/replay.webp",
+      "width": 320,
+      "height": 320,
+      "mode": "RGBA",
+      "bytes": 35104,
+      "sha256": "e578580fee6229f1b34da60e3f01aa791fddd31ecb23af2560474db7f18a7af7"
+    },
+    {
+      "path": "assets/ui/next.webp",
+      "width": 320,
+      "height": 320,
+      "mode": "RGBA",
+      "bytes": 33914,
+      "sha256": "912ea72b4d6d8c5e1026821814350730b500925f894b3f30874c9d80b6951210"
+    },
+    {
+      "path": "assets/ui/storybook.webp",
+      "width": 480,
+      "height": 360,
+      "mode": "RGBA",
+      "bytes": 61004,
+      "sha256": "d4c794eece7ae8ac8581b3a8b698fe3dfc4e55bd560e69a58151a0caba32be2d"
+    },
+    {
+      "path": "assets/ui/star.webp",
+      "width": 320,
+      "height": 320,
+      "mode": "RGBA",
+      "bytes": 28558,
+      "sha256": "335d65f97891d7268d4c84c05b751f37f1777d10bd0fbe74bfc427a1fd3c9c87"
+    },
+    {
+      "path": "assets/ui/sentence-ribbon.webp",
+      "width": 800,
+      "height": 280,
+      "mode": "RGBA",
+      "bytes": 59628,
+      "sha256": "6648521af5278f75f782d1b44893add3b03b62d247e130abbba43b1fee9c5fe8"
+    },
+    {
+      "path": "assets/characters/fox.webp",
+      "width": 560,
+      "height": 560,
+      "mode": "RGBA",
+      "bytes": 49736,
+      "sha256": "af4f9e077a455a923bd9aacac02fb5f000b3773e0fdd97536d8407280a2e3dd4"
+    },
+    {
+      "path": "assets/characters/whale.webp",
+      "width": 560,
+      "height": 560,
+      "mode": "RGBA",
+      "bytes": 53652,
+      "sha256": "e3bb2cbdef48e0daaa56873d0a847174e9eba616feeacc083eab552500497583"
+    },
+    {
+      "path": "assets/characters/moon-bunny.webp",
+      "width": 560,
+      "height": 560,
+      "mode": "RGBA",
+      "bytes": 46628,
+      "sha256": "e72f1f03eacd642989d14669a53b6a68ae16866f61db11958ab4fe88acdffb0a"
+    },
+    {
+      "path": "assets/vocab/fox.webp",
+      "width": 360,
+      "height": 360,
+      "mode": "RGBA",
+      "bytes": 27408,
+      "sha256": "663a1b89c566e0b5b6a4a896527d640251badcbba052bdb928488413f178ed12"
+    },
+    {
+      "path": "assets/vocab/butterfly.webp",
+      "width": 360,
+      "height": 360,
+      "mode": "RGBA",
+      "bytes": 31936,
+      "sha256": "77c9be66f5a471ddb254dd385d35dc97fd12c40826ae6dd3ef3e5da277ec5c41"
+    },
+    {
+      "path": "assets/vocab/stream.webp",
+      "width": 360,
+      "height": 360,
+      "mode": "RGBA",
+      "bytes": 34740,
+      "sha256": "9666d782fdfc6d9cc485431f91d4be3ef3a334160180a64e21383c0ccd7c9f14"
+    },
+    {
+      "path": "assets/vocab/flowers.webp",
+      "width": 360,
+      "height": 360,
+      "mode": "RGBA",
+      "bytes": 56498,
+      "sha256": "970932a5801bb08abf7de96986cb65ddedc4db8f3aba10d4cc80cfe985c373ae"
+    },
+    {
+      "path": "assets/vocab/whale.webp",
+      "width": 360,
+      "height": 360,
+      "mode": "RGBA",
+      "bytes": 29688,
+      "sha256": "62a7dac27c7a8c67c74e66fae11cece743ed9e6bf046da3588038d5ca75f747f"
+    },
+    {
+      "path": "assets/vocab/coral.webp",
+      "width": 360,
+      "height": 360,
+      "mode": "RGBA",
+      "bytes": 52344,
+      "sha256": "c27478fb8d0411d1be08f7d19e90ee5804fcef6f673e58a840bd7d43fd9b8515"
+    },
+    {
+      "path": "assets/vocab/turtle.webp",
+      "width": 360,
+      "height": 360,
+      "mode": "RGBA",
+      "bytes": 31560,
+      "sha256": "46009c38f64a4d30c8b141d3e83f3dacc3e3240ea87b6000b43e25aa3568c8a2"
+    },
+    {
+      "path": "assets/vocab/bubbles.webp",
+      "width": 360,
+      "height": 360,
+      "mode": "RGBA",
+      "bytes": 30604,
+      "sha256": "804c6d6cecaca566a3a791131fb90679591ac5227c0bbce79f9746405fbf964b"
+    },
+    {
+      "path": "assets/vocab/bunny.webp",
+      "width": 360,
+      "height": 360,
+      "mode": "RGBA",
+      "bytes": 24748,
+      "sha256": "7eb415a46219b95ed06135d4a25106d06b9a872842b38176470c7d28b9fca868"
+    },
+    {
+      "path": "assets/vocab/crater.webp",
+      "width": 360,
+      "height": 360,
+      "mode": "RGBA",
+      "bytes": 24534,
+      "sha256": "5713b3dfa870570593af0eafff8d0e4427e993da612d6d163d24a1c04d9f566c"
+    },
+    {
+      "path": "assets/vocab/rover.webp",
+      "width": 360,
+      "height": 360,
+      "mode": "RGBA",
+      "bytes": 29044,
+      "sha256": "4d3db6c4b6948cb56f85095681d61031fc0ce32ac87b085145e369aa5f40dbc3"
+    },
+    {
+      "path": "assets/vocab/star.webp",
+      "width": 360,
+      "height": 360,
+      "mode": "RGBA",
+      "bytes": 32044,
+      "sha256": "0bd41d0bbce7a325cd190fe49afb5db6856d2028dc14ce043f855e198c218431"
+    },
+    {
+      "path": "assets/choices/bridge.webp",
+      "width": 440,
+      "height": 440,
+      "mode": "RGBA",
+      "bytes": 62240,
+      "sha256": "ba2a4f6a739530ee3a68d42ae83258954f2cbda1b311a1dda7141138f7450cf8"
+    },
+    {
+      "path": "assets/choices/boat.webp",
+      "width": 440,
+      "height": 440,
+      "mode": "RGBA",
+      "bytes": 55428,
+      "sha256": "0a6cd2e03192c859ef3ce355002367f9c13fd36ba35f94a6fd3b829b5d0064e6"
+    },
+    {
+      "path": "assets/choices/duck.webp",
+      "width": 440,
+      "height": 440,
+      "mode": "RGBA",
+      "bytes": 51118,
+      "sha256": "1ed5c4f0776e0beab9fb63db09a1f7c10ecc66851d0640759aea55a08eb999e1"
+    },
+    {
+      "path": "assets/choices/fireflies.webp",
+      "width": 440,
+      "height": 440,
+      "mode": "RGBA",
+      "bytes": 51626,
+      "sha256": "b7bc7e40812e32a705075c7b9fb70c1365afffc0af70cb862f9a70ed55f10854"
+    },
+    {
+      "path": "assets/choices/dolphins.webp",
+      "width": 440,
+      "height": 440,
+      "mode": "RGBA",
+      "bytes": 56966,
+      "sha256": "3f46feb4180589610db6bdd24805ff55c64a29b57fef6723d691a0087cab39bf"
+    },
+    {
+      "path": "assets/choices/turtle.webp",
+      "width": 440,
+      "height": 440,
+      "mode": "RGBA",
+      "bytes": 61968,
+      "sha256": "6a5df669a6722c526a8d7d069999b14f504d1c90a4c21c301296c476a44cb1da"
+    },
+    {
+      "path": "assets/choices/pearl.webp",
+      "width": 440,
+      "height": 440,
+      "mode": "RGBA",
+      "bytes": 54950,
+      "sha256": "5845a75a885e80bbb1326c7e9e2ed102e6d8266160c9abc97233e889994d7c5d"
+    },
+    {
+      "path": "assets/choices/song.webp",
+      "width": 440,
+      "height": 440,
+      "mode": "RGBA",
+      "bytes": 55432,
+      "sha256": "d2430fb79dde7436c9df43678aa7c1b097d11648ffa08dfb7d80ad785d458fd8"
+    },
+    {
+      "path": "assets/choices/moon-hop.webp",
+      "width": 440,
+      "height": 440,
+      "mode": "RGBA",
+      "bytes": 47330,
+      "sha256": "4b13c2d40c1fc48a3080ff22b65b282ed9ea46adbdda1ec7b25860d46c1a5e78"
+    },
+    {
+      "path": "assets/choices/rover.webp",
+      "width": 440,
+      "height": 440,
+      "mode": "RGBA",
+      "bytes": 53666,
+      "sha256": "564e4e42f162b225fc9d36bf77950aeb95c81e5e099c3c942d85723a451c4128"
+    },
+    {
+      "path": "assets/choices/crystal.webp",
+      "width": 440,
+      "height": 440,
+      "mode": "RGBA",
+      "bytes": 53966,
+      "sha256": "d0f9e4a1eb4492576520a260f4744c8cce53c9d0810937f0a1e0081221043df5"
+    },
+    {
+      "path": "assets/choices/star-friend.webp",
+      "width": 440,
+      "height": 440,
+      "mode": "RGBA",
+      "bytes": 50838,
+      "sha256": "0e0b104adfb95da85b36affb4679d43b6241d99c85b1317006dc2213e4ff809d"
+    }
+  ],
+  "sourceMethods": {
+    "ui/home": "qwen-image-layered layer_2",
+    "ui/back": "qwen-image-layered layer_2",
+    "ui/sound": "qwen-image-layered layer_2",
+    "ui/sound-off": "qwen-image-layered layer_2",
+    "ui/mic": "qwen-image-layered layer_2",
+    "ui/replay": "qwen-image-layered layer_2",
+    "ui/next": "qwen-image-layered layer_2",
+    "ui/storybook": "qwen-image-layered layer_2",
+    "ui/star": "border-connected charcoal removal after shared cutter; Layered sheet rejected or incomplete",
+    "ui/sentence-ribbon": "qwen-image-layered layer_2",
+    "characters-vocab/fox": "border-connected charcoal removal after shared cutter; Layered sheet rejected or incomplete",
+    "characters-vocab/whale": "border-connected charcoal removal after shared cutter; Layered sheet rejected or incomplete",
+    "characters-vocab/moon-bunny": "border-connected charcoal removal after shared cutter; Layered sheet rejected or incomplete",
+    "characters-vocab/butterfly": "border-connected charcoal removal after shared cutter; Layered sheet rejected or incomplete",
+    "characters-vocab/stream": "border-connected charcoal removal after shared cutter; Layered sheet rejected or incomplete",
+    "characters-vocab/flowers": "qwen-image-layered layer_2",
+    "characters-vocab/coral": "qwen-image-layered layer_2",
+    "characters-vocab/turtle": "border-connected charcoal removal after shared cutter; Layered sheet rejected or incomplete",
+    "characters-vocab/bubbles": "border-connected charcoal removal after shared cutter; Layered sheet rejected or incomplete",
+    "characters-vocab/crater": "border-connected charcoal removal after shared cutter; Layered sheet rejected or incomplete",
+    "characters-vocab/rover": "border-connected charcoal removal after shared cutter; Layered sheet rejected or incomplete",
+    "characters-vocab/story-star": "border-connected charcoal removal after shared cutter; Layered sheet rejected or incomplete",
+    "choices/bridge": "border-connected charcoal removal after shared cutter; Layered output rejected after visual QC for gutter artifacts",
+    "choices/boat": "border-connected charcoal removal after shared cutter; Layered output rejected after visual QC for gutter artifacts",
+    "choices/duck": "border-connected charcoal removal after shared cutter; Layered output rejected after visual QC for gutter artifacts",
+    "choices/fireflies": "border-connected charcoal removal after shared cutter; Layered output rejected after visual QC for gutter artifacts",
+    "choices/dolphins": "border-connected charcoal removal after shared cutter; Layered output rejected after visual QC for gutter artifacts",
+    "choices/turtle": "border-connected charcoal removal after shared cutter; Layered output rejected after visual QC for gutter artifacts",
+    "choices/pearl": "border-connected charcoal removal after shared cutter; Layered output rejected after visual QC for gutter artifacts",
+    "choices/song": "border-connected charcoal removal after shared cutter; Layered output rejected after visual QC for gutter artifacts",
+    "choices/moon-hop": "border-connected charcoal removal after shared cutter; Layered output rejected after visual QC for gutter artifacts",
+    "choices/rover": "border-connected charcoal removal after shared cutter; Layered output rejected after visual QC for gutter artifacts",
+    "choices/crystal": "border-connected charcoal removal after shared cutter; Layered output rejected after visual QC for gutter artifacts",
+    "choices/star-friend": "border-connected charcoal removal after shared cutter; Layered output rejected after visual QC for gutter artifacts"
+  },
+  "qa": "assets/source/qa/final-alpha-magenta.jpg"
+}

@@ -1,0 +1,292 @@
+{
+  "source": "games/picture-narration/assets/source/qwen-layered/ui-layer2.png",
+  "sourceSha256": "1bab50fb7aacc5804bdff0aa89797ea8a1887c0c97568ee1a20587ca07c72b71",
+  "sourceSize": [
+    1024,
+    768
+  ],
+  "detection": "alpha",
+  "sampledBackgroundRgb": null,
+  "padding": 12,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "home",
+      "file": "home.png",
+      "componentArea": 36922,
+      "foregroundBbox": [
+        34,
+        46,
+        252,
+        260
+      ],
+      "cropBbox": [
+        22,
+        34,
+        264,
+        272
+      ],
+      "cropXywh": [
+        22,
+        34,
+        242,
+        238
+      ],
+      "normalizedCropBbox": [
+        0.021484,
+        0.044271,
+        0.257812,
+        0.354167
+      ]
+    },
+    {
+      "index": 2,
+      "name": "back",
+      "file": "back.png",
+      "componentArea": 35743,
+      "foregroundBbox": [
+        277,
+        47,
+        490,
+        259
+      ],
+      "cropBbox": [
+        265,
+        35,
+        502,
+        271
+      ],
+      "cropXywh": [
+        265,
+        35,
+        237,
+        236
+      ],
+      "normalizedCropBbox": [
+        0.258789,
+        0.045573,
+        0.490234,
+        0.352865
+      ]
+    },
+    {
+      "index": 3,
+      "name": "sound",
+      "file": "sound.png",
+      "componentArea": 36276,
+      "foregroundBbox": [
+        515,
+        47,
+        731,
+        259
+      ],
+      "cropBbox": [
+        503,
+        35,
+        743,
+        271
+      ],
+      "cropXywh": [
+        503,
+        35,
+        240,
+        236
+      ],
+      "normalizedCropBbox": [
+        0.491211,
+        0.045573,
+        0.725586,
+        0.352865
+      ]
+    },
+    {
+      "index": 4,
+      "name": "sound-off",
+      "file": "sound-off.png",
+      "componentArea": 36752,
+      "foregroundBbox": [
+        760,
+        46,
+        977,
+        259
+      ],
+      "cropBbox": [
+        748,
+        34,
+        989,
+        271
+      ],
+      "cropXywh": [
+        748,
+        34,
+        241,
+        237
+      ],
+      "normalizedCropBbox": [
+        0.730469,
+        0.044271,
+        0.96582,
+        0.352865
+      ]
+    },
+    {
+      "index": 5,
+      "name": "mic",
+      "file": "mic.png",
+      "componentArea": 39217,
+      "foregroundBbox": [
+        20,
+        285,
+        245,
+        505
+      ],
+      "cropBbox": [
+        8,
+        273,
+        257,
+        517
+      ],
+      "cropXywh": [
+        8,
+        273,
+        249,
+        244
+      ],
+      "normalizedCropBbox": [
+        0.007812,
+        0.355469,
+        0.250977,
+        0.673177
+      ]
+    },
+    {
+      "index": 6,
+      "name": "replay",
+      "file": "replay.png",
+      "componentArea": 35149,
+      "foregroundBbox": [
+        262,
+        289,
+        472,
+        499
+      ],
+      "cropBbox": [
+        250,
+        277,
+        484,
+        511
+      ],
+      "cropXywh": [
+        250,
+        277,
+        234,
+        234
+      ],
+      "normalizedCropBbox": [
+        0.244141,
+        0.360677,
+        0.472656,
+        0.665365
+      ]
+    },
+    {
+      "index": 7,
+      "name": "next",
+      "file": "next.png",
+      "componentArea": 34388,
+      "foregroundBbox": [
+        485,
+        288,
+        691,
+        499
+      ],
+      "cropBbox": [
+        473,
+        276,
+        703,
+        511
+      ],
+      "cropXywh": [
+        473,
+        276,
+        230,
+        235
+      ],
+      "normalizedCropBbox": [
+        0.461914,
+        0.359375,
+        0.686523,
+        0.665365
+      ]
+    },
+    {
+      "index": 8,
+      "name": "storybook",
+      "file": "storybook.png",
+      "componentArea": 58575,
+      "foregroundBbox": [
+        703,
+        290,
+        1005,
+        510
+      ],
+      "cropBbox": [
+        691,
+        278,
+        1017,
+        522
+      ],
+      "cropXywh": [
+        691,
+        278,
+        326,
+        244
+      ],
+      "normalizedCropBbox": [
+        0.674805,
+        0.361979,
+        0.993164,
+        0.679688
+      ]
+    },
+    {
+      "index": 9,
+      "name": "sentence-ribbon",
+      "file": "sentence-ribbon.png",
+      "componentArea": 71889,
+      "foregroundBbox": [
+        272,
+        543,
+        796,
+        703
+      ],
+      "cropBbox": [
+        260,
+        531,
+        808,
+        715
+      ],
+      "cropXywh": [
+        260,
+        531,
+        548,
+        184
+      ],
+      "normalizedCropBbox": [
+        0.253906,
+        0.691406,
+        0.789062,
+        0.93099
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 4,
+    "minArea": 393,
+    "order": "reading"
+  }
+}

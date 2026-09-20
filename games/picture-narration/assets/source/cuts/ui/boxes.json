@@ -1,0 +1,386 @@
+{
+  "source": "games/picture-narration/assets/source/gpt-image-2/ui-sheet.png",
+  "sourceSha256": "4f86c8b492ff78e597bd5550dcd1a3859893f161ac353b3deec8cd40870acea7",
+  "sourceSize": [
+    1448,
+    1086
+  ],
+  "detection": "background-threshold",
+  "sampledBackgroundRgb": [
+    30,
+    31,
+    35
+  ],
+  "padding": 12,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "home",
+      "file": "home.png",
+      "componentArea": 72481,
+      "foregroundBbox": [
+        50,
+        67,
+        355,
+        366
+      ],
+      "cropBbox": [
+        38,
+        55,
+        367,
+        378
+      ],
+      "cropXywh": [
+        38,
+        55,
+        329,
+        323
+      ],
+      "normalizedCropBbox": [
+        0.026243,
+        0.050645,
+        0.253453,
+        0.348066
+      ]
+    },
+    {
+      "index": 2,
+      "name": "back",
+      "file": "back.png",
+      "componentArea": 70058,
+      "foregroundBbox": [
+        392,
+        69,
+        692,
+        365
+      ],
+      "cropBbox": [
+        380,
+        57,
+        704,
+        377
+      ],
+      "cropXywh": [
+        380,
+        57,
+        324,
+        320
+      ],
+      "normalizedCropBbox": [
+        0.262431,
+        0.052486,
+        0.486188,
+        0.347145
+      ]
+    },
+    {
+      "index": 3,
+      "name": "sound",
+      "file": "sound.png",
+      "componentArea": 71208,
+      "foregroundBbox": [
+        730,
+        68,
+        1031,
+        365
+      ],
+      "cropBbox": [
+        718,
+        56,
+        1043,
+        377
+      ],
+      "cropXywh": [
+        718,
+        56,
+        325,
+        321
+      ],
+      "normalizedCropBbox": [
+        0.495856,
+        0.051565,
+        0.720304,
+        0.347145
+      ]
+    },
+    {
+      "index": 4,
+      "name": "sound-off",
+      "file": "sound-off.png",
+      "componentArea": 72194,
+      "foregroundBbox": [
+        1076,
+        66,
+        1381,
+        365
+      ],
+      "cropBbox": [
+        1064,
+        54,
+        1393,
+        377
+      ],
+      "cropXywh": [
+        1064,
+        54,
+        329,
+        323
+      ],
+      "normalizedCropBbox": [
+        0.734807,
+        0.049724,
+        0.962017,
+        0.347145
+      ]
+    },
+    {
+      "index": 5,
+      "name": "mic",
+      "file": "mic.png",
+      "componentArea": 77257,
+      "foregroundBbox": [
+        30,
+        404,
+        346,
+        713
+      ],
+      "cropBbox": [
+        18,
+        392,
+        358,
+        725
+      ],
+      "cropXywh": [
+        18,
+        392,
+        340,
+        333
+      ],
+      "normalizedCropBbox": [
+        0.012431,
+        0.360958,
+        0.247238,
+        0.667587
+      ]
+    },
+    {
+      "index": 6,
+      "name": "replay",
+      "file": "replay.png",
+      "componentArea": 69107,
+      "foregroundBbox": [
+        371,
+        410,
+        666,
+        705
+      ],
+      "cropBbox": [
+        359,
+        398,
+        678,
+        717
+      ],
+      "cropXywh": [
+        359,
+        398,
+        319,
+        319
+      ],
+      "normalizedCropBbox": [
+        0.247928,
+        0.366483,
+        0.468232,
+        0.660221
+      ]
+    },
+    {
+      "index": 7,
+      "name": "next",
+      "file": "next.png",
+      "componentArea": 67872,
+      "foregroundBbox": [
+        686,
+        407,
+        977,
+        705
+      ],
+      "cropBbox": [
+        674,
+        395,
+        989,
+        717
+      ],
+      "cropXywh": [
+        674,
+        395,
+        315,
+        322
+      ],
+      "normalizedCropBbox": [
+        0.46547,
+        0.36372,
+        0.683011,
+        0.660221
+      ]
+    },
+    {
+      "index": 8,
+      "name": "storybook",
+      "file": "storybook.png",
+      "componentArea": 115246,
+      "foregroundBbox": [
+        995,
+        412,
+        1420,
+        719
+      ],
+      "cropBbox": [
+        983,
+        400,
+        1432,
+        731
+      ],
+      "cropXywh": [
+        983,
+        400,
+        449,
+        331
+      ],
+      "normalizedCropBbox": [
+        0.678867,
+        0.368324,
+        0.98895,
+        0.673112
+      ]
+    },
+    {
+      "index": 9,
+      "name": "star",
+      "file": "star.png",
+      "componentArea": 55304,
+      "foregroundBbox": [
+        55,
+        747,
+        332,
+        1009
+      ],
+      "cropBbox": [
+        43,
+        735,
+        344,
+        1021
+      ],
+      "cropXywh": [
+        43,
+        735,
+        301,
+        286
+      ],
+      "normalizedCropBbox": [
+        0.029696,
+        0.676796,
+        0.237569,
+        0.940147
+      ]
+    },
+    {
+      "index": 10,
+      "name": "sentence-ribbon",
+      "file": "sentence-ribbon.png",
+      "componentArea": 142170,
+      "foregroundBbox": [
+        386,
+        769,
+        1124,
+        992
+      ],
+      "cropBbox": [
+        374,
+        757,
+        1136,
+        1004
+      ],
+      "cropXywh": [
+        374,
+        757,
+        762,
+        247
+      ],
+      "normalizedCropBbox": [
+        0.258287,
+        0.697053,
+        0.78453,
+        0.924494
+      ]
+    },
+    {
+      "index": 11,
+      "name": "sparkles-gold",
+      "file": "sparkles-gold.png",
+      "componentArea": 11078,
+      "foregroundBbox": [
+        1191,
+        760,
+        1327,
+        987
+      ],
+      "cropBbox": [
+        1179,
+        748,
+        1339,
+        999
+      ],
+      "cropXywh": [
+        1179,
+        748,
+        160,
+        251
+      ],
+      "normalizedCropBbox": [
+        0.814227,
+        0.688766,
+        0.924724,
+        0.91989
+      ]
+    },
+    {
+      "index": 12,
+      "name": "sparkles-blue",
+      "file": "sparkles-blue.png",
+      "componentArea": 5362,
+      "foregroundBbox": [
+        1268,
+        840,
+        1391,
+        981
+      ],
+      "cropBbox": [
+        1256,
+        828,
+        1403,
+        993
+      ],
+      "cropXywh": [
+        1256,
+        828,
+        147,
+        165
+      ],
+      "normalizedCropBbox": [
+        0.867403,
+        0.762431,
+        0.968923,
+        0.914365
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 6,
+    "minArea": 2500,
+    "order": "reading"
+  }
+}

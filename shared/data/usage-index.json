@@ -9,7 +9,7 @@
     "games/<id>/config.js",
     "games/<id>/js/**/*.js"
   ],
-  "generated": "2026-09-20T00:47:51.130Z",
+  "generated": "2026-09-20T02:05:14.948Z",
   "engines": {
     "choose-one": {
       "count": 2,
@@ -48,12 +48,6 @@
       "count": 1,
       "games": [
         "story-stones"
-      ]
-    },
-    "observe-journal": {
-      "count": 1,
-      "games": [
-        "picture-narration"
       ]
     },
     "match-pairs": {
@@ -2001,22 +1995,26 @@
       "packs": []
     },
     "picture-narration": {
-      "engine": "observe-journal",
-      "status": "in-design",
+      "engine": null,
+      "status": "beta",
       "category": "oral-storytelling",
       "characters": [],
       "modules": [
         "shared/js/analytics.js",
-        "shared/js/engines/observe-journal.js",
+        "shared/js/audio-unlock.js",
+        "shared/js/debug-harness.js",
+        "shared/js/preload.js",
+        "shared/js/rng.js",
         "shared/js/sfx.js",
-        "shared/js/speech.js"
+        "shared/js/timers.js",
+        "shared/js/voice-clips.js"
       ],
       "css": [
-        "shared/css/base.css",
-        "shared/css/engine-base.css",
-        "shared/css/screens.css"
+        "shared/css/base.css"
       ],
-      "assets": [],
+      "assets": [
+        "games/picture-narration/assets"
+      ],
       "packs": []
     },
     "picture-word-match": {
@@ -3977,6 +3975,7 @@
         "obstacle-course-builder",
         "pattern-bracelet-band",
         "pattern-train",
+        "picture-narration",
         "picture-word-match",
         "plan-do-review",
         "plant-care-captain",
@@ -4216,6 +4215,7 @@
         "obstacle-course-builder",
         "pattern-bracelet-band",
         "pattern-train",
+        "picture-narration",
         "picture-word-match",
         "plan-do-review",
         "plant-care-captain",
@@ -4289,9 +4289,6 @@
       ],
       "shared/js/engines/match-pairs.js": [
         "then-now-sort"
-      ],
-      "shared/js/engines/observe-journal.js": [
-        "picture-narration"
       ],
       "shared/js/engines/puppet-band.js": [
         "my-puppet-band"
@@ -4561,6 +4558,7 @@
         "obstacle-course-builder",
         "pattern-bracelet-band",
         "pattern-train",
+        "picture-narration",
         "picture-word-match",
         "plan-do-review",
         "plant-care-captain",
@@ -4631,6 +4629,7 @@
         "obstacle-course-builder",
         "pattern-bracelet-band",
         "pattern-train",
+        "picture-narration",
         "picture-word-match",
         "plant-care-captain",
         "playdough-letter-factory",
@@ -4862,7 +4861,6 @@
         "number-sense-kitchen",
         "obstacle-course-builder",
         "pattern-bracelet-band",
-        "picture-narration",
         "playdough-letter-factory",
         "pouring-station",
         "problem-solving-puppets",
@@ -5133,6 +5131,7 @@
         "obstacle-course-builder",
         "pattern-bracelet-band",
         "pattern-train",
+        "picture-narration",
         "picture-word-match",
         "plan-do-review",
         "plant-care-captain",
@@ -5225,6 +5224,7 @@
         "obstacle-course-builder",
         "pattern-bracelet-band",
         "pattern-train",
+        "picture-narration",
         "picture-word-match",
         "plan-do-review",
         "plant-care-captain",
@@ -5408,7 +5408,6 @@
         "my-puppet-band",
         "mystery-letter-bag",
         "number-line-jump",
-        "picture-narration",
         "problem-solving-puppets",
         "puppet-problem-solvers",
         "scissor-trail-safari",
@@ -5540,7 +5539,6 @@
         "obstacle-course-builder",
         "pattern-bracelet-band",
         "pattern-train",
-        "picture-narration",
         "picture-word-match",
         "post-office-letters",
         "pouring-station",
@@ -6487,6 +6485,9 @@
       "games/pattern-train/assets/audio": [
         "pattern-train"
       ],
+      "games/picture-narration/assets": [
+        "picture-narration"
+      ],
       "games/picture-word-match/assets/art/reading-garden.webp": [
         "picture-word-match"
       ],
@@ -7334,6 +7335,7 @@
   },
   "zeroConsumers": {
     "modules": [
+      "shared/js/engines/observe-journal.js",
       "shared/js/engines/pattern-continue.js",
       "shared/js/engines/sequence-order.js",
       "shared/js/engines/sort-into-bins.js",

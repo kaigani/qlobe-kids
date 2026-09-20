@@ -1,0 +1,382 @@
+{
+  "source": "games/picture-narration/assets/source/qwen-layered/choices-layer2.png",
+  "sourceSha256": "f2bc9e6f7a25625956a993868074127e8595cb9cb01c4519dda60bbd0bc86e54",
+  "sourceSize": [
+    1024,
+    768
+  ],
+  "detection": "alpha",
+  "sampledBackgroundRgb": null,
+  "padding": 12,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "bridge",
+      "file": "bridge.png",
+      "componentArea": 56358,
+      "foregroundBbox": [
+        14,
+        14,
+        256,
+        254
+      ],
+      "cropBbox": [
+        2,
+        2,
+        268,
+        266
+      ],
+      "cropXywh": [
+        2,
+        2,
+        266,
+        264
+      ],
+      "normalizedCropBbox": [
+        0.001953,
+        0.002604,
+        0.261719,
+        0.346354
+      ]
+    },
+    {
+      "index": 2,
+      "name": "boat",
+      "file": "boat.png",
+      "componentArea": 56574,
+      "foregroundBbox": [
+        265,
+        14,
+        507,
+        254
+      ],
+      "cropBbox": [
+        253,
+        2,
+        519,
+        266
+      ],
+      "cropXywh": [
+        253,
+        2,
+        266,
+        264
+      ],
+      "normalizedCropBbox": [
+        0.24707,
+        0.002604,
+        0.506836,
+        0.346354
+      ]
+    },
+    {
+      "index": 3,
+      "name": "duck",
+      "file": "duck.png",
+      "componentArea": 56956,
+      "foregroundBbox": [
+        516,
+        13,
+        759,
+        254
+      ],
+      "cropBbox": [
+        504,
+        1,
+        771,
+        266
+      ],
+      "cropXywh": [
+        504,
+        1,
+        267,
+        265
+      ],
+      "normalizedCropBbox": [
+        0.492188,
+        0.001302,
+        0.75293,
+        0.346354
+      ]
+    },
+    {
+      "index": 4,
+      "name": "fireflies",
+      "file": "fireflies.png",
+      "componentArea": 56848,
+      "foregroundBbox": [
+        768,
+        13,
+        1011,
+        254
+      ],
+      "cropBbox": [
+        756,
+        1,
+        1023,
+        266
+      ],
+      "cropXywh": [
+        756,
+        1,
+        267,
+        265
+      ],
+      "normalizedCropBbox": [
+        0.738281,
+        0.001302,
+        0.999023,
+        0.346354
+      ]
+    },
+    {
+      "index": 5,
+      "name": "dolphins",
+      "file": "dolphins.png",
+      "componentArea": 56530,
+      "foregroundBbox": [
+        13,
+        263,
+        256,
+        502
+      ],
+      "cropBbox": [
+        1,
+        251,
+        268,
+        514
+      ],
+      "cropXywh": [
+        1,
+        251,
+        267,
+        263
+      ],
+      "normalizedCropBbox": [
+        0.000977,
+        0.326823,
+        0.261719,
+        0.669271
+      ]
+    },
+    {
+      "index": 6,
+      "name": "turtle",
+      "file": "turtle.png",
+      "componentArea": 56448,
+      "foregroundBbox": [
+        265,
+        263,
+        507,
+        502
+      ],
+      "cropBbox": [
+        253,
+        251,
+        519,
+        514
+      ],
+      "cropXywh": [
+        253,
+        251,
+        266,
+        263
+      ],
+      "normalizedCropBbox": [
+        0.24707,
+        0.326823,
+        0.506836,
+        0.669271
+      ]
+    },
+    {
+      "index": 7,
+      "name": "pearl",
+      "file": "pearl.png",
+      "componentArea": 56474,
+      "foregroundBbox": [
+        517,
+        263,
+        759,
+        502
+      ],
+      "cropBbox": [
+        505,
+        251,
+        771,
+        514
+      ],
+      "cropXywh": [
+        505,
+        251,
+        266,
+        263
+      ],
+      "normalizedCropBbox": [
+        0.493164,
+        0.326823,
+        0.75293,
+        0.669271
+      ]
+    },
+    {
+      "index": 8,
+      "name": "song",
+      "file": "song.png",
+      "componentArea": 56437,
+      "foregroundBbox": [
+        768,
+        263,
+        1010,
+        503
+      ],
+      "cropBbox": [
+        756,
+        251,
+        1022,
+        515
+      ],
+      "cropXywh": [
+        756,
+        251,
+        266,
+        264
+      ],
+      "normalizedCropBbox": [
+        0.738281,
+        0.326823,
+        0.998047,
+        0.670573
+      ]
+    },
+    {
+      "index": 9,
+      "name": "moon-hop",
+      "file": "moon-hop.png",
+      "componentArea": 56457,
+      "foregroundBbox": [
+        13,
+        510,
+        256,
+        749
+      ],
+      "cropBbox": [
+        1,
+        498,
+        268,
+        761
+      ],
+      "cropXywh": [
+        1,
+        498,
+        267,
+        263
+      ],
+      "normalizedCropBbox": [
+        0.000977,
+        0.648438,
+        0.261719,
+        0.990885
+      ]
+    },
+    {
+      "index": 10,
+      "name": "rover",
+      "file": "rover.png",
+      "componentArea": 56435,
+      "foregroundBbox": [
+        265,
+        510,
+        507,
+        749
+      ],
+      "cropBbox": [
+        253,
+        498,
+        519,
+        761
+      ],
+      "cropXywh": [
+        253,
+        498,
+        266,
+        263
+      ],
+      "normalizedCropBbox": [
+        0.24707,
+        0.648438,
+        0.506836,
+        0.990885
+      ]
+    },
+    {
+      "index": 11,
+      "name": "crystal",
+      "file": "crystal.png",
+      "componentArea": 56500,
+      "foregroundBbox": [
+        516,
+        510,
+        759,
+        750
+      ],
+      "cropBbox": [
+        504,
+        498,
+        771,
+        762
+      ],
+      "cropXywh": [
+        504,
+        498,
+        267,
+        264
+      ],
+      "normalizedCropBbox": [
+        0.492188,
+        0.648438,
+        0.75293,
+        0.992188
+      ]
+    },
+    {
+      "index": 12,
+      "name": "star-friend",
+      "file": "star-friend.png",
+      "componentArea": 56390,
+      "foregroundBbox": [
+        768,
+        510,
+        1010,
+        750
+      ],
+      "cropBbox": [
+        756,
+        498,
+        1022,
+        762
+      ],
+      "cropXywh": [
+        756,
+        498,
+        266,
+        264
+      ],
+      "normalizedCropBbox": [
+        0.738281,
+        0.648438,
+        0.998047,
+        0.992188
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 2,
+    "minArea": 393,
+    "order": "reading"
+  }
+}

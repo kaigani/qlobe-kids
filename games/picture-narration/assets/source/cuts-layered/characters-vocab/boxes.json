@@ -1,0 +1,82 @@
+{
+  "source": "games/picture-narration/assets/source/qwen-layered/characters-vocab-layer2.png",
+  "sourceSha256": "1f75dab2ff0e5b6978aa448db2e07ec5b0b08227953dd8947ec1d8f4f4cdbae3",
+  "sourceSize": [
+    1024,
+    768
+  ],
+  "detection": "alpha",
+  "sampledBackgroundRgb": null,
+  "padding": 12,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "flowers",
+      "file": "flowers.png",
+      "componentArea": 37095,
+      "foregroundBbox": [
+        276,
+        265,
+        500,
+        494
+      ],
+      "cropBbox": [
+        264,
+        253,
+        512,
+        506
+      ],
+      "cropXywh": [
+        264,
+        253,
+        248,
+        253
+      ],
+      "normalizedCropBbox": [
+        0.257812,
+        0.329427,
+        0.5,
+        0.658854
+      ]
+    },
+    {
+      "index": 2,
+      "name": "coral",
+      "file": "coral.png",
+      "componentArea": 38804,
+      "foregroundBbox": [
+        518,
+        266,
+        750,
+        483
+      ],
+      "cropBbox": [
+        506,
+        254,
+        762,
+        495
+      ],
+      "cropXywh": [
+        506,
+        254,
+        256,
+        241
+      ],
+      "normalizedCropBbox": [
+        0.494141,
+        0.330729,
+        0.744141,
+        0.644531
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 4,
+    "minArea": 393,
+    "order": "reading"
+  }
+}

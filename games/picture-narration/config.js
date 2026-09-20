@@ -1,168 +1,241 @@
+const asset = (path) => `./assets/${path}`;
+
+export const ui = {
+  splash: asset('art/splash.webp'),
+  title: asset('ui/title.webp'),
+  home: asset('ui/home.webp'),
+  back: asset('ui/back.webp'),
+  sound: asset('ui/sound.webp'),
+  soundOff: asset('ui/sound-off.webp'),
+  mic: asset('ui/mic.webp'),
+  replay: asset('ui/replay.webp'),
+  next: asset('ui/next.webp'),
+  storybook: asset('ui/storybook.webp'),
+  star: asset('ui/star.webp'),
+  sentenceRibbon: asset('ui/sentence-ribbon.webp'),
+};
+
+export const worlds = [
+  {
+    id: 'forest',
+    title: 'Forest',
+    storyTitle: "Pip's Forest Story",
+    skill: 'name forest story clues and choose how Pip crosses the stream',
+    background: asset('art/forest.webp'),
+    protagonist: {
+      id: 'pip',
+      name: 'Pip',
+      label: 'Pip the fox',
+      art: asset('characters/fox.webp'),
+    },
+    intro: 'Pip the fox found a path with two surprises. Tap the glowing pictures and name what you see.',
+    hotspots: [
+      {
+        id: 'fox', label: 'fox', pronunciation: 'FOX', art: asset('vocab/fox.webp'),
+        x: 25, y: 57, line: 'Fox. Pip is a curious fox.',
+      },
+      {
+        id: 'butterfly', label: 'butterfly', pronunciation: 'BUT-ter-fly', art: asset('vocab/butterfly.webp'),
+        x: 71, y: 28, line: 'Butterfly. The blue butterfly flutters.',
+      },
+      {
+        id: 'stream', label: 'stream', pronunciation: 'STREAM', art: asset('vocab/stream.webp'),
+        x: 51, y: 61, line: 'Stream. The stream sparkles and splashes.',
+      },
+      {
+        id: 'flowers', label: 'flowers', pronunciation: 'FLOW-ers', art: asset('vocab/flowers.webp'),
+        x: 79, y: 70, line: 'Flowers. The flowers bloom in many colors.',
+      },
+    ],
+    choicePrompts: [
+      'What happens next? Will Pip cross the bridge, or sail in the leaf boat?',
+      'Who will Pip meet? A little duck, or dancing fireflies?',
+    ],
+    choices: [
+      [
+        {
+          id: 'bridge', label: 'Bridge', token: 'crossed the bridge', art: asset('choices/bridge.webp'),
+          line: 'Pip padded across the little bridge.',
+          sentencePart: 'crossed the stream on a little bridge',
+        },
+        {
+          id: 'boat', label: 'Boat', token: 'sailed in a boat', art: asset('choices/boat.webp'),
+          line: 'Pip sailed across in a tiny wooden boat.',
+          sentencePart: 'sailed across the stream in a tiny boat',
+        },
+      ],
+      [
+        {
+          id: 'duck', label: 'Duck', token: 'met a duck', art: asset('choices/duck.webp'),
+          line: 'On the other side, Pip met a cheerful duck.',
+          sentencePart: 'met a cheerful duck on the other side',
+        },
+        {
+          id: 'fireflies', label: 'Fireflies', token: 'followed fireflies', art: asset('choices/fireflies.webp'),
+          line: 'Glowing fireflies danced around Pip.',
+          sentencePart: 'followed a dance of glowing fireflies',
+        },
+      ],
+    ],
+  },
+  {
+    id: 'ocean',
+    title: 'Ocean',
+    storyTitle: "Willa's Ocean Story",
+    skill: 'name ocean story clues and choose Willa’s underwater adventure',
+    background: asset('art/ocean.webp'),
+    protagonist: {
+      id: 'willa',
+      name: 'Willa',
+      label: 'Willa the whale',
+      art: asset('characters/whale.webp'),
+    },
+    intro: 'Willa the whale found a sparkling reef. Tap the glowing pictures and name what you see.',
+    hotspots: [
+      {
+        id: 'whale', label: 'whale', pronunciation: 'WHALE', art: asset('vocab/whale.webp'),
+        x: 29, y: 47, line: 'Whale. Willa is a gentle whale.',
+      },
+      {
+        id: 'coral', label: 'coral', pronunciation: 'COR-al', art: asset('vocab/coral.webp'),
+        x: 20, y: 74, line: 'Coral. The coral makes a colorful sea garden.',
+      },
+      {
+        id: 'turtle', label: 'turtle', pronunciation: 'TUR-tle', art: asset('vocab/turtle.webp'),
+        x: 72, y: 58, line: 'Turtle. The sea turtle glides slowly.',
+      },
+      {
+        id: 'bubbles', label: 'bubbles', pronunciation: 'BUB-bles', art: asset('vocab/bubbles.webp'),
+        x: 59, y: 27, line: 'Bubbles. The bubbles float up, up, up.',
+      },
+    ],
+    choicePrompts: [
+      'What happens next? Will Willa follow the dolphins, or visit the turtle?',
+      'What will Willa discover? A glowing pearl, or a fishy song?',
+    ],
+    choices: [
+      [
+        {
+          id: 'dolphins', label: 'Dolphins', token: 'followed dolphins', art: asset('choices/dolphins.webp'),
+          line: 'Willa followed two playful dolphins through the waves.',
+          sentencePart: 'followed two playful dolphins through the waves',
+        },
+        {
+          id: 'turtle', label: 'Sea turtle', token: 'swam with a turtle', art: asset('choices/turtle.webp'),
+          line: 'Willa swam beside a wise sea turtle.',
+          sentencePart: 'swam beside a wise sea turtle',
+        },
+      ],
+      [
+        {
+          id: 'pearl', label: 'Pearl', token: 'found a pearl', art: asset('choices/pearl.webp'),
+          line: 'Together they found a glowing pearl in a shell.',
+          sentencePart: 'found a glowing pearl tucked inside a shell',
+        },
+        {
+          id: 'song', label: 'Ocean song', token: 'sang a song', art: asset('choices/song.webp'),
+          line: 'Together they sang a gentle song for the whole ocean.',
+          sentencePart: 'sang a gentle song for the whole ocean',
+        },
+      ],
+    ],
+  },
+  {
+    id: 'moon',
+    title: 'Moon',
+    storyTitle: "Nova's Moon Story",
+    skill: 'name moon story clues and choose Nova’s space adventure',
+    background: asset('art/moon.webp'),
+    protagonist: {
+      id: 'nova',
+      name: 'Nova',
+      label: 'Nova the moon bunny',
+      art: asset('characters/moon-bunny.webp'),
+    },
+    intro: 'Nova the moon bunny found a trail of stardust. Tap the glowing pictures and name what you see.',
+    hotspots: [
+      {
+        id: 'bunny', label: 'bunny', pronunciation: 'BUN-ny', art: asset('vocab/bunny.webp'),
+        x: 27, y: 58, line: 'Bunny. Nova is a brave moon bunny.',
+      },
+      {
+        id: 'crater', label: 'crater', pronunciation: 'CRAY-ter', art: asset('vocab/crater.webp'),
+        x: 64, y: 69, line: 'Crater. A crater is a round hollow on the moon.',
+      },
+      {
+        id: 'rover', label: 'rover', pronunciation: 'RO-ver', art: asset('vocab/rover.webp'),
+        x: 76, y: 45, line: 'Rover. The rover rolls over moon rocks.',
+      },
+      {
+        id: 'star', label: 'star', pronunciation: 'STAR', art: asset('vocab/star.webp'),
+        x: 55, y: 24, line: 'Star. The golden star twinkles hello.',
+      },
+    ],
+    choicePrompts: [
+      'What happens next? Will Nova moon-hop, or ride the rover?',
+      'What will Nova find? A crystal cave, or a friendly star?',
+    ],
+    choices: [
+      [
+        {
+          id: 'moon-hop', label: 'Moon hop', token: 'hopped high', art: asset('choices/moon-hop.webp'),
+          line: 'Nova made giant, bouncy moon hops.',
+          sentencePart: 'made giant, bouncy hops across the moon',
+        },
+        {
+          id: 'rover', label: 'Moon rover', token: 'rode the rover', art: asset('choices/rover.webp'),
+          line: 'Nova rode the little rover over silver hills.',
+          sentencePart: 'rode a little rover over the silver hills',
+        },
+      ],
+      [
+        {
+          id: 'crystal', label: 'Moon crystal', token: 'found a crystal', art: asset('choices/crystal.webp'),
+          line: 'Nova found a crystal glowing under the moon dust.',
+          sentencePart: 'found a crystal glowing under the moon dust',
+        },
+        {
+          id: 'star-friend', label: 'Star friend', token: 'met a star friend', art: asset('choices/star-friend.webp'),
+          line: 'Nova met a tiny star who became a new friend.',
+          sentencePart: 'met a tiny star who became a new friend',
+        },
+      ],
+    ],
+  },
+];
+
+export function storySentence(world, selectedChoices) {
+  const first = world.choices[0].find((choice) => choice.id === selectedChoices[0]);
+  const second = world.choices[1].find((choice) => choice.id === selectedChoices[1]);
+  if (!first || !second) return `${world.protagonist.label} began a wonderful adventure.`;
+  return `${world.protagonist.label} ${first.sentencePart}, and ${second.sentencePart}.`;
+}
+
+export const audioLines = Object.fromEntries([
+  ['welcome', "Welcome, storyteller! Let's make a tale together."],
+  ['choose-world', 'Forest, ocean, or moon. Where shall our story begin?'],
+  ['all-clues', 'You found every story word. Now choose what happens next!'],
+  ['story-ready', 'Your story is ready. Tell it in your own words.'],
+  ['record-ready', 'Press and hold the red microphone while you tell your story. It stays on this device.'],
+  ['recording', "I'm listening. Tell your story!"],
+  ['recorded', 'Your recording stays here until you leave this story. Tap replay to hear it.'],
+  ['mic-fallback', 'No microphone? No problem. Tell your story out loud to someone nearby.'],
+  ['guided-finish', 'Wonderful telling! You made a brand new story.'],
+  ...worlds.flatMap((world) => [
+    [`intro-${world.id}`, world.intro],
+    ...world.hotspots.map((hotspot) => [`word-${world.id}-${hotspot.id}`, hotspot.line]),
+    ...world.choicePrompts.map((line, index) => [`prompt-${world.id}-${index + 1}`, line]),
+    ...world.choices.flatMap((choices, step) => choices.map((choice) => [
+      `choice-${world.id}-${step + 1}-${choice.id}`,
+      choice.line,
+    ])),
+  ]),
+]);
+
 export default {
   id: 'picture-narration',
-  engine: 'observe-journal',
-  title: 'Picture Narration',
-  splashEmoji: '🖼️',
-  // Story-corner backdrop, Story Screen art world (docs/art-direction.md)
-  theme: { world: 'story-screen', background: './assets/bg.jpg' },
-  copy: {
-    recap: 'My Noticing Story',
-    playAgain: 'Explore Again',
-  },
-  voice: {
-    cheer: 'You noticed so many wonderful details!',
-    yum: 'You found something!',
-  },
-  modes: [
-    {
-      id: 'park',
-      title: 'At the Park',
-      prompt: 'Let us explore the park together. Point, pick, and say the name of everything you notice!',
-      rounds: 3,
-      endTitle: 'Our Park Story',
-      cheer: 'You looked closely and told a wonderful park story!',
-      pages: [
-        {
-          scene: 'emoji:🏞️',
-          alt: 'a busy park scene',
-          prompts: [
-            {
-              say: 'Find something that flies. Say what it is!',
-              stickers: [
-                { art: 'emoji:🪁', alt: 'kite', say: 'A kite! It dances in the wind! Say, I see a kite!' },
-                { art: 'emoji:🦆', alt: 'duck', say: 'A duck! It flaps above the pond! Say, I see a duck!' },
-              ],
-            },
-            {
-              say: 'Find a living thing. Name it out loud!',
-              stickers: [
-                { art: 'emoji:🐕', alt: 'dog', say: 'A dog! It trots across the grass! Say, I see a dog!' },
-                { art: 'emoji:🌳', alt: 'tree', say: 'A tree! Its leafy branches stretch up high! Say, I see a tree!' },
-                { art: 'emoji:🦆', alt: 'duck', say: 'A duck! It paddles through the water! Say, I see a duck!' },
-              ],
-            },
-          ],
-        },
-        {
-          scene: 'emoji:🏞️',
-          alt: 'a busy park scene',
-          prompts: [
-            {
-              say: 'Find something with water. Say its name!',
-              stickers: [
-                { art: 'emoji:⛲', alt: 'fountain', say: 'A fountain! The water splashes up and tumbles down! Say, I see a fountain!' },
-                { art: 'emoji:🦆', alt: 'duck', say: 'A duck! Water drips from its feathers! Say, I see a duck!' },
-              ],
-            },
-            {
-              say: 'Find something that can move. Tell me what it does!',
-              stickers: [
-                { art: 'emoji:🐕', alt: 'dog', say: 'A dog! It can run and wag its tail! Say what the dog is doing!' },
-                { art: 'emoji:🪁', alt: 'kite', say: 'A kite! It can swoop and spin! Say what the kite is doing!' },
-                { art: 'emoji:🦆', alt: 'duck', say: 'A duck! It can waddle and swim! Say what the duck is doing!' },
-              ],
-            },
-          ],
-        },
-        {
-          scene: 'emoji:🏞️',
-          alt: 'a busy park scene',
-          prompts: [
-            {
-              say: 'Find something tall. Name it in a full sentence!',
-              stickers: [
-                { art: 'emoji:🌳', alt: 'tree', say: 'A tall tree! It shades the park! Say, the tree is tall!' },
-                { art: 'emoji:⛲', alt: 'fountain', say: 'A tall fountain! Its water reaches toward the sky! Say, the fountain is tall!' },
-              ],
-            },
-            {
-              say: 'Choose one last park detail. Say what you see, then tell the whole picture story!',
-              stickers: [
-                { art: 'emoji:🐕', alt: 'dog', say: 'A playful dog! Add the dog to your park story!' },
-                { art: 'emoji:🪁', alt: 'kite', say: 'A bright kite! Add the kite to your park story!' },
-                { art: 'emoji:🦆', alt: 'duck', say: 'A waddling duck! Add the duck to your park story!' },
-                { art: 'emoji:⛲', alt: 'fountain', say: 'A splashing fountain! Add the fountain to your park story!' },
-              ],
-            },
-          ],
-        },
-      ],
-    },
-    {
-      id: 'market',
-      title: 'At the Market',
-      prompt: 'Let us explore the market together. Point, pick, and say the name of everything you notice!',
-      rounds: 3,
-      endTitle: 'Our Market Story',
-      cheer: 'You hunted for details and told a delicious market story!',
-      pages: [
-        {
-          scene: 'emoji:🧺',
-          alt: 'a busy market scene',
-          prompts: [
-            {
-              say: 'Find something red or orange. Say what it is!',
-              stickers: [
-                { art: 'emoji:🍎', alt: 'apple', say: 'An apple! It is round, shiny, and red! Say, I see an apple!' },
-                { art: 'emoji:🥕', alt: 'carrot', say: 'A carrot! It is long, crunchy, and orange! Say, I see a carrot!' },
-              ],
-            },
-            {
-              say: 'Find a food that grows from a plant. Name it out loud!',
-              stickers: [
-                { art: 'emoji:🍎', alt: 'apple', say: 'An apple! It grows on a tree! Say, I see an apple!' },
-                { art: 'emoji:🥕', alt: 'carrot', say: 'A carrot! It grows under the soil! Say, I see a carrot!' },
-                { art: 'emoji:🌽', alt: 'corn', say: 'Corn! It grows tall in a field! Say, I see corn!' },
-              ],
-            },
-          ],
-        },
-        {
-          scene: 'emoji:🧺',
-          alt: 'a busy market scene',
-          prompts: [
-            {
-              say: 'Find something yellow. Say its name!',
-              stickers: [
-                { art: 'emoji:🧀', alt: 'cheese', say: 'Cheese! It is a creamy yellow wedge! Say, I see cheese!' },
-                { art: 'emoji:🌽', alt: 'corn', say: 'Corn! Its kernels are sunny yellow! Say, I see corn!' },
-              ],
-            },
-            {
-              say: 'Find something you could hear at the market. Name it and make its sound!',
-              stickers: [
-                { art: 'emoji:🐓', alt: 'chicken', say: 'A chicken! Cluck, cluck, it calls across the market! Say, I hear a chicken!' },
-                { art: 'emoji:🌽', alt: 'corn', say: 'Corn! Crunch, crunch, it makes a crisp sound! Say, I hear corn crunch!' },
-                { art: 'emoji:🍎', alt: 'apple', say: 'An apple! Crunch, it sounds juicy! Say, I hear an apple crunch!' },
-              ],
-            },
-          ],
-        },
-        {
-          scene: 'emoji:🧺',
-          alt: 'a busy market scene',
-          prompts: [
-            {
-              say: 'Find something with an interesting shape. Describe it out loud!',
-              stickers: [
-                { art: 'emoji:🍎', alt: 'apple', say: 'A round apple! It could roll across the stall! Say, the apple is round!' },
-                { art: 'emoji:🥕', alt: 'carrot', say: 'A pointy carrot! It is wide at the top and narrow at the tip! Say, the carrot is pointy!' },
-                { art: 'emoji:🧀', alt: 'cheese', say: 'A triangle of cheese! It has corners and flat sides! Say, the cheese is a triangle!' },
-              ],
-            },
-            {
-              say: 'Choose one last market detail. Say what you see, then tell the whole picture story!',
-              stickers: [
-                { art: 'emoji:🍎', alt: 'apple', say: 'A shiny apple! Add the apple to your market story!' },
-                { art: 'emoji:🥕', alt: 'carrot', say: 'A crunchy carrot! Add the carrot to your market story!' },
-                { art: 'emoji:🧀', alt: 'cheese', say: 'A creamy cheese wedge! Add the cheese to your market story!' },
-                { art: 'emoji:🌽', alt: 'corn', say: 'Sunny corn! Add the corn to your market story!' },
-                { art: 'emoji:🐓', alt: 'chicken', say: 'A clucking chicken! Add the chicken to your market story!' },
-              ],
-            },
-          ],
-        },
-      ],
-    },
-  ],
+  title: 'TaleTeller',
+  ui,
+  worlds,
+  audioLines,
 };

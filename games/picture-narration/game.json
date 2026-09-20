@@ -1,33 +1,45 @@
 {
   "id": "picture-narration",
-  "title": "Picture Narration",
+  "title": "TaleTeller",
   "category": "oral-storytelling",
   "path": "games/picture-narration/",
-  "icon": "🖼️",
+  "icon": "assets/ui/storybook.webp",
   "entry": "index.html",
-  "age": { "min": 5, "max": 6 },
-  "status": "in-design",
-  "accent": "#2d7dd2",
-  "shareTitle": "Picture Narration 🖼️ — Notice and Tell a Story",
-  "description": "Explore a busy park or market scene, name the details you notice aloud, and hear your own words replayed as a story. A descriptive-language game for ages 5–6.",
+  "age": { "min": 3, "max": 7 },
+  "status": "beta",
+  "accent": "#4f8548",
+  "shareTitle": "TaleTeller — Make a Picture Story",
+  "description": "Explore three watercolor worlds, discover picture words, choose what happens next, and tell the finished tale in your own voice.",
   "learningGoals": [
-    "Build descriptive vocabulary through close observation",
-    "Name familiar objects and actions aloud",
-    "Speak observations in complete sentences"
+    "Build expressive vocabulary by naming illustrated story clues",
+    "Connect choices to cause and effect in a simple narrative",
+    "Practice sequencing and retelling a complete story aloud"
   ],
-  "interactionModel": "listen to a noticing prompt, tap a matching open-ended sticker, and name the pictured detail aloud",
-  "feedbackModel": "Every valid noticing is repeated in a curious teacher voice, sparkles into the journal, and returns in the spoken recap.",
+  "interactionModel": "tap four picture-word hotspots, make two sequential illustrated choices, then listen and hold to record an original retelling",
+  "feedbackModel": "each discovery animates, speaks the word in context, and joins a picture-token strip; every choice changes the narrated sentence; the finale supports private local replay or a guided speak-aloud fallback",
   "uses": [
-    "shared/js/engines/observe-journal.js",
-    "shared/js/speech.js",
-    "shared/js/sfx.js"
+    "games/picture-narration/js/main.js",
+    "games/picture-narration/assets/",
+    "shared/js/audio-unlock.js",
+    "shared/js/voice-clips.js",
+    "shared/js/sfx.js",
+    "shared/js/debug-harness.js",
+    "shared/js/preload.js",
+    "shared/js/rng.js",
+    "shared/js/timers.js",
+    "shared/fonts/fredoka-latin-600-normal.woff2"
   ],
   "modes": [
-    { "id": "park", "title": "At the Park", "skill": "observing and describing details in a park scene" },
-    { "id": "market", "title": "At the Market", "skill": "naming and describing familiar market sights and sounds" }
+    { "id": "forest", "title": "Forest", "skill": "name forest clues and choose how Pip crosses the stream" },
+    { "id": "ocean", "title": "Ocean", "skill": "name ocean clues and choose Willa’s underwater adventure" },
+    { "id": "moon", "title": "Moon", "skill": "name moon clues and choose Nova’s space adventure" }
   ],
   "license": { "code": "MIT", "assets": "CC-BY-4.0" },
-  "credits": "QLOBE Kids contributors; placeholder emoji only (see ASSETS.md).",
-  "characters": [],
-  "conceptVideo": ""
+  "credits": "Kaigani; original watercolor game art produced with GPT Image 2 and local QLOBE Studio workflows; teacher narration produced with local Qwen TTS and Whisper QA. Built with Codex for QLOBE Kids.",
+  "characters": [
+    { "id": "pip", "name": "Pip the fox" },
+    { "id": "willa", "name": "Willa the whale" },
+    { "id": "nova", "name": "Nova the moon bunny" }
+  ],
+  "conceptVideo": null
 }

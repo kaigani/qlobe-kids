@@ -1,0 +1,52 @@
+{
+  "source": "games/picture-narration/assets/source/gpt-image-2/title-master.png",
+  "sourceSha256": "007fd59f0ba6d71c34debce8808e01de037d72fe4ea124e6268e10efe8e5746b",
+  "sourceSize": [
+    1774,
+    887
+  ],
+  "detection": "alpha",
+  "sampledBackgroundRgb": null,
+  "padding": 12,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "title",
+      "file": "title.png",
+      "componentArea": 690092,
+      "foregroundBbox": [
+        43,
+        104,
+        1724,
+        785
+      ],
+      "cropBbox": [
+        31,
+        92,
+        1736,
+        797
+      ],
+      "cropXywh": [
+        31,
+        92,
+        1705,
+        705
+      ],
+      "normalizedCropBbox": [
+        0.017475,
+        0.10372,
+        0.978579,
+        0.898534
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 8,
+    "minArea": 2000,
+    "order": "reading"
+  }
+}
