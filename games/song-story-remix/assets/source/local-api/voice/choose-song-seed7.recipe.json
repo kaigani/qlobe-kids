@@ -1,0 +1,35 @@
+{
+  "format": "song-story-remix-voice-candidate-v1",
+  "engine": "qwen3-tts-voiceclone",
+  "voice": "approved-teacher-reference",
+  "voiceRefSha256": "8fc1a8d4793732548e1ba2e8526784040946c66a2d27a617ad946e39aed91e1c",
+  "seed": 7,
+  "sourceText": "Pick a song book.",
+  "textHash": "d1981fd1ff23be86",
+  "generated": true,
+  "valid": true,
+  "duration": 1.106,
+  "meanVolumeDb": -19.5,
+  "codec": "aac",
+  "channels": 1,
+  "sampleRate": 24000,
+  "faststart": true,
+  "bytes": 15134,
+  "audioSha256": "4dceb4db7ea9d30b9ffdcb9e2b49b7a444f30f168363d32f49eb998f1d28ab9d",
+  "verification": {
+    "workflow": "whisper-stt",
+    "modelSize": "base",
+    "language": "en",
+    "audioSha256": "4dceb4db7ea9d30b9ffdcb9e2b49b7a444f30f168363d32f49eb998f1d28ab9d",
+    "transcript": "Pick a song book.",
+    "similarity": 1.0,
+    "wordCoverage": 1.0,
+    "exact": true,
+    "valid": true,
+    "thresholds": {
+      "similarity": 0.9,
+      "wordCoverage": 0.94
+    },
+    "error": null
+  }
+}

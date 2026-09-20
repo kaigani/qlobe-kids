@@ -1,0 +1,410 @@
+{
+  "cutter": "tools\\cut-asset-sheet.py",
+  "sources": {
+    "assets\\source\\local-api\\layered\\song-cards-seed42-layer-2.png": {
+      "sha256": "314b88ddefc4fdee5514f9d98f542e3727bbe59c629c43c93b0816aac8dd460b",
+      "dimensions": [
+        1024,
+        512
+      ],
+      "purpose": "accepted Qwen Image Layered alpha mask for full-resolution cards"
+    },
+    "title-lockup.png": {
+      "sha256": "ecaa6c906d8c60eea6e5362fa38dc62a6c06701b3dac0fe68f5f9c16335112bb",
+      "dimensions": [
+        2172,
+        724
+      ]
+    },
+    "song-cards-sheet.png": {
+      "sha256": "d75dba0f3fb1f9b134257fb7562bd03d409f5ca1e9bffde153586e5ac0649b8d",
+      "dimensions": [
+        1774,
+        887
+      ]
+    },
+    "story-tokens-sheet.png": {
+      "sha256": "9ef82a24375005566eb14907772e687e4734ccbb09ef6bb8dd11a4d574e073cf",
+      "dimensions": [
+        1312,
+        1199
+      ]
+    },
+    "performers-sheet.png": {
+      "sha256": "b60b1e5e1555109d875907062bce4e01ed895c91ad3fbb643117284feb3ddb06",
+      "dimensions": [
+        2172,
+        724
+      ]
+    },
+    "controls-sheet.png": {
+      "sha256": "228c1173a424fc7c3c4ecc30169cb8eb516886120c99c70ea5b9c3d8f9fac70b",
+      "dimensions": [
+        1448,
+        1086
+      ]
+    },
+    "camera-frame.png": {
+      "sha256": "587840daf8d26e48168bf706dc6bf76e1ccc8aa570875d7c67de723ef9095257",
+      "dimensions": [
+        1122,
+        1402
+      ]
+    },
+    "select-background.png": {
+      "sha256": "d8296f14d3d61707aebed21c3e08f5b07047a58a56c62a97173756c6e1ac07ae",
+      "dimensions": [
+        1448,
+        1086
+      ]
+    },
+    "remix-background.png": {
+      "sha256": "d113c8755250802854a851b6a50e39fa57593be5404ea03c74cb31f89fcb715c",
+      "dimensions": [
+        1448,
+        1086
+      ]
+    },
+    "concert-background.png": {
+      "sha256": "3434a4cac37e6bc28fc541e530c7e45e7e2fc9f3ddc5035117ad2e2ced84034e",
+      "dimensions": [
+        1448,
+        1086
+      ]
+    }
+  },
+  "assets": [
+    {
+      "name": "ui/title",
+      "source": "assets\\source\\crops\\title\\title.png",
+      "alphaSource": null,
+      "output": "assets\\art\\ui\\title.webp",
+      "dimensions": [
+        960,
+        209
+      ],
+      "bytes": 56680,
+      "alpha": true
+    },
+    {
+      "name": "cards/rainy-day",
+      "source": "assets\\source\\crops\\cards\\rainy-day.png",
+      "alphaSource": "assets\\source\\local-api\\layered\\song-cards-seed42-layer-2.png",
+      "output": "assets\\art\\cards\\rainy-day.webp",
+      "dimensions": [
+        534,
+        761
+      ],
+      "bytes": 117862,
+      "alpha": true
+    },
+    {
+      "name": "cards/space-trip",
+      "source": "assets\\source\\crops\\cards\\space-trip.png",
+      "alphaSource": "assets\\source\\local-api\\layered\\song-cards-seed42-layer-2.png",
+      "output": "assets\\art\\cards\\space-trip.webp",
+      "dimensions": [
+        536,
+        763
+      ],
+      "bytes": 121742,
+      "alpha": true
+    },
+    {
+      "name": "cards/jungle-walk",
+      "source": "assets\\source\\crops\\cards\\jungle-walk.png",
+      "alphaSource": "assets\\source\\local-api\\layered\\song-cards-seed42-layer-2.png",
+      "output": "assets\\art\\cards\\jungle-walk.webp",
+      "dimensions": [
+        537,
+        763
+      ],
+      "bytes": 137378,
+      "alpha": true
+    },
+    {
+      "name": "tokens/raindrop",
+      "source": "assets\\source\\crops\\tokens\\raindrop.png",
+      "alphaSource": null,
+      "output": "assets\\art\\tokens\\raindrop.webp",
+      "dimensions": [
+        375,
+        367
+      ],
+      "bytes": 30214,
+      "alpha": true
+    },
+    {
+      "name": "tokens/duck",
+      "source": "assets\\source\\crops\\tokens\\duck.png",
+      "alphaSource": null,
+      "output": "assets\\art\\tokens\\duck.webp",
+      "dimensions": [
+        378,
+        368
+      ],
+      "bytes": 30176,
+      "alpha": true
+    },
+    {
+      "name": "tokens/umbrella",
+      "source": "assets\\source\\crops\\tokens\\umbrella.png",
+      "alphaSource": null,
+      "output": "assets\\art\\tokens\\umbrella.webp",
+      "dimensions": [
+        379,
+        369
+      ],
+      "bytes": 29442,
+      "alpha": true
+    },
+    {
+      "name": "tokens/star",
+      "source": "assets\\source\\crops\\tokens\\star.png",
+      "alphaSource": null,
+      "output": "assets\\art\\tokens\\star.webp",
+      "dimensions": [
+        380,
+        371
+      ],
+      "bytes": 31034,
+      "alpha": true
+    },
+    {
+      "name": "tokens/frog",
+      "source": "assets\\source\\crops\\tokens\\frog.png",
+      "alphaSource": null,
+      "output": "assets\\art\\tokens\\frog.webp",
+      "dimensions": [
+        380,
+        371
+      ],
+      "bytes": 32574,
+      "alpha": true
+    },
+    {
+      "name": "tokens/bird",
+      "source": "assets\\source\\crops\\tokens\\bird.png",
+      "alphaSource": null,
+      "output": "assets\\art\\tokens\\bird.webp",
+      "dimensions": [
+        382,
+        371
+      ],
+      "bytes": 30404,
+      "alpha": true
+    },
+    {
+      "name": "tokens/tiger",
+      "source": "assets\\source\\crops\\tokens\\tiger.png",
+      "alphaSource": null,
+      "output": "assets\\art\\tokens\\tiger.webp",
+      "dimensions": [
+        388,
+        380
+      ],
+      "bytes": 36738,
+      "alpha": true
+    },
+    {
+      "name": "tokens/monkey",
+      "source": "assets\\source\\crops\\tokens\\monkey.png",
+      "alphaSource": null,
+      "output": "assets\\art\\tokens\\monkey.webp",
+      "dimensions": [
+        384,
+        380
+      ],
+      "bytes": 33978,
+      "alpha": true
+    },
+    {
+      "name": "tokens/parrot",
+      "source": "assets\\source\\crops\\tokens\\parrot.png",
+      "alphaSource": null,
+      "output": "assets\\art\\tokens\\parrot.webp",
+      "dimensions": [
+        383,
+        380
+      ],
+      "bytes": 33732,
+      "alpha": true
+    },
+    {
+      "name": "performers/leo",
+      "source": "assets\\source\\crops\\performers\\leo.png",
+      "alphaSource": null,
+      "output": "assets\\art\\performers\\leo.webp",
+      "dimensions": [
+        482,
+        653
+      ],
+      "bytes": 76290,
+      "alpha": true
+    },
+    {
+      "name": "performers/bird-band",
+      "source": "assets\\source\\crops\\performers\\bird-band.png",
+      "alphaSource": null,
+      "output": "assets\\art\\performers\\bird-band.webp",
+      "dimensions": [
+        489,
+        582
+      ],
+      "bytes": 59844,
+      "alpha": true
+    },
+    {
+      "name": "performers/frog-band",
+      "source": "assets\\source\\crops\\performers\\frog-band.png",
+      "alphaSource": null,
+      "output": "assets\\art\\performers\\frog-band.webp",
+      "dimensions": [
+        472,
+        543
+      ],
+      "bytes": 74580,
+      "alpha": true
+    },
+    {
+      "name": "performers/tiger-band",
+      "source": "assets\\source\\crops\\performers\\tiger-band.png",
+      "alphaSource": null,
+      "output": "assets\\art\\performers\\tiger-band.webp",
+      "dimensions": [
+        492,
+        617
+      ],
+      "bytes": 77090,
+      "alpha": true
+    },
+    {
+      "name": "ui/play",
+      "source": "assets\\source\\crops\\controls\\play.png",
+      "alphaSource": null,
+      "output": "assets\\art\\ui\\play.webp",
+      "dimensions": [
+        459,
+        455
+      ],
+      "bytes": 54334,
+      "alpha": true
+    },
+    {
+      "name": "ui/record",
+      "source": "assets\\source\\crops\\controls\\record.png",
+      "alphaSource": null,
+      "output": "assets\\art\\ui\\record.webp",
+      "dimensions": [
+        459,
+        455
+      ],
+      "bytes": 61314,
+      "alpha": true
+    },
+    {
+      "name": "ui/stop",
+      "source": "assets\\source\\crops\\controls\\stop.png",
+      "alphaSource": null,
+      "output": "assets\\art\\ui\\stop.webp",
+      "dimensions": [
+        461,
+        455
+      ],
+      "bytes": 55686,
+      "alpha": true
+    },
+    {
+      "name": "ui/replay",
+      "source": "assets\\source\\crops\\controls\\replay.png",
+      "alphaSource": null,
+      "output": "assets\\art\\ui\\replay.webp",
+      "dimensions": [
+        458,
+        455
+      ],
+      "bytes": 56660,
+      "alpha": true
+    },
+    {
+      "name": "ui/save",
+      "source": "assets\\source\\crops\\controls\\save.png",
+      "alphaSource": null,
+      "output": "assets\\art\\ui\\save.webp",
+      "dimensions": [
+        459,
+        455
+      ],
+      "bytes": 57788,
+      "alpha": true
+    },
+    {
+      "name": "ui/library",
+      "source": "assets\\source\\crops\\controls\\library.png",
+      "alphaSource": null,
+      "output": "assets\\art\\ui\\library.webp",
+      "dimensions": [
+        462,
+        455
+      ],
+      "bytes": 59384,
+      "alpha": true
+    },
+    {
+      "name": "ui/camera-frame",
+      "source": "assets\\source\\crops\\ui\\camera-frame.png",
+      "alphaSource": null,
+      "output": "assets\\art\\ui\\camera-frame.webp",
+      "dimensions": [
+        520,
+        720
+      ],
+      "bytes": 70390,
+      "alpha": true
+    },
+    {
+      "name": "backgrounds/select-background.png",
+      "source": "assets\\source\\gpt-image-2\\select-background.png",
+      "output": "assets\\art\\backgrounds\\select-background.webp",
+      "dimensions": [
+        1440,
+        1080
+      ],
+      "bytes": 114428,
+      "alpha": false
+    },
+    {
+      "name": "backgrounds/remix-background.png",
+      "source": "assets\\source\\gpt-image-2\\remix-background.png",
+      "output": "assets\\art\\backgrounds\\remix-background.webp",
+      "dimensions": [
+        1440,
+        1080
+      ],
+      "bytes": 107848,
+      "alpha": false
+    },
+    {
+      "name": "backgrounds/concert-background.png",
+      "source": "assets\\source\\gpt-image-2\\concert-background.png",
+      "output": "assets\\art\\backgrounds\\concert-background.webp",
+      "dimensions": [
+        1440,
+        1080
+      ],
+      "bytes": 162420,
+      "alpha": false
+    },
+    {
+      "name": "og-image",
+      "source": "assets/source/gpt-image-2/concert-background.png + title-lockup.png",
+      "output": "assets/og-image.jpg",
+      "dimensions": [
+        1200,
+        630
+      ],
+      "bytes": 148888,
+      "alpha": false
+    }
+  ]
+}

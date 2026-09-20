@@ -1,0 +1,162 @@
+{
+  "schemaVersion": 1,
+  "id": "song-story-remix",
+  "title": "Song Story Remix",
+  "performanceDuration": 16,
+  "maxSavedShows": 8,
+  "assets": {
+    "backgrounds": {
+      "select": "./assets/art/backgrounds/select-background.webp",
+      "remix": "./assets/art/backgrounds/remix-background.webp",
+      "concert": "./assets/art/backgrounds/concert-background.webp"
+    },
+    "title": "./assets/art/ui/title.webp",
+    "cameraFrame": "./assets/art/ui/camera-frame.webp",
+    "cameraPoster": "./assets/art/backgrounds/concert-background.webp",
+    "controls": {
+      "play": "./assets/art/ui/play.webp",
+      "record": "./assets/art/ui/record.webp",
+      "stop": "./assets/art/ui/stop.webp",
+      "replay": "./assets/art/ui/replay.webp",
+      "save": "./assets/art/ui/save.webp",
+      "library": "./assets/art/ui/library.webp"
+    }
+  },
+  "singers": [
+    { "id": "leo", "label": "Leo", "art": "./assets/art/performers/leo.webp" },
+    { "id": "bird-band", "label": "Bird", "art": "./assets/art/performers/bird-band.webp" },
+    { "id": "frog-band", "label": "Frog", "art": "./assets/art/performers/frog-band.webp" },
+    { "id": "tiger-band", "label": "Tiger", "art": "./assets/art/performers/tiger-band.webp" }
+  ],
+  "songs": [
+    {
+      "id": "rainy-day",
+      "title": "Rainy Day",
+      "skill": "swap a story character and sing a four-line verse",
+      "card": "./assets/art/cards/rainy-day.webp",
+      "instrument": "rain",
+      "melody": [67, 67, 64, 64, 67, 67, 64, null, 69, 69, 67, null, 64, 64, 62, null, 67, 67, 64, 64, 67, 67, 64, null, 62, 62, 60, null, 60, null, 60, null],
+      "choices": [
+        {
+          "id": "raindrop",
+          "label": "Raindrop",
+          "token": "./assets/art/tokens/raindrop.webp",
+          "lyrics": [
+            "Pitter, patter, little raindrop",
+            "Tap the rooftops, plip and plop",
+            "Dance together, splash and sway",
+            "Sing our rainy song today"
+          ]
+        },
+        {
+          "id": "duck",
+          "label": "Duck",
+          "token": "./assets/art/tokens/duck.webp",
+          "lyrics": [
+            "Waddle, waddle, little duck",
+            "Splash the puddles, quack, quack, quack",
+            "Flap your wings and bob along",
+            "Lead our happy rainy song"
+          ]
+        },
+        {
+          "id": "umbrella",
+          "label": "Umbrella",
+          "token": "./assets/art/tokens/umbrella.webp",
+          "lyrics": [
+            "Twirl, twirl, purple umbrella",
+            "Spin beneath the rainy sky",
+            "Catch the drops and tiptoe round",
+            "Make a swishy, splashy sound"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "space-trip",
+      "title": "Space Trip",
+      "skill": "replace a familiar lyric subject and follow the sung story",
+      "card": "./assets/art/cards/space-trip.webp",
+      "instrument": "space",
+      "melody": [60, 60, 67, 67, 69, 69, 67, null, 65, 65, 64, 64, 62, 62, 60, null, 67, 67, 65, 65, 64, 64, 62, null, 67, 67, 65, 65, 64, 64, 62, null],
+      "choices": [
+        {
+          "id": "star",
+          "label": "Star",
+          "token": "./assets/art/tokens/star.webp",
+          "lyrics": [
+            "Twinkle, twinkle, little star",
+            "How I wonder what you are",
+            "Zooming through the sky so high",
+            "Sparkle, sparkle, wave goodbye"
+          ]
+        },
+        {
+          "id": "frog",
+          "label": "Frog",
+          "token": "./assets/art/tokens/frog.webp",
+          "lyrics": [
+            "Hopping, hopping, space frog",
+            "Bounce across the moonlit fog",
+            "Leap above the world so high",
+            "Wave to rockets passing by"
+          ]
+        },
+        {
+          "id": "bird",
+          "label": "Bird",
+          "token": "./assets/art/tokens/bird.webp",
+          "lyrics": [
+            "Flutter, flutter, space bird",
+            "Sing the silliest moon word",
+            "Loop around the stars so high",
+            "Paint a rainbow through the sky"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "jungle-walk",
+      "title": "Jungle Walk",
+      "skill": "choose a lead animal and keep a steady song story",
+      "card": "./assets/art/cards/jungle-walk.webp",
+      "instrument": "jungle",
+      "melody": [60, 60, 60, 62, 64, 64, 62, 64, 65, 67, null, null, 72, 72, 72, 67, 67, 67, 64, 64, 64, 60, 60, 60, 67, 65, 64, 62, 60, null, 60, null],
+      "choices": [
+        {
+          "id": "tiger",
+          "label": "Tiger",
+          "token": "./assets/art/tokens/tiger.webp",
+          "lyrics": [
+            "Tromp, tromp, little tiger",
+            "Through the jungle, soft and slow",
+            "Tap a beat with velvet paws",
+            "Roar hello, then off we go"
+          ]
+        },
+        {
+          "id": "monkey",
+          "label": "Monkey",
+          "token": "./assets/art/tokens/monkey.webp",
+          "lyrics": [
+            "Swing, swing, little monkey",
+            "Past the leaves from tree to tree",
+            "Clap a beat and shake the vines",
+            "Sing a jungle song with me"
+          ]
+        },
+        {
+          "id": "parrot",
+          "label": "Parrot",
+          "token": "./assets/art/tokens/parrot.webp",
+          "lyrics": [
+            "Flap, flap, little parrot",
+            "Paint the jungle teal and red",
+            "Whistle high and bob along",
+            "Lead our leafy dancing song"
+          ]
+        }
+      ]
+    }
+  ]
+}

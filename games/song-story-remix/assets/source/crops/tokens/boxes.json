@@ -1,0 +1,292 @@
+{
+  "source": "story-tokens-sheet.png",
+  "sourceSha256": "9ef82a24375005566eb14907772e687e4734ccbb09ef6bb8dd11a4d574e073cf",
+  "sourceSize": [
+    1312,
+    1199
+  ],
+  "detection": "alpha",
+  "sampledBackgroundRgb": null,
+  "padding": 12,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "raindrop",
+      "file": "raindrop.png",
+      "componentArea": 96126,
+      "foregroundBbox": [
+        67,
+        32,
+        418,
+        375
+      ],
+      "cropBbox": [
+        55,
+        20,
+        430,
+        387
+      ],
+      "cropXywh": [
+        55,
+        20,
+        375,
+        367
+      ],
+      "normalizedCropBbox": [
+        0.041921,
+        0.016681,
+        0.327744,
+        0.322769
+      ]
+    },
+    {
+      "index": 2,
+      "name": "duck",
+      "file": "duck.png",
+      "componentArea": 97264,
+      "foregroundBbox": [
+        479,
+        31,
+        833,
+        375
+      ],
+      "cropBbox": [
+        467,
+        19,
+        845,
+        387
+      ],
+      "cropXywh": [
+        467,
+        19,
+        378,
+        368
+      ],
+      "normalizedCropBbox": [
+        0.355945,
+        0.015847,
+        0.644055,
+        0.322769
+      ]
+    },
+    {
+      "index": 3,
+      "name": "umbrella",
+      "file": "umbrella.png",
+      "componentArea": 96989,
+      "foregroundBbox": [
+        889,
+        30,
+        1244,
+        375
+      ],
+      "cropBbox": [
+        877,
+        18,
+        1256,
+        387
+      ],
+      "cropXywh": [
+        877,
+        18,
+        379,
+        369
+      ],
+      "normalizedCropBbox": [
+        0.668445,
+        0.015013,
+        0.957317,
+        0.322769
+      ]
+    },
+    {
+      "index": 4,
+      "name": "star",
+      "file": "star.png",
+      "componentArea": 98915,
+      "foregroundBbox": [
+        62,
+        405,
+        418,
+        752
+      ],
+      "cropBbox": [
+        50,
+        393,
+        430,
+        764
+      ],
+      "cropXywh": [
+        50,
+        393,
+        380,
+        371
+      ],
+      "normalizedCropBbox": [
+        0.03811,
+        0.327773,
+        0.327744,
+        0.637198
+      ]
+    },
+    {
+      "index": 5,
+      "name": "frog",
+      "file": "frog.png",
+      "componentArea": 99275,
+      "foregroundBbox": [
+        476,
+        405,
+        832,
+        752
+      ],
+      "cropBbox": [
+        464,
+        393,
+        844,
+        764
+      ],
+      "cropXywh": [
+        464,
+        393,
+        380,
+        371
+      ],
+      "normalizedCropBbox": [
+        0.353659,
+        0.327773,
+        0.643293,
+        0.637198
+      ]
+    },
+    {
+      "index": 6,
+      "name": "bird",
+      "file": "bird.png",
+      "componentArea": 99310,
+      "foregroundBbox": [
+        887,
+        405,
+        1245,
+        752
+      ],
+      "cropBbox": [
+        875,
+        393,
+        1257,
+        764
+      ],
+      "cropXywh": [
+        875,
+        393,
+        382,
+        371
+      ],
+      "normalizedCropBbox": [
+        0.666921,
+        0.327773,
+        0.958079,
+        0.637198
+      ]
+    },
+    {
+      "index": 7,
+      "name": "tiger",
+      "file": "tiger.png",
+      "componentArea": 104027,
+      "foregroundBbox": [
+        59,
+        777,
+        423,
+        1133
+      ],
+      "cropBbox": [
+        47,
+        765,
+        435,
+        1145
+      ],
+      "cropXywh": [
+        47,
+        765,
+        388,
+        380
+      ],
+      "normalizedCropBbox": [
+        0.035823,
+        0.638032,
+        0.331555,
+        0.954962
+      ]
+    },
+    {
+      "index": 8,
+      "name": "monkey",
+      "file": "monkey.png",
+      "componentArea": 102996,
+      "foregroundBbox": [
+        474,
+        777,
+        834,
+        1133
+      ],
+      "cropBbox": [
+        462,
+        765,
+        846,
+        1145
+      ],
+      "cropXywh": [
+        462,
+        765,
+        384,
+        380
+      ],
+      "normalizedCropBbox": [
+        0.352134,
+        0.638032,
+        0.644817,
+        0.954962
+      ]
+    },
+    {
+      "index": 9,
+      "name": "parrot",
+      "file": "parrot.png",
+      "componentArea": 102881,
+      "foregroundBbox": [
+        887,
+        777,
+        1246,
+        1133
+      ],
+      "cropBbox": [
+        875,
+        765,
+        1258,
+        1145
+      ],
+      "cropXywh": [
+        875,
+        765,
+        383,
+        380
+      ],
+      "normalizedCropBbox": [
+        0.666921,
+        0.638032,
+        0.958841,
+        0.954962
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 2,
+    "minArea": 787,
+    "order": "reading"
+  }
+}

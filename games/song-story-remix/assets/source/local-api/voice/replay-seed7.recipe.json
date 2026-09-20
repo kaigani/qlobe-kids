@@ -1,0 +1,35 @@
+{
+  "format": "song-story-remix-voice-candidate-v1",
+  "engine": "qwen3-tts-voiceclone",
+  "voice": "approved-teacher-reference",
+  "voiceRefSha256": "8fc1a8d4793732548e1ba2e8526784040946c66a2d27a617ad946e39aed91e1c",
+  "seed": 7,
+  "sourceText": "Here comes your remix!",
+  "textHash": "165766c437a23044",
+  "generated": true,
+  "valid": true,
+  "duration": 1.383,
+  "meanVolumeDb": -19.1,
+  "codec": "aac",
+  "channels": 1,
+  "sampleRate": 24000,
+  "faststart": true,
+  "bytes": 18767,
+  "audioSha256": "73578c81e0ea19e65813ec3cf9a81e01561667e6f9a124266f278a39ec7e1fef",
+  "verification": {
+    "workflow": "whisper-stt",
+    "modelSize": "base",
+    "language": "en",
+    "audioSha256": "73578c81e0ea19e65813ec3cf9a81e01561667e6f9a124266f278a39ec7e1fef",
+    "transcript": "Here comes your remix!",
+    "similarity": 1.0,
+    "wordCoverage": 1.0,
+    "exact": true,
+    "valid": true,
+    "thresholds": {
+      "similarity": 0.9,
+      "wordCoverage": 0.94
+    },
+    "error": null
+  }
+}

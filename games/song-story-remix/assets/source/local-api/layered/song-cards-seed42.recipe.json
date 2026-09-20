@@ -1,0 +1,76 @@
+{
+  "format": "song-story-remix-layered-recipe-v1",
+  "workflow": "qwen-image-layered",
+  "prompt": "Separate the exact three complete storybook song cards from the uniform dark background into the foreground subject layer. Preserve every card pixel, gold corner, bookmark, and silhouette; do not redesign, merge, crop, recolor, add, or delete anything. Output all three isolated cards with clean transparent edges.",
+  "layers": 2,
+  "seed": 42,
+  "selectedOutput": "layer_2",
+  "source": "games/song-story-remix/assets/source/gpt-image-2/song-cards-sheet.png",
+  "sourceSha256": "d75dba0f3fb1f9b134257fb7562bd03d409f5ca1e9bffde153586e5ac0649b8d",
+  "output": "games/song-story-remix/assets/source/local-api/layered/song-cards-seed42-layer-2.png",
+  "outputSha256": "314b88ddefc4fdee5514f9d98f542e3727bbe59c629c43c93b0816aac8dd460b",
+  "preview": "games/song-story-remix/assets/source/local-api/layered/song-cards-seed42-magenta.png",
+  "previewSha256": "1e5b6e66abab830f66493f62969a48f80f9d5a253a92923f8858be7567860168",
+  "qa": {
+    "dimensions": [
+      1024,
+      512
+    ],
+    "mode": "RGBA",
+    "alpha": {
+      "extrema": [
+        0,
+        255
+      ],
+      "transparentFraction": 0.659676,
+      "clearFraction": 0.336029,
+      "opaqueFraction": 0.340324,
+      "visibleBbox": [
+        35,
+        46,
+        989,
+        475
+      ]
+    },
+    "reviewStatus": "accepted-as-runtime-alpha-mask",
+    "promotedToRuntime": true,
+    "mechanicalValid": true,
+    "largeComponentCount": 3,
+    "components": [
+      {
+        "areaFraction": 0.2217,
+        "bbox": [
+          9,
+          12,
+          83,
+          119
+        ],
+        "centerXFraction": 0.1797
+      },
+      {
+        "areaFraction": 0.2242,
+        "bbox": [
+          90,
+          11,
+          165,
+          119
+        ],
+        "centerXFraction": 0.498
+      },
+      {
+        "areaFraction": 0.2251,
+        "bbox": [
+          172,
+          11,
+          247,
+          119
+        ],
+        "centerXFraction": 0.8184
+      }
+    ],
+    "sampleDimensions": [
+      256,
+      128
+    ]
+  }
+}

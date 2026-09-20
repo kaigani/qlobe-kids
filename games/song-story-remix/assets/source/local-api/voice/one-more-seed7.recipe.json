@@ -1,0 +1,35 @@
+{
+  "format": "song-story-remix-voice-candidate-v1",
+  "engine": "qwen3-tts-voiceclone",
+  "voice": "approved-teacher-reference",
+  "voiceRefSha256": "8fc1a8d4793732548e1ba2e8526784040946c66a2d27a617ad946e39aed91e1c",
+  "seed": 7,
+  "sourceText": "Make another remix!",
+  "textHash": "ba72ed08dc71c1dd",
+  "generated": true,
+  "valid": true,
+  "duration": 1.243,
+  "meanVolumeDb": -20.5,
+  "codec": "aac",
+  "channels": 1,
+  "sampleRate": 24000,
+  "faststart": true,
+  "bytes": 17775,
+  "audioSha256": "8352a0e671d20528bfcf837e68b941a14e4d87636e7eaaae84245c42d8546e5d",
+  "verification": {
+    "workflow": "whisper-stt",
+    "modelSize": "base",
+    "language": "en",
+    "audioSha256": "8352a0e671d20528bfcf837e68b941a14e4d87636e7eaaae84245c42d8546e5d",
+    "transcript": "Make another remix!",
+    "similarity": 1.0,
+    "wordCoverage": 1.0,
+    "exact": true,
+    "valid": true,
+    "thresholds": {
+      "similarity": 0.9,
+      "wordCoverage": 0.94
+    },
+    "error": null
+  }
+}

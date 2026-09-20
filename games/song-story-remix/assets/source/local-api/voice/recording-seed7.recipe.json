@@ -1,0 +1,35 @@
+{
+  "format": "song-story-remix-voice-candidate-v1",
+  "engine": "qwen3-tts-voiceclone",
+  "voice": "approved-teacher-reference",
+  "voiceRefSha256": "8fc1a8d4793732548e1ba2e8526784040946c66a2d27a617ad946e39aed91e1c",
+  "seed": 7,
+  "sourceText": "Sing it your way!",
+  "textHash": "11773fc78962398c",
+  "generated": true,
+  "valid": true,
+  "duration": 0.955,
+  "meanVolumeDb": -19.7,
+  "codec": "aac",
+  "channels": 1,
+  "sampleRate": 24000,
+  "faststart": true,
+  "bytes": 12661,
+  "audioSha256": "1ba38ad1544d6fb4e65fbe26db23e9753ebf285ed78e7bcd438518449180cfc2",
+  "verification": {
+    "workflow": "whisper-stt",
+    "modelSize": "base",
+    "language": "en",
+    "audioSha256": "1ba38ad1544d6fb4e65fbe26db23e9753ebf285ed78e7bcd438518449180cfc2",
+    "transcript": "Sing it your way!",
+    "similarity": 1.0,
+    "wordCoverage": 1.0,
+    "exact": true,
+    "valid": true,
+    "thresholds": {
+      "similarity": 0.9,
+      "wordCoverage": 0.94
+    },
+    "error": null
+  }
+}

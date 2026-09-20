@@ -1,0 +1,35 @@
+{
+  "format": "song-story-remix-krea-recipe-v1",
+  "workflow": "krea2-turbo-t2i",
+  "prompt": "Original premium Kawaii preschool game tile: an open cream songbook on a tiny plum velvet theater stage, a smiling golden star, green frog, pink songbird and orange tiger peeking from the pages, floating candy-colored music notes, plush-vinyl and glossy clay materials, antique gold trim, rich plum and teal lighting, centered readable silhouette, warm joyful glow, no text, no letters, no logos, no watermark, no device frame.",
+  "seed": 42,
+  "width": 768,
+  "height": 640,
+  "steps": 8,
+  "cfg": 1,
+  "source": "games/song-story-remix/assets/source/krea/hub-seed42.png",
+  "sourceSha256": "51b2a2c049250a229fc107ce076157ea29eb6604f04ba90564fd1c69edffcd2a",
+  "output": "assets/hub/tiles/song-story-remix.jpg",
+  "outputSha256": "3444509f9625178db392d4ad2dc4c38af0297134910b7831e064544a54113c6c",
+  "transform": {
+    "operation": "center-cover",
+    "dimensions": [
+      640,
+      533
+    ],
+    "format": "progressive JPEG",
+    "quality": 90
+  },
+  "qa": {
+    "sourceDimensions": [
+      768,
+      640
+    ],
+    "outputDimensions": [
+      640,
+      533
+    ],
+    "progressive": true,
+    "valid": true
+  }
+}

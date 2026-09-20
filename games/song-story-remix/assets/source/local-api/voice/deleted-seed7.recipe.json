@@ -1,0 +1,35 @@
+{
+  "format": "song-story-remix-voice-candidate-v1",
+  "engine": "qwen3-tts-voiceclone",
+  "voice": "approved-teacher-reference",
+  "voiceRefSha256": "8fc1a8d4793732548e1ba2e8526784040946c66a2d27a617ad946e39aed91e1c",
+  "seed": 7,
+  "sourceText": "That remix is gone.",
+  "textHash": "e0a1d90d23fc8b17",
+  "generated": true,
+  "valid": true,
+  "duration": 1.328,
+  "meanVolumeDb": -19.3,
+  "codec": "aac",
+  "channels": 1,
+  "sampleRate": 24000,
+  "faststart": true,
+  "bytes": 18264,
+  "audioSha256": "ae6774292ea7c422bb25bf46a380da5833e95d6633976f55d491f4275a4f40f4",
+  "verification": {
+    "workflow": "whisper-stt",
+    "modelSize": "base",
+    "language": "en",
+    "audioSha256": "ae6774292ea7c422bb25bf46a380da5833e95d6633976f55d491f4275a4f40f4",
+    "transcript": "That remix is gone.",
+    "similarity": 1.0,
+    "wordCoverage": 1.0,
+    "exact": true,
+    "valid": true,
+    "thresholds": {
+      "similarity": 0.9,
+      "wordCoverage": 0.94
+    },
+    "error": null
+  }
+}

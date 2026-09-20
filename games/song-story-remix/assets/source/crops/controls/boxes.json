@@ -1,0 +1,202 @@
+{
+  "source": "controls-sheet.png",
+  "sourceSha256": "228c1173a424fc7c3c4ecc30169cb8eb516886120c99c70ea5b9c3d8f9fac70b",
+  "sourceSize": [
+    1448,
+    1086
+  ],
+  "detection": "alpha",
+  "sampledBackgroundRgb": null,
+  "padding": 12,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "play",
+      "file": "play.png",
+      "componentArea": 172657,
+      "foregroundBbox": [
+        34,
+        75,
+        469,
+        506
+      ],
+      "cropBbox": [
+        22,
+        63,
+        481,
+        518
+      ],
+      "cropXywh": [
+        22,
+        63,
+        459,
+        455
+      ],
+      "normalizedCropBbox": [
+        0.015193,
+        0.058011,
+        0.332182,
+        0.47698
+      ]
+    },
+    {
+      "index": 2,
+      "name": "record",
+      "file": "record.png",
+      "componentArea": 173469,
+      "foregroundBbox": [
+        504,
+        75,
+        939,
+        506
+      ],
+      "cropBbox": [
+        492,
+        63,
+        951,
+        518
+      ],
+      "cropXywh": [
+        492,
+        63,
+        459,
+        455
+      ],
+      "normalizedCropBbox": [
+        0.339779,
+        0.058011,
+        0.656768,
+        0.47698
+      ]
+    },
+    {
+      "index": 3,
+      "name": "stop",
+      "file": "stop.png",
+      "componentArea": 173619,
+      "foregroundBbox": [
+        975,
+        75,
+        1412,
+        506
+      ],
+      "cropBbox": [
+        963,
+        63,
+        1424,
+        518
+      ],
+      "cropXywh": [
+        963,
+        63,
+        461,
+        455
+      ],
+      "normalizedCropBbox": [
+        0.665055,
+        0.058011,
+        0.983425,
+        0.47698
+      ]
+    },
+    {
+      "index": 4,
+      "name": "replay",
+      "file": "replay.png",
+      "componentArea": 171550,
+      "foregroundBbox": [
+        34,
+        553,
+        468,
+        984
+      ],
+      "cropBbox": [
+        22,
+        541,
+        480,
+        996
+      ],
+      "cropXywh": [
+        22,
+        541,
+        458,
+        455
+      ],
+      "normalizedCropBbox": [
+        0.015193,
+        0.498158,
+        0.331492,
+        0.917127
+      ]
+    },
+    {
+      "index": 5,
+      "name": "save",
+      "file": "save.png",
+      "componentArea": 172344,
+      "foregroundBbox": [
+        503,
+        553,
+        938,
+        984
+      ],
+      "cropBbox": [
+        491,
+        541,
+        950,
+        996
+      ],
+      "cropXywh": [
+        491,
+        541,
+        459,
+        455
+      ],
+      "normalizedCropBbox": [
+        0.339088,
+        0.498158,
+        0.656077,
+        0.917127
+      ]
+    },
+    {
+      "index": 6,
+      "name": "library",
+      "file": "library.png",
+      "componentArea": 172654,
+      "foregroundBbox": [
+        974,
+        553,
+        1412,
+        984
+      ],
+      "cropBbox": [
+        962,
+        541,
+        1424,
+        996
+      ],
+      "cropXywh": [
+        962,
+        541,
+        462,
+        455
+      ],
+      "normalizedCropBbox": [
+        0.664365,
+        0.498158,
+        0.983425,
+        0.917127
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 2,
+    "minArea": 786,
+    "order": "reading"
+  }
+}

@@ -9,7 +9,7 @@
     "games/<id>/config.js",
     "games/<id>/js/**/*.js"
   ],
-  "generated": "2026-09-20T05:08:08.866Z",
+  "generated": "2026-09-20T06:34:59.119Z",
   "engines": {
     "choose-one": {
       "count": 2,
@@ -3061,6 +3061,38 @@
       ],
       "packs": []
     },
+    "song-story-remix": {
+      "engine": null,
+      "status": "live",
+      "category": "art-music",
+      "characters": [],
+      "modules": [
+        "shared/js/analytics.js",
+        "shared/js/audio-unlock.js",
+        "shared/js/celebrate.js",
+        "shared/js/debug-harness.js",
+        "shared/js/dom.js",
+        "shared/js/hud.js",
+        "shared/js/idle-nudge.js",
+        "shared/js/narrator.js",
+        "shared/js/preload.js",
+        "shared/js/screens.js",
+        "shared/js/sfx.js",
+        "shared/js/tap.js",
+        "shared/js/timers.js",
+        "shared/js/voice-clips.js"
+      ],
+      "css": [
+        "shared/css/base.css",
+        "shared/css/hud.css",
+        "shared/css/screens.css"
+      ],
+      "assets": [
+        "games/song-story-remix/assets/art",
+        "games/song-story-remix/assets/audio"
+      ],
+      "packs": []
+    },
     "sound-basket": {
       "engine": null,
       "status": "beta",
@@ -3947,6 +3979,7 @@
         "smell-jars",
         "snack-addition-stories",
         "snack-chef",
+        "song-story-remix",
         "sound-basket",
         "sound-cylinder-match",
         "sound-hopscotch",
@@ -4051,6 +4084,7 @@
         "smell-jars",
         "snack-addition-stories",
         "snack-chef",
+        "song-story-remix",
         "sound-basket",
         "sound-cylinder-match",
         "sound-hopscotch",
@@ -4182,6 +4216,7 @@
         "smell-jars",
         "snack-addition-stories",
         "snack-chef",
+        "song-story-remix",
         "sticker-line-challenge",
         "story-repair-shop",
         "subtraction-picnic",
@@ -4297,6 +4332,7 @@
         "smell-jars",
         "snack-addition-stories",
         "snack-chef",
+        "song-story-remix",
         "sound-basket",
         "sound-cylinder-match",
         "sound-hopscotch",
@@ -4329,6 +4365,7 @@
         "sandpaper-number-match",
         "shadow-chase",
         "shape-detective",
+        "song-story-remix",
         "tangram-tales",
         "teen-bead-builder",
         "tweezer-rescue",
@@ -4420,6 +4457,7 @@
         "shelf-reset-game",
         "silly-swap-words",
         "smell-jars",
+        "song-story-remix",
         "sticker-line-challenge",
         "sweep-the-trail",
         "table-setting-mission",
@@ -4476,6 +4514,7 @@
         "sink-or-float",
         "smell-jars",
         "snack-addition-stories",
+        "song-story-remix",
         "sound-hopscotch",
         "sticker-line-challenge",
         "story-repair-shop",
@@ -4571,6 +4610,7 @@
         "sink-or-float",
         "smell-jars",
         "snack-addition-stories",
+        "song-story-remix",
         "sound-hopscotch",
         "sound-painting",
         "story-repair-shop",
@@ -4639,6 +4679,7 @@
         "silly-swap-words",
         "smell-jars",
         "snack-addition-stories",
+        "song-story-remix",
         "sound-hopscotch",
         "sticker-line-challenge",
         "story-repair-shop",
@@ -4782,6 +4823,7 @@
         "smell-jars",
         "snack-addition-stories",
         "snack-chef",
+        "song-story-remix",
         "sound-hopscotch",
         "sticker-line-challenge",
         "story-repair-shop",
@@ -4883,6 +4925,7 @@
         "smell-jars",
         "snack-addition-stories",
         "snack-chef",
+        "song-story-remix",
         "sound-basket",
         "sound-cylinder-match",
         "sound-hopscotch",
@@ -5140,6 +5183,7 @@
         "smell-jars",
         "snack-addition-stories",
         "snack-chef",
+        "song-story-remix",
         "sound-basket",
         "sound-cylinder-match",
         "sound-painting",
@@ -5227,6 +5271,7 @@
         "silly-swap-words",
         "smell-jars",
         "snack-addition-stories",
+        "song-story-remix",
         "sound-cylinder-match",
         "sound-hopscotch",
         "sticker-line-challenge",
@@ -5328,6 +5373,7 @@
         "smell-jars",
         "snack-addition-stories",
         "snack-chef",
+        "song-story-remix",
         "sound-basket",
         "sound-cylinder-match",
         "sound-hopscotch",
@@ -5457,6 +5503,7 @@
         "smell-jars",
         "snack-addition-stories",
         "snack-chef",
+        "song-story-remix",
         "sound-cylinder-match",
         "sound-hopscotch",
         "sound-painting",
@@ -5551,6 +5598,7 @@
         "silly-swap-words",
         "smell-jars",
         "snack-addition-stories",
+        "song-story-remix",
         "sound-cylinder-match",
         "sound-hopscotch",
         "sound-painting",
@@ -5641,6 +5689,7 @@
         "smell-jars",
         "snack-addition-stories",
         "snack-chef",
+        "song-story-remix",
         "sound-basket",
         "sound-hopscotch",
         "sound-painting",
@@ -6930,6 +6979,12 @@
       ],
       "games/snack-chef/assets/ui/star-gold.webp": [
         "snack-chef"
+      ],
+      "games/song-story-remix/assets/art": [
+        "song-story-remix"
+      ],
+      "games/song-story-remix/assets/audio": [
+        "song-story-remix"
       ],
       "games/sound-basket/assets/art/backdrop.webp": [
         "sound-basket"

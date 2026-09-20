@@ -1,0 +1,35 @@
+{
+  "format": "song-story-remix-voice-candidate-v1",
+  "engine": "qwen3-tts-voiceclone",
+  "voice": "approved-teacher-reference",
+  "voiceRefSha256": "8fc1a8d4793732548e1ba2e8526784040946c66a2d27a617ad946e39aed91e1c",
+  "seed": 7,
+  "sourceText": "Camera and microphone are optional. You can sing without them.",
+  "textHash": "9521096241a78605",
+  "generated": true,
+  "valid": true,
+  "duration": 3.4,
+  "meanVolumeDb": -19.0,
+  "codec": "aac",
+  "channels": 1,
+  "sampleRate": 24000,
+  "faststart": true,
+  "bytes": 42273,
+  "audioSha256": "5dfd3017f007701145dee355ebabe9ba5da87b882d4469f5c65834b5881ad1e3",
+  "verification": {
+    "workflow": "whisper-stt",
+    "modelSize": "base",
+    "language": "en",
+    "audioSha256": "5dfd3017f007701145dee355ebabe9ba5da87b882d4469f5c65834b5881ad1e3",
+    "transcript": "Camera and microphone are optional. You can sing without them.",
+    "similarity": 1.0,
+    "wordCoverage": 1.0,
+    "exact": true,
+    "valid": true,
+    "thresholds": {
+      "similarity": 0.9,
+      "wordCoverage": 0.94
+    },
+    "error": null
+  }
+}

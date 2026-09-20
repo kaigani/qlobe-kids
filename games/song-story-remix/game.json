@@ -1,0 +1,65 @@
+{
+  "id": "song-story-remix",
+  "title": "Song Story Remix",
+  "category": "art-music",
+  "path": "games/song-story-remix/",
+  "icon": "🎤",
+  "entry": "index.html",
+  "age": { "min": 3, "max": 7 },
+  "status": "live",
+  "liveDate": "2026-09-19",
+  "accent": "#8d3a89",
+  "artDirection": "Kawaii",
+  "shareTitle": "Song Story Remix — Make Every Song Your Own",
+  "description": "Choose a picture, remix a four-line song story, pick a Kawaii bandleader, rehearse it, and optionally record a private camera-and-microphone performance that stays on this device.",
+  "learningGoals": [
+    "Notice how swapping one character changes a song's meaning",
+    "Follow four lyric cues in musical sequence",
+    "Build confidence through playful singing and performance"
+  ],
+  "interactionModel": "Pick one of three picture-led songs, swap among three story characters, choose a bandleader, rehearse against synchronized visual lyric cues, then make a stage-only show or explicitly opt into a short local camera-and-microphone recording. Save up to eight remixes in an on-device shelf and replay them with the same semantic song state.",
+  "feedbackModel": "Every swap immediately rewrites the lyric card and plays a musical accent; the selected singer responds with motion; rehearsal highlights one lyric line at a time; recording uses a visible status, progress rail, and live mirror; completion adds a short Kawaii concert, teacher praise, and gentle confetti without scores or failure.",
+  "uses": [
+    "games/song-story-remix/assets/art/",
+    "games/song-story-remix/assets/audio/",
+    "shared/fonts/fredoka-latin-600-normal.woff2",
+    "shared/js/audio-unlock.js",
+    "shared/js/celebrate.js",
+    "shared/js/debug-harness.js",
+    "shared/js/dom.js",
+    "shared/js/hud.js",
+    "shared/js/idle-nudge.js",
+    "shared/js/narrator.js",
+    "shared/js/preload.js",
+    "shared/js/screens.js",
+    "shared/js/sfx.js",
+    "shared/js/tap.js",
+    "shared/js/timers.js",
+    "shared/js/voice-clips.js"
+  ],
+  "modes": [
+    { "id": "rainy-day", "title": "Rainy Day", "skill": "swap a story character and sing a four-line verse" },
+    { "id": "space-trip", "title": "Space Trip", "skill": "replace a familiar lyric subject and follow the sung story" },
+    { "id": "jungle-walk", "title": "Jungle Walk", "skill": "choose a lead animal and keep a steady song story" }
+  ],
+  "privacy": {
+    "recording": "optional front-camera video and microphone audio after an explicit choice; stage-only play is always equal and available",
+    "storage": "IndexedDB on the current device only, capped at eight shows, with session-memory fallback",
+    "uploads": false,
+    "transcription": false,
+    "exports": false,
+    "maximumSavedShows": 8
+  },
+  "assets": {
+    "source": "generated/local",
+    "runtimeNetwork": false,
+    "runtimeNetworkScope": "No runtime model, media, child-recording, transcription, or asset requests; inherited platform analytics is outside this flag.",
+    "art": "GPT Image 2 Kawaii production plates and contact sheets, cut with the shared asset-sheet cutter; Krea 2 hub art; Qwen Image Layered alpha separation applied to the full-resolution song cards",
+    "voice": "Qwen3-TTS voice-cloned teacher narration with Whisper transcript QA and device-speech fallback",
+    "music": "game-local Web Audio arrangements because live notes and timing are the core mechanic"
+  },
+  "license": { "code": "MIT", "assets": "CC-BY-4.0" },
+  "credits": "Original Kawaii art made with GPT Image 2 and processed with the shared QLOBE cutter; hub art made with local Krea 2; Qwen Image Layered used as a quality-gated authoring pass; narration made with the approved Qwen voice-clone reference and verified with Whisper. Child recordings never leave the device. Built with Codex for QLOBE Kids.",
+  "characters": [],
+  "conceptVideo": ""
+}

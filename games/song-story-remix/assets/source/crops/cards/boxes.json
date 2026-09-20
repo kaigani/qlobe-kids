@@ -1,0 +1,116 @@
+{
+  "source": "song-cards-sheet.png",
+  "sourceSha256": "d75dba0f3fb1f9b134257fb7562bd03d409f5ca1e9bffde153586e5ac0649b8d",
+  "sourceSize": [
+    1774,
+    887
+  ],
+  "detection": "background-threshold",
+  "sampledBackgroundRgb": [
+    20,
+    17,
+    23
+  ],
+  "padding": 12,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "rainy-day",
+      "file": "rainy-day.png",
+      "componentArea": 338024,
+      "foregroundBbox": [
+        64,
+        84,
+        574,
+        821
+      ],
+      "cropBbox": [
+        52,
+        72,
+        586,
+        833
+      ],
+      "cropXywh": [
+        52,
+        72,
+        534,
+        761
+      ],
+      "normalizedCropBbox": [
+        0.029312,
+        0.081172,
+        0.330327,
+        0.939121
+      ]
+    },
+    {
+      "index": 2,
+      "name": "space-trip",
+      "file": "space-trip.png",
+      "componentArea": 340278,
+      "foregroundBbox": [
+        629,
+        82,
+        1141,
+        821
+      ],
+      "cropBbox": [
+        617,
+        70,
+        1153,
+        833
+      ],
+      "cropXywh": [
+        617,
+        70,
+        536,
+        763
+      ],
+      "normalizedCropBbox": [
+        0.347802,
+        0.078918,
+        0.649944,
+        0.939121
+      ]
+    },
+    {
+      "index": 3,
+      "name": "jungle-walk",
+      "file": "jungle-walk.png",
+      "componentArea": 344617,
+      "foregroundBbox": [
+        1196,
+        83,
+        1709,
+        822
+      ],
+      "cropBbox": [
+        1184,
+        71,
+        1721,
+        834
+      ],
+      "cropXywh": [
+        1184,
+        71,
+        537,
+        763
+      ],
+      "normalizedCropBbox": [
+        0.667418,
+        0.080045,
+        0.970124,
+        0.940248
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 2,
+    "minArea": 787,
+    "order": "reading"
+  }
+}

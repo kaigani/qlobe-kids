@@ -1,0 +1,52 @@
+{
+  "source": "title-lockup.png",
+  "sourceSha256": "ecaa6c906d8c60eea6e5362fa38dc62a6c06701b3dac0fe68f5f9c16335112bb",
+  "sourceSize": [
+    2172,
+    724
+  ],
+  "detection": "alpha",
+  "sampledBackgroundRgb": null,
+  "padding": 12,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "title",
+      "file": "title.png",
+      "componentArea": 712557,
+      "foregroundBbox": [
+        48,
+        130,
+        2124,
+        564
+      ],
+      "cropBbox": [
+        36,
+        118,
+        2136,
+        576
+      ],
+      "cropXywh": [
+        36,
+        118,
+        2100,
+        458
+      ],
+      "normalizedCropBbox": [
+        0.016575,
+        0.162983,
+        0.983425,
+        0.79558
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 2,
+    "minArea": 786,
+    "order": "reading"
+  }
+}

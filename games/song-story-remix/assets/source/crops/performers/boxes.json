@@ -1,0 +1,142 @@
+{
+  "source": "performers-sheet.png",
+  "sourceSha256": "b60b1e5e1555109d875907062bce4e01ed895c91ad3fbb643117284feb3ddb06",
+  "sourceSize": [
+    2172,
+    724
+  ],
+  "detection": "alpha",
+  "sampledBackgroundRgb": null,
+  "padding": 12,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "leo",
+      "file": "leo.png",
+      "componentArea": 175376,
+      "foregroundBbox": [
+        79,
+        50,
+        537,
+        679
+      ],
+      "cropBbox": [
+        67,
+        38,
+        549,
+        691
+      ],
+      "cropXywh": [
+        67,
+        38,
+        482,
+        653
+      ],
+      "normalizedCropBbox": [
+        0.030847,
+        0.052486,
+        0.252762,
+        0.95442
+      ]
+    },
+    {
+      "index": 2,
+      "name": "bird-band",
+      "file": "bird-band.png",
+      "componentArea": 152319,
+      "foregroundBbox": [
+        574,
+        113,
+        1039,
+        671
+      ],
+      "cropBbox": [
+        562,
+        101,
+        1051,
+        683
+      ],
+      "cropXywh": [
+        562,
+        101,
+        489,
+        582
+      ],
+      "normalizedCropBbox": [
+        0.258748,
+        0.139503,
+        0.483886,
+        0.94337
+      ]
+    },
+    {
+      "index": 3,
+      "name": "frog-band",
+      "file": "frog-band.png",
+      "componentArea": 160886,
+      "foregroundBbox": [
+        1095,
+        164,
+        1543,
+        683
+      ],
+      "cropBbox": [
+        1083,
+        152,
+        1555,
+        695
+      ],
+      "cropXywh": [
+        1083,
+        152,
+        472,
+        543
+      ],
+      "normalizedCropBbox": [
+        0.498619,
+        0.209945,
+        0.71593,
+        0.959945
+      ]
+    },
+    {
+      "index": 4,
+      "name": "tiger-band",
+      "file": "tiger-band.png",
+      "componentArea": 187982,
+      "foregroundBbox": [
+        1631,
+        84,
+        2099,
+        677
+      ],
+      "cropBbox": [
+        1619,
+        72,
+        2111,
+        689
+      ],
+      "cropXywh": [
+        1619,
+        72,
+        492,
+        617
+      ],
+      "normalizedCropBbox": [
+        0.745396,
+        0.099448,
+        0.971915,
+        0.951657
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 2,
+    "minArea": 786,
+    "order": "reading"
+  }
+}

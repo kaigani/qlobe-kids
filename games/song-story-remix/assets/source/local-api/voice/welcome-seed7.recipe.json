@@ -1,0 +1,35 @@
+{
+  "format": "song-story-remix-voice-candidate-v1",
+  "engine": "qwen3-tts-voiceclone",
+  "voice": "approved-teacher-reference",
+  "voiceRefSha256": "8fc1a8d4793732548e1ba2e8526784040946c66a2d27a617ad946e39aed91e1c",
+  "seed": 7,
+  "sourceText": "Welcome to Song Story Remix! Pick a song and make it yours.",
+  "textHash": "001360aa15a2beff",
+  "generated": true,
+  "valid": true,
+  "duration": 3.9,
+  "meanVolumeDb": -19.1,
+  "codec": "aac",
+  "channels": 1,
+  "sampleRate": 24000,
+  "faststart": true,
+  "bytes": 51016,
+  "audioSha256": "e3fa354f18a4396e3ee2085e68e6cbe57d33a8fb7c421c3552433fc62804dc54",
+  "verification": {
+    "workflow": "whisper-stt",
+    "modelSize": "base",
+    "language": "en",
+    "audioSha256": "e3fa354f18a4396e3ee2085e68e6cbe57d33a8fb7c421c3552433fc62804dc54",
+    "transcript": "Welcome to Song Story Remix! Pick a song and make it yours.",
+    "similarity": 1.0,
+    "wordCoverage": 1.0,
+    "exact": true,
+    "valid": true,
+    "thresholds": {
+      "similarity": 0.9,
+      "wordCoverage": 0.94
+    },
+    "error": null
+  }
+}

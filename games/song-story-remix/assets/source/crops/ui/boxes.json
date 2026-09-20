@@ -1,0 +1,52 @@
+{
+  "source": "camera-frame.png",
+  "sourceSha256": "587840daf8d26e48168bf706dc6bf76e1ccc8aa570875d7c67de723ef9095257",
+  "sourceSize": [
+    1122,
+    1402
+  ],
+  "detection": "alpha",
+  "sampledBackgroundRgb": null,
+  "padding": 12,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "camera-frame",
+      "file": "camera-frame.png",
+      "componentArea": 462988,
+      "foregroundBbox": [
+        86,
+        25,
+        1033,
+        1345
+      ],
+      "cropBbox": [
+        74,
+        13,
+        1045,
+        1357
+      ],
+      "cropXywh": [
+        74,
+        13,
+        971,
+        1344
+      ],
+      "normalizedCropBbox": [
+        0.065954,
+        0.009272,
+        0.931373,
+        0.967903
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 2,
+    "minArea": 787,
+    "order": "reading"
+  }
+}
