@@ -1,0 +1,206 @@
+{
+  "source": "games/then-now-sort/assets/source/gpt-image-2/then-cards-sheet.png",
+  "sourceSha256": "812383c00c2d7b1fc45b60ae08dcf2ea5bc6cb9f9970e67683bceb4847bf3b67",
+  "sourceSize": [
+    1448,
+    1086
+  ],
+  "detection": "background-threshold",
+  "sampledBackgroundRgb": [
+    31,
+    32,
+    31
+  ],
+  "padding": 12,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "candle",
+      "file": "candle.png",
+      "componentArea": 204181,
+      "foregroundBbox": [
+        42,
+        29,
+        470,
+        516
+      ],
+      "cropBbox": [
+        30,
+        17,
+        482,
+        528
+      ],
+      "cropXywh": [
+        30,
+        17,
+        452,
+        511
+      ],
+      "normalizedCropBbox": [
+        0.020718,
+        0.015654,
+        0.332873,
+        0.486188
+      ]
+    },
+    {
+      "index": 2,
+      "name": "quill",
+      "file": "quill.png",
+      "componentArea": 203062,
+      "foregroundBbox": [
+        512,
+        29,
+        938,
+        515
+      ],
+      "cropBbox": [
+        500,
+        17,
+        950,
+        527
+      ],
+      "cropXywh": [
+        500,
+        17,
+        450,
+        510
+      ],
+      "normalizedCropBbox": [
+        0.345304,
+        0.015654,
+        0.656077,
+        0.485267
+      ]
+    },
+    {
+      "index": 3,
+      "name": "carriage",
+      "file": "carriage.png",
+      "componentArea": 203191,
+      "foregroundBbox": [
+        979,
+        29,
+        1407,
+        516
+      ],
+      "cropBbox": [
+        967,
+        17,
+        1419,
+        528
+      ],
+      "cropXywh": [
+        967,
+        17,
+        452,
+        511
+      ],
+      "normalizedCropBbox": [
+        0.667818,
+        0.015654,
+        0.979972,
+        0.486188
+      ]
+    },
+    {
+      "index": 4,
+      "name": "letter",
+      "file": "letter.png",
+      "componentArea": 203858,
+      "foregroundBbox": [
+        42,
+        554,
+        470,
+        1040
+      ],
+      "cropBbox": [
+        30,
+        542,
+        482,
+        1052
+      ],
+      "cropXywh": [
+        30,
+        542,
+        452,
+        510
+      ],
+      "normalizedCropBbox": [
+        0.020718,
+        0.499079,
+        0.332873,
+        0.968692
+      ]
+    },
+    {
+      "index": 5,
+      "name": "phonograph",
+      "file": "phonograph.png",
+      "componentArea": 201159,
+      "foregroundBbox": [
+        512,
+        554,
+        938,
+        1040
+      ],
+      "cropBbox": [
+        500,
+        542,
+        950,
+        1052
+      ],
+      "cropXywh": [
+        500,
+        542,
+        450,
+        510
+      ],
+      "normalizedCropBbox": [
+        0.345304,
+        0.499079,
+        0.656077,
+        0.968692
+      ]
+    },
+    {
+      "index": 6,
+      "name": "washboard",
+      "file": "washboard.png",
+      "componentArea": 203889,
+      "foregroundBbox": [
+        979,
+        554,
+        1407,
+        1040
+      ],
+      "cropBbox": [
+        967,
+        542,
+        1419,
+        1052
+      ],
+      "cropXywh": [
+        967,
+        542,
+        452,
+        510
+      ],
+      "normalizedCropBbox": [
+        0.667818,
+        0.499079,
+        0.979972,
+        0.968692
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 2,
+    "minArea": 786,
+    "order": "reading"
+  }
+}

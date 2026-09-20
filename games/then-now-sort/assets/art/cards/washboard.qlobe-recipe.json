@@ -1,0 +1,19 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "then-now-then-washboard",
+  "kind": "image",
+  "asset": "games\\then-now-sort\\assets\\art\\cards\\washboard.webp",
+  "steps": [
+    {
+      "workflow": "qwen-image-layered",
+      "source": "washboard.png",
+      "model": "qwen-image-layered",
+      "prompt": "Separate the foreground toy object(s) into layer_2 with true transparent alpha. Preserve exact shape, colors, texture, scale, and all details; do not repaint, crop, add, or remove anything.",
+      "selectedOutput": "source-cut-edge-matte",
+      "layeredQa": "attempt retained in assets/source; runtime uses lossless matte after subject-loss review"
+    }
+  ],
+  "sourceSha256": "fcaa149a8f68e7a3effde30a00a3c42b67019ea448911e8b1a1e2ed5b5a51190",
+  "createdAt": "2026-09-20T07:45:30.099007+00:00"
+}

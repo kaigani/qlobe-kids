@@ -1,0 +1,19 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "then-now-then-carriage",
+  "kind": "image",
+  "asset": "games\\then-now-sort\\assets\\art\\cards\\carriage.webp",
+  "steps": [
+    {
+      "workflow": "qwen-image-layered",
+      "source": "carriage.png",
+      "model": "qwen-image-layered",
+      "prompt": "Separate the foreground toy object(s) into layer_2 with true transparent alpha. Preserve exact shape, colors, texture, scale, and all details; do not repaint, crop, add, or remove anything.",
+      "selectedOutput": "source-cut-edge-matte",
+      "layeredQa": "attempt retained in assets/source; runtime uses lossless matte after subject-loss review"
+    }
+  ],
+  "sourceSha256": "6c8e30463e4c25ca789a678a0a3d1303863e08914dab2c25465ffd36dd272337",
+  "createdAt": "2026-09-20T07:45:24.602511+00:00"
+}

@@ -1,0 +1,12 @@
+{
+  "engine": "qwen3-tts-voiceclone",
+  "verifier": "whisper-stt",
+  "voiceReference": "shared:assets/refs/voice-teacher.wav",
+  "seed": 8,
+  "sourceText": "A letter and a phone both send messages. A phone can send one in a moment.",
+  "textHash": "a431742fea81b2e8",
+  "output": "assets\\audio\\voice\\pair-message.mp3",
+  "transcript": "A letter and a phone both send messages. A phone can send one in a moment.",
+  "ratio": 1.0,
+  "coverage": 1.0
+}

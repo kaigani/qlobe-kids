@@ -1,0 +1,19 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "then-now-ui-action-plate",
+  "kind": "image",
+  "asset": "games\\then-now-sort\\assets\\art\\ui\\action-plate.webp",
+  "steps": [
+    {
+      "workflow": "qwen-image-layered",
+      "source": "action-plate.png",
+      "model": "qwen-image-layered",
+      "prompt": "Separate the foreground toy object(s) into layer_2 with true transparent alpha. Preserve exact shape, colors, texture, scale, and all details; do not repaint, crop, add, or remove anything.",
+      "selectedOutput": "source-cut-edge-matte",
+      "layeredQa": "attempt retained in assets/source; runtime uses lossless matte after subject-loss review"
+    }
+  ],
+  "sourceSha256": "10e8ea9746b6710158c1371eb9f38164c5cd552fe12fcb2f4534ae5b0af9520e",
+  "createdAt": "2026-09-20T07:45:41.903555+00:00"
+}

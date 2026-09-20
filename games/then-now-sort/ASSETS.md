@@ -1,40 +1,65 @@
-# Asset Log - Then & Now Sort
+# Asset Log — Then & Now (2026-09-20 rebuild)
 
-| Asset | Source URL | Creator | License | Attribution required | Modifications |
-|---|---|---|---|---|---|
-| Fredoka font SemiBold (`shared/fonts/fredoka-latin-600-normal.woff2`) | https://fonts.google.com/specimen/Fredoka via Fontsource (@fontsource/fredoka@5.0.13) | Milena Brandão & Hafontia | SIL OFL 1.1 | No UI attribution required | Reused unmodified |
-| HUD buttons (`shared/assets/ui/btn-home.png`, `btn-sound.png`, `btn-play.png`) | Shared QLOBE Kids library | Generated for this project | CC BY 4.0 | No | Reused by `shared/js/engines/match-pairs.js` |
-| Then/now placeholder art | N/A - Unicode emoji rendered by the browser through `emoji:*` refs | N/A | Platform/browser emoji font license | N/A | Used as temporary placeholders only |
-| Sound effects | N/A - synthesized at runtime via WebAudio API (`shared/js/sfx.js`) | N/A | N/A | N/A | No sourced audio assets |
-| Web Speech voice | N/A - device built-in Web Speech API voices via `shared/js/speech.js` | N/A | N/A | N/A | Used for all beta voice lines |
+Art world: **Watercolor / Storybook**. All game-facing illustrations are original raster assets created for this game; no browser emoji, SVG, canvas drawing, or CSS-drawn child-facing artwork is used. Generated assets are CC BY 4.0 for this project. Full prompts and acceptance notes are in `assets/source/PROMPTS.md`.
 
-## Assets needed
+## GPT Image 2 authored art
 
-### Art
-- Candle and lightbulb card art
-- Quill and pencil card art
-- Horse and car card art
-- Letter and phone card art
-- Radio and headphones card art
-- Broom and robot vacuum card art
+The platform image-generation skill (GPT Image 2) used the concept overview and three UI mockups from `01-game-concepts/then-and-now/output/ui-mockups/` as style/composition references.
 
-### Voice
-- "Let's match the old thing with the new thing."
-- "Hmm, these do different jobs. Try another match."
-- "Then and now, you matched them all!"
-- "Old and new, same job!"
-- "History helper!"
-- "You found what they are for!"
-- "Match the old thing to the new thing."
-- "A candle and a lightbulb. Both make light!"
-- "A quill and a pencil. Both help us write!"
-- "A horse and a car. Both help people travel!"
-- "A letter and a phone. Both send messages!"
-- "A radio and headphones. Both let us hear music!"
-- "A broom and a robot. Both sweep the floor!"
+| Runtime assets | Accepted source | Notes |
+|---|---|---|
+| Six Then cards | `assets/source/gpt-image-2/then-cards-sheet.png` | Candle, quill, carriage, letter, phonograph, washboard; exact 2×3 charcoal-ground sheet |
+| Six Now cards | `assets/source/gpt-image-2/now-cards-sheet.png` | Lightbulb, keyboard, car, smartphone, headphones, washing machine; exact 2×3 sheet |
+| Splash environment | `assets/source/gpt-image-2/splash-background.png` | Bright history reading nook with an open blank book |
+| Landscape play book | `assets/source/gpt-image-2/book-background.png` | Facing cream pages with blue/lavender page grammar |
+| Portrait play book | `assets/source/gpt-image-2/book-background-portrait.png` | Stacked scrapbook panels for portrait composition |
+| Reward environment | `assets/source/gpt-image-2/gallery-background.png` | Deep-blue watercolor star path with a clear center |
+| Exact title lockup | `assets/source/gpt-image-2/title-lockup.png` | “THEN & NOW”, visually checked for spelling |
+| UI source sheet | `assets/source/gpt-image-2/ui-sheet.png` | Initial six-part watercolor UI study; superseded for cutting by the Qwen edit below |
 
-## Link preview (og:image)
+Runtime WebPs live under `assets/art/backgrounds/`, `assets/art/cards/`, and `assets/art/ui/`. Card and UI crops were detected with the required `tools/cut-asset-sheet.py`; cutter manifests and mask previews are kept in `assets/source/cuts/` and `assets/source/qa/`. A deterministic edge-connected alpha matte preserves the exact accepted pixels while removing only the plain sheet ground. `assets/source/qa/produced/contact-sheet.jpg` is the magenta alpha review sheet.
 
-| Asset | Source | Creator | License | Attribution required | Modifications |
-|---|---|---|---|---|---|
-| `assets/og-image.jpg` | Generated screenshot of this game's own splash screen (1200×630), captured by `tools/pipeline/capture_og_images.mjs` | QLOBE Kids | CC BY 4.0 | No | Regenerate with the tool rather than editing by hand |
+## Local image workflows
+
+| Workflow | Asset | Result |
+|---|---|---|
+| Qwen Image Edit, seed 42 | `assets/source/local-api/qwen-edit/ui-separated-seed42.png` | Accepted. Rearranged the six UI pieces into a strict, non-touching 2×3 cutter sheet without changing their painted identity. |
+| Qwen Image Layered, seed 42 | `assets/source/local-api/layered/` | Evaluated adversarially. Several layer_2 results omitted essential subject parts (for example, retaining an inkpot but dropping its quill), so those outputs were rejected for runtime use and retained as QA evidence. |
+| Local edge-connected matte | all accepted cutter crops | Accepted after alpha statistics and magenta composite review; exact source pixels preserved. |
+| Krea 2 Turbo T2I, seed 42 | `assets/source/local-api/hub/then-now-krea-seed-42.*` | Curated 640×533 catalog tile installed at `assets/hub/tiles/then-now-sort.jpg`. |
+
+Asset production is resumable through:
+
+```powershell
+python games/then-now-sort/tools/produce-art.py --matte-only --skip-hub --force
+python games/then-now-sort/tools/produce-art.py --skip-layered --install-hub
+```
+
+## Voice and sound
+
+- Narration is generated from the rights-cleared `shared/assets/refs/voice-teacher.wav` reference with local `qwen3-tts-voiceclone`, using seed ladder 7/8/9.
+- Every accepted line is checked with local `whisper-stt`; `assets/audio/voice/qa-report.json` records the intended line, transcript, similarity, duration, level, seed, and acceptance.
+- Final batch: **32/32 accepted**, all exact normalized transcripts (ratio and coverage 1.0); 30 takes use seed 7 and two retries use seed 8. Durations are 0.600–5.472 s and measured mean level is −21.7 to −18.2 dB.
+- `assets/audio/manifest.json` selects recorded MP3 clips; `assets/audio/lines.json` is the matching Web Speech fallback table.
+- Each clip has a `.recipe.json` sidecar with symbolic voice provenance and generation/verification parameters.
+- Runtime SFX are synthesized by `shared/js/sfx.js`. The licensed platform track `shared/assets/music/gentle-country-morning.mp3` is reused unmodified at low volume with narration ducking.
+
+Regenerate or verify voice with:
+
+```powershell
+python games/then-now-sort/tools/generate-voice.py --workers 3
+python games/then-now-sort/tools/generate-voice.py --check
+```
+
+## Shared / reused
+
+| Asset | Source | License | Use |
+|---|---|---|---|
+| Fredoka SemiBold | `shared/fonts/fredoka-latin-600-normal.woff2` | SIL OFL 1.1 | Display type |
+| Home, back, and sound controls | `shared/assets/ui/` | CC BY 4.0 | Platform HUD |
+| Gentle Country Morning | `shared/assets/music/gentle-country-morning.mp3` | QLOBE shared library | Background music |
+| Teacher voice reference | `shared/assets/refs/voice-teacher.wav` | Project rights-cleared reference | Local voice clone only; not shipped again |
+
+## Link preview
+
+`assets/og-image.jpg` is a 1200×630 capture derived from this game's final splash composition. Regenerate after splash changes; do not hand-draw or substitute generic artwork.

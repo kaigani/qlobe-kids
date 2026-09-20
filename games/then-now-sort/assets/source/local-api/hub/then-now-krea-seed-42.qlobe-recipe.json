@@ -1,0 +1,18 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "then-now-hub-krea",
+  "kind": "image",
+  "asset": "games\\then-now-sort\\assets\\source\\local-api\\hub\\then-now-krea-seed-42.jpg",
+  "steps": [
+    {
+      "workflow": "krea2-turbo-t2i",
+      "source": "then-now-krea-seed-42.png",
+      "seed": 42,
+      "width": 768,
+      "height": 640
+    }
+  ],
+  "sourceSha256": "caf77e6cbf73d0fb67d91d4307935cd538a7ab11e7daff5018562e9dce4ada09",
+  "createdAt": "2026-09-20T07:35:21.165199+00:00"
+}

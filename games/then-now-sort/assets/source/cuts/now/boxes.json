@@ -1,0 +1,206 @@
+{
+  "source": "games/then-now-sort/assets/source/gpt-image-2/now-cards-sheet.png",
+  "sourceSha256": "f8eb7dcb1b4a7eb539d1d118a82b89f5dce6ee609c168b73f1d7527ed271acee",
+  "sourceSize": [
+    1448,
+    1086
+  ],
+  "detection": "background-threshold",
+  "sampledBackgroundRgb": [
+    33,
+    33,
+    32
+  ],
+  "padding": 12,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "lightbulb",
+      "file": "lightbulb.png",
+      "componentArea": 193164,
+      "foregroundBbox": [
+        42,
+        48,
+        463,
+        514
+      ],
+      "cropBbox": [
+        30,
+        36,
+        475,
+        526
+      ],
+      "cropXywh": [
+        30,
+        36,
+        445,
+        490
+      ],
+      "normalizedCropBbox": [
+        0.020718,
+        0.033149,
+        0.328039,
+        0.484346
+      ]
+    },
+    {
+      "index": 2,
+      "name": "keyboard",
+      "file": "keyboard.png",
+      "componentArea": 194440,
+      "foregroundBbox": [
+        512,
+        48,
+        936,
+        514
+      ],
+      "cropBbox": [
+        500,
+        36,
+        948,
+        526
+      ],
+      "cropXywh": [
+        500,
+        36,
+        448,
+        490
+      ],
+      "normalizedCropBbox": [
+        0.345304,
+        0.033149,
+        0.654696,
+        0.484346
+      ]
+    },
+    {
+      "index": 3,
+      "name": "car",
+      "file": "car.png",
+      "componentArea": 194985,
+      "foregroundBbox": [
+        983,
+        48,
+        1408,
+        514
+      ],
+      "cropBbox": [
+        971,
+        36,
+        1420,
+        526
+      ],
+      "cropXywh": [
+        971,
+        36,
+        449,
+        490
+      ],
+      "normalizedCropBbox": [
+        0.67058,
+        0.033149,
+        0.980663,
+        0.484346
+      ]
+    },
+    {
+      "index": 4,
+      "name": "smartphone",
+      "file": "smartphone.png",
+      "componentArea": 197329,
+      "foregroundBbox": [
+        43,
+        556,
+        465,
+        1031
+      ],
+      "cropBbox": [
+        31,
+        544,
+        477,
+        1043
+      ],
+      "cropXywh": [
+        31,
+        544,
+        446,
+        499
+      ],
+      "normalizedCropBbox": [
+        0.021409,
+        0.500921,
+        0.32942,
+        0.960405
+      ]
+    },
+    {
+      "index": 5,
+      "name": "headphones",
+      "file": "headphones.png",
+      "componentArea": 198499,
+      "foregroundBbox": [
+        512,
+        556,
+        936,
+        1031
+      ],
+      "cropBbox": [
+        500,
+        544,
+        948,
+        1043
+      ],
+      "cropXywh": [
+        500,
+        544,
+        448,
+        499
+      ],
+      "normalizedCropBbox": [
+        0.345304,
+        0.500921,
+        0.654696,
+        0.960405
+      ]
+    },
+    {
+      "index": 6,
+      "name": "washing-machine",
+      "file": "washing-machine.png",
+      "componentArea": 198626,
+      "foregroundBbox": [
+        984,
+        556,
+        1408,
+        1032
+      ],
+      "cropBbox": [
+        972,
+        544,
+        1420,
+        1044
+      ],
+      "cropXywh": [
+        972,
+        544,
+        448,
+        500
+      ],
+      "normalizedCropBbox": [
+        0.671271,
+        0.500921,
+        0.980663,
+        0.961326
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 2,
+    "minArea": 786,
+    "order": "reading"
+  }
+}

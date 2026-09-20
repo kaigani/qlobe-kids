@@ -1,0 +1,19 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "then-now-ui-detective-medallion",
+  "kind": "image",
+  "asset": "games\\then-now-sort\\assets\\art\\ui\\detective-medallion.webp",
+  "steps": [
+    {
+      "workflow": "qwen-image-layered",
+      "source": "detective-medallion.png",
+      "model": "qwen-image-layered",
+      "prompt": "Separate the foreground toy object(s) into layer_2 with true transparent alpha. Preserve exact shape, colors, texture, scale, and all details; do not repaint, crop, add, or remove anything.",
+      "selectedOutput": "source-cut-edge-matte",
+      "layeredQa": "attempt retained in assets/source; runtime uses lossless matte after subject-loss review"
+    }
+  ],
+  "sourceSha256": "8790f4b7d310494d9f1004792299f1b0f1d912c9683a314b7f5e3f393722ed38",
+  "createdAt": "2026-09-20T07:45:43.140520+00:00"
+}

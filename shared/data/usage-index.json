@@ -9,7 +9,7 @@
     "games/<id>/config.js",
     "games/<id>/js/**/*.js"
   ],
-  "generated": "2026-09-20T06:34:59.119Z",
+  "generated": "2026-09-20T07:47:28.208Z",
   "engines": {
     "choose-one": {
       "count": 2,
@@ -41,12 +41,6 @@
       "count": 1,
       "games": [
         "story-stones"
-      ]
-    },
-    "match-pairs": {
-      "count": 1,
-      "games": [
-        "then-now-sort"
       ]
     },
     "coach-timer": {
@@ -3578,22 +3572,33 @@
       "packs": []
     },
     "then-now-sort": {
-      "engine": "match-pairs",
-      "status": "in-design",
+      "engine": null,
+      "status": "beta",
       "category": "culture-geography",
       "characters": [],
       "modules": [
         "shared/js/analytics.js",
-        "shared/js/engines/match-pairs.js",
+        "shared/js/audio-unlock.js",
+        "shared/js/bgm.js",
+        "shared/js/celebrate.js",
+        "shared/js/debug-harness.js",
+        "shared/js/hud.js",
+        "shared/js/idle-nudge.js",
+        "shared/js/narrator.js",
+        "shared/js/preload.js",
+        "shared/js/rng.js",
         "shared/js/sfx.js",
-        "shared/js/speech.js"
+        "shared/js/tap.js",
+        "shared/js/timers.js",
+        "shared/js/voice-clips.js"
       ],
       "css": [
         "shared/css/base.css",
-        "shared/css/engine-base.css",
-        "shared/css/screens.css"
+        "shared/css/hud.css"
       ],
-      "assets": [],
+      "assets": [
+        "shared/assets/music/gentle-country-morning.mp3"
+      ],
       "packs": []
     },
     "throwing-target-garden": {
@@ -4098,6 +4103,7 @@
         "tangram-tales",
         "teen-bead-builder",
         "texture-trail",
+        "then-now-sort",
         "throwing-target-garden",
         "tiny-reader-theater",
         "tiny-sentence-workshop",
@@ -4152,6 +4158,7 @@
         "sweep-the-trail",
         "table-setting-mission",
         "texture-trail",
+        "then-now-sort",
         "tiny-sentence-workshop",
         "trail-counting-walk",
         "turn-taking-tower",
@@ -4222,6 +4229,7 @@
         "subtraction-picnic",
         "table-setting-mission",
         "teen-bead-builder",
+        "then-now-sort",
         "tiny-reader-theater",
         "trail-counting-walk",
         "turn-taking-tower",
@@ -4347,6 +4355,7 @@
         "tangram-tales",
         "teen-bead-builder",
         "texture-trail",
+        "then-now-sort",
         "throwing-target-garden",
         "tiny-reader-theater",
         "tiny-sentence-workshop",
@@ -4380,9 +4389,6 @@
       ],
       "shared/js/engines/coach-timer.js": [
         "waiting-muscle-game"
-      ],
-      "shared/js/engines/match-pairs.js": [
-        "then-now-sort"
       ],
       "shared/js/engines/puppet-band.js": [
         "my-puppet-band"
@@ -4462,6 +4468,7 @@
         "sweep-the-trail",
         "table-setting-mission",
         "texture-trail",
+        "then-now-sort",
         "tiny-reader-theater",
         "trail-counting-walk",
         "turn-taking-tower"
@@ -4522,6 +4529,7 @@
         "table-setting-mission",
         "teen-bead-builder",
         "texture-trail",
+        "then-now-sort",
         "tiny-reader-theater",
         "tiny-sentence-workshop",
         "trail-counting-walk",
@@ -4616,6 +4624,7 @@
         "story-repair-shop",
         "subtraction-picnic",
         "texture-trail",
+        "then-now-sort",
         "throwing-target-garden",
         "trail-counting-walk",
         "turn-taking-tower",
@@ -4687,6 +4696,7 @@
         "sweep-the-trail",
         "table-setting-mission",
         "tangram-tales",
+        "then-now-sort",
         "throwing-target-garden",
         "tiny-sentence-workshop",
         "trail-counting-walk",
@@ -4766,6 +4776,7 @@
         "tangram-tales",
         "teen-bead-builder",
         "texture-trail",
+        "then-now-sort",
         "throwing-target-garden",
         "tiny-reader-theater",
         "tiny-sentence-workshop",
@@ -4995,7 +5006,6 @@
         "sweep-the-trail",
         "tangram-tales",
         "teen-bead-builder",
-        "then-now-sort",
         "waiting-muscle-game",
         "weather-scientist",
         "world-music-dance"
@@ -5195,6 +5205,7 @@
         "tangram-tales",
         "teen-bead-builder",
         "texture-trail",
+        "then-now-sort",
         "throwing-target-garden",
         "tiny-reader-theater",
         "tiny-sentence-workshop",
@@ -5282,6 +5293,7 @@
         "table-setting-mission",
         "teen-bead-builder",
         "texture-trail",
+        "then-now-sort",
         "throwing-target-garden",
         "tiny-reader-theater",
         "tiny-sentence-workshop",
@@ -5389,6 +5401,7 @@
         "tangram-tales",
         "teen-bead-builder",
         "texture-trail",
+        "then-now-sort",
         "throwing-target-garden",
         "tiny-reader-theater",
         "tiny-sentence-workshop",
@@ -5537,7 +5550,6 @@
         "puppet-problem-solvers",
         "scissor-trail-safari",
         "story-stones",
-        "then-now-sort",
         "waiting-muscle-game"
       ],
       "shared/css/hud.css": [
@@ -5609,6 +5621,7 @@
         "table-setting-mission",
         "tangram-tales",
         "texture-trail",
+        "then-now-sort",
         "throwing-target-garden",
         "tiny-reader-theater",
         "trail-counting-walk",
@@ -5701,7 +5714,6 @@
         "table-setting-mission",
         "teen-bead-builder",
         "texture-trail",
-        "then-now-sort",
         "throwing-target-garden",
         "tiny-reader-theater",
         "tiny-sentence-workshop",
@@ -7243,6 +7255,7 @@
         "garden-graphers",
         "picture-word-match",
         "subtraction-picnic",
+        "then-now-sort",
         "tweezer-rescue"
       ],
       "shared/assets/music/mug-and-sunbeam.mp3": [
@@ -7473,6 +7486,7 @@
   },
   "zeroConsumers": {
     "modules": [
+      "shared/js/engines/match-pairs.js",
       "shared/js/engines/observe-journal.js",
       "shared/js/engines/pattern-continue.js",
       "shared/js/engines/sequence-order.js",

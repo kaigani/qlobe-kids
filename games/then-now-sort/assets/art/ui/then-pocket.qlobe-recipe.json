@@ -1,0 +1,19 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "then-now-ui-then-pocket",
+  "kind": "image",
+  "asset": "games\\then-now-sort\\assets\\art\\ui\\then-pocket.webp",
+  "steps": [
+    {
+      "workflow": "qwen-image-layered",
+      "source": "then-pocket.png",
+      "model": "qwen-image-layered",
+      "prompt": "Separate the foreground toy object(s) into layer_2 with true transparent alpha. Preserve exact shape, colors, texture, scale, and all details; do not repaint, crop, add, or remove anything.",
+      "selectedOutput": "source-cut-edge-matte",
+      "layeredQa": "attempt retained in assets/source; runtime uses lossless matte after subject-loss review"
+    }
+  ],
+  "sourceSha256": "942bbaef882c5ab902213aacf25e277828a1141e1b691ce43f83c9c0c62bc879",
+  "createdAt": "2026-09-20T07:45:45.427857+00:00"
+}

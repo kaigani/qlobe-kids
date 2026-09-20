@@ -1,0 +1,19 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "then-now-ui-traveler-medallion",
+  "kind": "image",
+  "asset": "games\\then-now-sort\\assets\\art\\ui\\traveler-medallion.webp",
+  "steps": [
+    {
+      "workflow": "qwen-image-layered",
+      "source": "traveler-medallion.png",
+      "model": "qwen-image-layered",
+      "prompt": "Separate the foreground toy object(s) into layer_2 with true transparent alpha. Preserve exact shape, colors, texture, scale, and all details; do not repaint, crop, add, or remove anything.",
+      "selectedOutput": "source-cut-edge-matte",
+      "layeredQa": "attempt retained in assets/source; runtime uses lossless matte after subject-loss review"
+    }
+  ],
+  "sourceSha256": "3231349181d936ef76d17f79f5254527b03596e435c2969a3b1c81026fdc4a6f",
+  "createdAt": "2026-09-20T07:45:45.656616+00:00"
+}

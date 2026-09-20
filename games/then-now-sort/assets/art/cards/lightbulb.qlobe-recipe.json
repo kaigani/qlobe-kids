@@ -1,0 +1,19 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "then-now-now-lightbulb",
+  "kind": "image",
+  "asset": "games\\then-now-sort\\assets\\art\\cards\\lightbulb.webp",
+  "steps": [
+    {
+      "workflow": "qwen-image-layered",
+      "source": "lightbulb.png",
+      "model": "qwen-image-layered",
+      "prompt": "Separate the foreground toy object(s) into layer_2 with true transparent alpha. Preserve exact shape, colors, texture, scale, and all details; do not repaint, crop, add, or remove anything.",
+      "selectedOutput": "source-cut-edge-matte",
+      "layeredQa": "attempt retained in assets/source; runtime uses lossless matte after subject-loss review"
+    }
+  ],
+  "sourceSha256": "05021af7422da4f25b7311b7e465dadf129dc799bf4ba691a86c784697e3d8a8",
+  "createdAt": "2026-09-20T07:45:39.961368+00:00"
+}

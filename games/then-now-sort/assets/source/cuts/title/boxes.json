@@ -1,0 +1,52 @@
+{
+  "source": "games/then-now-sort/assets/source/gpt-image-2/title-lockup.png",
+  "sourceSha256": "48f08471a54028b21b2ccfa746b54a7bfdc596f4c9d039efc0e819efc375f7e2",
+  "sourceSize": [
+    2051,
+    767
+  ],
+  "detection": "alpha",
+  "sampledBackgroundRgb": null,
+  "padding": 12,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "title",
+      "file": "title.png",
+      "componentArea": 642972,
+      "foregroundBbox": [
+        84,
+        134,
+        1969,
+        600
+      ],
+      "cropBbox": [
+        72,
+        122,
+        1981,
+        612
+      ],
+      "cropXywh": [
+        72,
+        122,
+        1909,
+        490
+      ],
+      "normalizedCropBbox": [
+        0.035105,
+        0.159061,
+        0.96587,
+        0.797914
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 2,
+    "minArea": 787,
+    "order": "reading"
+  }
+}

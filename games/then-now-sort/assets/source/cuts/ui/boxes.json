@@ -1,0 +1,206 @@
+{
+  "source": "games/then-now-sort/assets/source/local-api/qwen-edit/ui-separated-seed42.png",
+  "sourceSha256": "08636b84e9fd4ccf83692d97b649aba5f8f071afaf8a647fe8ce72203801bf76",
+  "sourceSize": [
+    1184,
+    880
+  ],
+  "detection": "background-threshold",
+  "sampledBackgroundRgb": [
+    82,
+    81,
+    83
+  ],
+  "padding": 12,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "then-pocket",
+      "file": "then-pocket.png",
+      "componentArea": 98693,
+      "foregroundBbox": [
+        73,
+        87,
+        394,
+        404
+      ],
+      "cropBbox": [
+        61,
+        75,
+        406,
+        416
+      ],
+      "cropXywh": [
+        61,
+        75,
+        345,
+        341
+      ],
+      "normalizedCropBbox": [
+        0.05152,
+        0.085227,
+        0.342905,
+        0.472727
+      ]
+    },
+    {
+      "index": 2,
+      "name": "now-pocket",
+      "file": "now-pocket.png",
+      "componentArea": 101032,
+      "foregroundBbox": [
+        430,
+        87,
+        761,
+        401
+      ],
+      "cropBbox": [
+        418,
+        75,
+        773,
+        413
+      ],
+      "cropXywh": [
+        418,
+        75,
+        355,
+        338
+      ],
+      "normalizedCropBbox": [
+        0.353041,
+        0.085227,
+        0.652872,
+        0.469318
+      ]
+    },
+    {
+      "index": 3,
+      "name": "detective-medallion",
+      "file": "detective-medallion.png",
+      "componentArea": 77852,
+      "foregroundBbox": [
+        813,
+        93,
+        1124,
+        411
+      ],
+      "cropBbox": [
+        801,
+        81,
+        1136,
+        423
+      ],
+      "cropXywh": [
+        801,
+        81,
+        335,
+        342
+      ],
+      "normalizedCropBbox": [
+        0.67652,
+        0.092045,
+        0.959459,
+        0.480682
+      ]
+    },
+    {
+      "index": 4,
+      "name": "traveler-medallion",
+      "file": "traveler-medallion.png",
+      "componentArea": 76334,
+      "foregroundBbox": [
+        74,
+        457,
+        383,
+        772
+      ],
+      "cropBbox": [
+        62,
+        445,
+        395,
+        784
+      ],
+      "cropXywh": [
+        62,
+        445,
+        333,
+        339
+      ],
+      "normalizedCropBbox": [
+        0.052365,
+        0.505682,
+        0.333615,
+        0.890909
+      ]
+    },
+    {
+      "index": 5,
+      "name": "badge",
+      "file": "badge.png",
+      "componentArea": 47023,
+      "foregroundBbox": [
+        415,
+        454,
+        708,
+        768
+      ],
+      "cropBbox": [
+        403,
+        442,
+        720,
+        780
+      ],
+      "cropXywh": [
+        403,
+        442,
+        317,
+        338
+      ],
+      "normalizedCropBbox": [
+        0.340372,
+        0.502273,
+        0.608108,
+        0.886364
+      ]
+    },
+    {
+      "index": 6,
+      "name": "action-plate",
+      "file": "action-plate.png",
+      "componentArea": 66882,
+      "foregroundBbox": [
+        723,
+        538,
+        1121,
+        715
+      ],
+      "cropBbox": [
+        711,
+        526,
+        1133,
+        727
+      ],
+      "cropXywh": [
+        711,
+        526,
+        422,
+        201
+      ],
+      "normalizedCropBbox": [
+        0.600507,
+        0.597727,
+        0.956926,
+        0.826136
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 2,
+    "minArea": 521,
+    "order": "reading"
+  }
+}

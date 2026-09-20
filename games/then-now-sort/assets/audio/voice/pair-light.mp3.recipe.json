@@ -1,0 +1,12 @@
+{
+  "engine": "qwen3-tts-voiceclone",
+  "verifier": "whisper-stt",
+  "voiceReference": "shared:assets/refs/voice-teacher.wav",
+  "seed": 7,
+  "sourceText": "A candle and a lightbulb both make light. A lightbulb does not need a flame.",
+  "textHash": "10a85e8bd44de461",
+  "output": "assets\\audio\\voice\\pair-light.mp3",
+  "transcript": "A candle and a lightbulb both make light. A lightbulb does not need a flame.",
+  "ratio": 1.0,
+  "coverage": 1.0
+}

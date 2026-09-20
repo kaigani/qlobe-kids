@@ -1,0 +1,96 @@
+{
+  "schemaVersion": 1,
+  "id": "then-now-sort",
+  "title": "Then & Now",
+  "sessionPairs": 3,
+  "assets": {
+    "backgrounds": {
+      "splash": "./assets/art/backgrounds/splash-background.webp",
+      "book": "./assets/art/backgrounds/book-background.webp",
+      "bookPortrait": "./assets/art/backgrounds/book-background-portrait.webp",
+      "gallery": "./assets/art/backgrounds/gallery-background.webp"
+    },
+    "ui": {
+      "title": "./assets/art/ui/title.webp",
+      "thenPocket": "./assets/art/ui/then-pocket.webp",
+      "nowPocket": "./assets/art/ui/now-pocket.webp",
+      "detectiveMedallion": "./assets/art/ui/detective-medallion.webp",
+      "travelerMedallion": "./assets/art/ui/traveler-medallion.webp",
+      "badge": "./assets/art/ui/badge.webp",
+      "actionPlate": "./assets/art/ui/action-plate.webp"
+    },
+    "audio": {
+      "manifest": "./assets/audio/manifest.json",
+      "lines": "./assets/audio/lines.json"
+    },
+    "music": "../../shared/assets/music/gentle-country-morning.mp3"
+  },
+  "modes": [
+    {
+      "id": "sort",
+      "title": "Long Ago or Today",
+      "shortTitle": "Then or Now",
+      "skill": "sort familiar tools by whether they belong to long ago or today"
+    },
+    {
+      "id": "match",
+      "title": "Same Job, New Tool",
+      "shortTitle": "Same Job",
+      "skill": "connect an older tool with a modern tool that serves the same purpose"
+    }
+  ],
+  "voice": {
+    "welcome": "Welcome, History Detective! Let's see what changed from long ago to today.",
+    "choose": "Choose a history adventure.",
+    "sort-intro": "Put each picture in Then or Now.",
+    "match-intro": "Find the new tool that does the same job.",
+    "sort-then": "Yes! That belongs in Then.",
+    "sort-now": "Yes! That belongs in Now.",
+    "try-sort": "Let's look again. Is this from long ago, or today?",
+    "try-match": "Almost! Find the new tool with the same job.",
+    "pair-cheer": "You found two tools with the same job!",
+    "next-clue": "Wonderful detective work! Here comes the next clue.",
+    "gallery": "Your time-travel book is full of clever changes! History Detective badge earned!",
+    "idle-sort": "Try the blue Then pocket or the purple Now pocket.",
+    "idle-match": "Look for the picture that does the same job.",
+    "gallery-empty": "Finish an adventure to fill your Time Traveler Gallery."
+  },
+  "pairs": [
+    {
+      "id": "light",
+      "relation": "A candle and a lightbulb both make light. A lightbulb does not need a flame.",
+      "then": { "id": "candle", "label": "Candle", "art": "./assets/art/cards/candle.webp", "alt": "a beeswax candle in a brass holder" },
+      "now": { "id": "lightbulb", "label": "Lightbulb", "art": "./assets/art/cards/lightbulb.webp", "alt": "a glowing household lightbulb" }
+    },
+    {
+      "id": "write",
+      "relation": "A quill and a keyboard both help people write. Keyboards can make letters very quickly.",
+      "then": { "id": "quill", "label": "Quill", "art": "./assets/art/cards/quill.webp", "alt": "a feather quill and ink pot" },
+      "now": { "id": "keyboard", "label": "Keyboard", "art": "./assets/art/cards/keyboard.webp", "alt": "a colorful computer keyboard" }
+    },
+    {
+      "id": "travel",
+      "relation": "A carriage and a car both help people travel. Carriages were pulled by horses.",
+      "then": { "id": "carriage", "label": "Carriage", "art": "./assets/art/cards/carriage.webp", "alt": "a horse-drawn carriage" },
+      "now": { "id": "car", "label": "Car", "art": "./assets/art/cards/car.webp", "alt": "a small modern car" }
+    },
+    {
+      "id": "message",
+      "relation": "A letter and a phone both send messages. A phone can send one in a moment.",
+      "then": { "id": "letter", "label": "Letter", "art": "./assets/art/cards/letter.webp", "alt": "a sealed paper letter" },
+      "now": { "id": "smartphone", "label": "Phone", "art": "./assets/art/cards/smartphone.webp", "alt": "a modern smartphone with a message bubble" }
+    },
+    {
+      "id": "music",
+      "relation": "A phonograph and headphones both play music. Both bring songs close to our ears.",
+      "then": { "id": "phonograph", "label": "Phonograph", "art": "./assets/art/cards/phonograph.webp", "alt": "an antique phonograph with a brass horn" },
+      "now": { "id": "headphones", "label": "Headphones", "art": "./assets/art/cards/headphones.webp", "alt": "colorful over-ear headphones" }
+    },
+    {
+      "id": "wash",
+      "relation": "A washboard and a washing machine both wash clothes. The machine swishes them for us.",
+      "then": { "id": "washboard", "label": "Washboard", "art": "./assets/art/cards/washboard.webp", "alt": "a wooden washboard in a wash tub" },
+      "now": { "id": "washing-machine", "label": "Washing Machine", "art": "./assets/art/cards/washing-machine.webp", "alt": "a front-loading washing machine" }
+    }
+  ]
+}

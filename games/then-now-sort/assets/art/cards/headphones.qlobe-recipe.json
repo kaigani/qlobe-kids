@@ -1,0 +1,19 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "then-now-now-headphones",
+  "kind": "image",
+  "asset": "games\\then-now-sort\\assets\\art\\cards\\headphones.webp",
+  "steps": [
+    {
+      "workflow": "qwen-image-layered",
+      "source": "headphones.png",
+      "model": "qwen-image-layered",
+      "prompt": "Separate the foreground toy object(s) into layer_2 with true transparent alpha. Preserve exact shape, colors, texture, scale, and all details; do not repaint, crop, add, or remove anything.",
+      "selectedOutput": "source-cut-edge-matte",
+      "layeredQa": "attempt retained in assets/source; runtime uses lossless matte after subject-loss review"
+    }
+  ],
+  "sourceSha256": "63e74597e2c228e611c53be72b2d11f35bad29c8d121e9ddc6741ed60714b94a",
+  "createdAt": "2026-09-20T07:45:35.383517+00:00"
+}

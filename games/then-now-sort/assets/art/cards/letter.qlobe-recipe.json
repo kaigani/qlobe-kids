@@ -1,0 +1,19 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "then-now-then-letter",
+  "kind": "image",
+  "asset": "games\\then-now-sort\\assets\\art\\cards\\letter.webp",
+  "steps": [
+    {
+      "workflow": "qwen-image-layered",
+      "source": "letter.png",
+      "model": "qwen-image-layered",
+      "prompt": "Separate the foreground toy object(s) into layer_2 with true transparent alpha. Preserve exact shape, colors, texture, scale, and all details; do not repaint, crop, add, or remove anything.",
+      "selectedOutput": "source-cut-edge-matte",
+      "layeredQa": "attempt retained in assets/source; runtime uses lossless matte after subject-loss review"
+    }
+  ],
+  "sourceSha256": "a84a5a9f364c5094790bd54c97e24e986fcf5f637ae2a96c1a18c21e4d54a2d5",
+  "createdAt": "2026-09-20T07:45:24.445437+00:00"
+}

@@ -1,32 +1,46 @@
 {
   "id": "then-now-sort",
-  "title": "Then & Now Sort",
+  "title": "Then & Now",
   "category": "culture-geography",
   "path": "games/then-now-sort/",
-  "icon": "🕰️",
+  "icon": "⏳",
   "entry": "index.html",
-  "age": { "min": 5, "max": 6 },
-  "status": "in-design",
-  "accent": "#7c4fc4",
-  "shareTitle": "Then & Now Sort 🕰️ — Matching Then and Now",
-  "description": "Pair an old-fashioned object with its modern match, hearing why the two share the same job. A cozy first-history matching game for ages 5–6.",
+  "age": { "min": 4, "max": 7 },
+  "status": "beta",
+  "accent": "#7657a8",
+  "shareTitle": "Then & Now — A History Detective Adventure",
+  "description": "Open a watercolor time-travel book, sort familiar objects into long ago or today, and match older tools with the modern tools that do the same job.",
   "learningGoals": [
-    "Notice then-and-now relationships",
-    "Connect objects by their shared function",
-    "Build early history vocabulary through concrete examples"
+    "Use then and now as concrete time concepts",
+    "Connect changing tools by the job they share",
+    "Build early history vocabulary through picture, touch, and narration"
   ],
-  "interactionModel": "match-pairs tap cards that share a purpose across time",
-  "feedbackModel": "Correct pairs get pop and sparkle SFX plus a spoken shared-job line; misses wiggle gently with a spoken nudge and retry.",
+  "interactionModel": "drag or tap-tap objects into large Then and Now pockets, then choose a modern tool that shares an older tool's job",
+  "feedbackModel": "correct choices settle into the storybook with spoken time language and a paired reveal; misses softly return with one warm retry prompt; each adventure fills a Time Traveler Gallery",
+  "artDirection": "Watercolor / Storybook",
   "uses": [
-    "shared/js/engines/match-pairs.js",
-    "shared/js/speech.js",
-    "shared/js/sfx.js"
+    "shared/js/tap.js",
+    "shared/js/audio-unlock.js",
+    "shared/js/voice-clips.js",
+    "shared/js/narrator.js",
+    "shared/js/sfx.js",
+    "shared/js/bgm.js",
+    "shared/js/hud.js",
+    "shared/js/idle-nudge.js",
+    "shared/js/timers.js",
+    "shared/js/rng.js",
+    "shared/js/preload.js",
+    "shared/js/celebrate.js",
+    "shared/js/debug-harness.js",
+    "shared/assets/music/gentle-country-morning.mp3",
+    "shared/fonts/fredoka-latin-600-normal.woff2"
   ],
   "modes": [
-    { "id": "classic", "title": "Old and New", "skill": "then-and-now comparison and object function" }
+    { "id": "sort", "title": "Long Ago or Today", "skill": "sort familiar tools by whether they belong to long ago or today" },
+    { "id": "match", "title": "Same Job, New Tool", "skill": "connect an older tool with a modern tool that serves the same purpose" }
   ],
   "license": { "code": "MIT", "assets": "CC-BY-4.0" },
-  "credits": "Kaigani; emoji placeholder art only (see ASSETS.md). Built with Codex for QLOBE Kids.",
+  "credits": "Kaigani; original watercolor art produced with GPT Image 2 and the local QLOBE image pipeline; local Qwen Image Edit and Layered used for asset preparation and review; hub art produced with local Krea 2; teacher voice produced with Qwen3 voice clone and Whisper QA. Built with Codex for QLOBE Kids.",
   "characters": [],
   "conceptVideo": null
 }

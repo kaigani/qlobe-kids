@@ -1,0 +1,19 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "then-now-ui-badge",
+  "kind": "image",
+  "asset": "games\\then-now-sort\\assets\\art\\ui\\badge.webp",
+  "steps": [
+    {
+      "workflow": "qwen-image-layered",
+      "source": "badge.png",
+      "model": "qwen-image-layered",
+      "prompt": "Separate the foreground toy object(s) into layer_2 with true transparent alpha. Preserve exact shape, colors, texture, scale, and all details; do not repaint, crop, add, or remove anything.",
+      "selectedOutput": "source-cut-edge-matte",
+      "layeredQa": "attempt retained in assets/source; runtime uses lossless matte after subject-loss review"
+    }
+  ],
+  "sourceSha256": "2be3cdb4799578abb3ffaf0b8f4751016edd28467f7a119345ce95faa589603f",
+  "createdAt": "2026-09-20T07:45:42.887748+00:00"
+}

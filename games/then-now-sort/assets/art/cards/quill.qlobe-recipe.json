@@ -1,0 +1,19 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "then-now-then-quill",
+  "kind": "image",
+  "asset": "games\\then-now-sort\\assets\\art\\cards\\quill.webp",
+  "steps": [
+    {
+      "workflow": "qwen-image-layered",
+      "source": "quill.png",
+      "model": "qwen-image-layered",
+      "prompt": "Separate the foreground toy object(s) into layer_2 with true transparent alpha. Preserve exact shape, colors, texture, scale, and all details; do not repaint, crop, add, or remove anything.",
+      "selectedOutput": "source-cut-edge-matte",
+      "layeredQa": "attempt retained in assets/source; runtime uses lossless matte after subject-loss review"
+    }
+  ],
+  "sourceSha256": "502e7ed9df4f37a3c2d4035038f7b880b63ca26ebe5cec23c11779ba80715a98",
+  "createdAt": "2026-09-20T07:45:30.098816+00:00"
+}

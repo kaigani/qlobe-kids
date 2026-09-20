@@ -1,0 +1,19 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "then-now-now-smartphone",
+  "kind": "image",
+  "asset": "games\\then-now-sort\\assets\\art\\cards\\smartphone.webp",
+  "steps": [
+    {
+      "workflow": "qwen-image-layered",
+      "source": "smartphone.png",
+      "model": "qwen-image-layered",
+      "prompt": "Separate the foreground toy object(s) into layer_2 with true transparent alpha. Preserve exact shape, colors, texture, scale, and all details; do not repaint, crop, add, or remove anything.",
+      "selectedOutput": "source-cut-edge-matte",
+      "layeredQa": "attempt retained in assets/source; runtime uses lossless matte after subject-loss review"
+    }
+  ],
+  "sourceSha256": "08c517fb3ee6cc1d8076ff1e98d841531930196e3a496eb07b59df89b6f08321",
+  "createdAt": "2026-09-20T07:45:40.439493+00:00"
+}

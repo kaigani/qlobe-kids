@@ -1,0 +1,19 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "then-now-now-keyboard",
+  "kind": "image",
+  "asset": "games\\then-now-sort\\assets\\art\\cards\\keyboard.webp",
+  "steps": [
+    {
+      "workflow": "qwen-image-layered",
+      "source": "keyboard.png",
+      "model": "qwen-image-layered",
+      "prompt": "Separate the foreground toy object(s) into layer_2 with true transparent alpha. Preserve exact shape, colors, texture, scale, and all details; do not repaint, crop, add, or remove anything.",
+      "selectedOutput": "source-cut-edge-matte",
+      "layeredQa": "attempt retained in assets/source; runtime uses lossless matte after subject-loss review"
+    }
+  ],
+  "sourceSha256": "02ab5d22febe8126781e5080b365c0a137e1ae81df343b306ca65e9ece676b9e",
+  "createdAt": "2026-09-20T07:45:35.303838+00:00"
+}
