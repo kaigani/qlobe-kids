@@ -1,0 +1,52 @@
+{
+  "id": "puppet-patience-theater",
+  "title": "Puppet Patience Theater",
+  "category": "social-emotional",
+  "path": "games/puppet-patience-theater/",
+  "icon": "assets/characters/fox-wave.webp",
+  "entry": "index.html",
+  "age": { "min": 3, "max": 7 },
+  "status": "live",
+  "liveDate": "2026-09-19",
+  "accent": "#8f2443",
+  "shareTitle": "Puppet Patience Theater — Watch, Breathe, Take Turns",
+  "description": "Join Fox in three cozy handmade puppet stories. Watch a friend go first, help Fox wait with slow flower breaths, then take a joyful turn on the swing, at the bakery, or in the parade.",
+  "learningGoals": [
+    "Recognize that a friend going first does not mean losing a turn",
+    "Use slow breathing as a concrete strategy while waiting",
+    "Follow the predictable sequence Watch, Breathe, Your Turn",
+    "Experience patient turn-taking without timers, penalties, or failure"
+  ],
+  "interactionModel": "choose one of three felt-puppet stories, watch the first turn, tap a smiling flower for three to five paced breaths, then tap the story prop when Fox's turn arrives",
+  "feedbackModel": "early prop taps receive a warm reminder; every breath earns a felt star; taking the turn triggers puppet celebration, three stars, and a curtain call",
+  "uses": [
+    "shared/js/audio-unlock.js",
+    "shared/js/bgm.js",
+    "shared/js/celebrate.js",
+    "shared/js/debug-harness.js",
+    "shared/js/hud.js",
+    "shared/js/idle-nudge.js",
+    "shared/js/narrator.js",
+    "shared/js/preload.js",
+    "shared/js/rng.js",
+    "shared/js/screens.js",
+    "shared/js/sfx.js",
+    "shared/js/tap.js",
+    "shared/js/timers.js",
+    "shared/js/voice-clips.js",
+    "shared/assets/music/cozy-starlight-lullaby.mp3"
+  ],
+  "modes": [
+    { "id": "swing", "title": "Swing Turn", "skill": "wait while a friend finishes" },
+    { "id": "bakery", "title": "Cookie Turn", "skill": "wait for something good" },
+    { "id": "parade", "title": "Parade Turn", "skill": "wait in line for a special role" }
+  ],
+  "license": { "code": "MIT", "assets": "CC-BY-4.0" },
+  "credits": "Kaigani; original felt-theater artwork authored with GPT Image 2 and Krea 2, processed through Qwen Image Edit, Qwen Image Layered, and the QLOBE asset cutter; teacher narration produced with Qwen voice clone and verified with Whisper. Built with Codex for QLOBE Kids.",
+  "characters": [
+    { "id": "fox", "name": "Fox" },
+    { "id": "rabbit", "name": "Rabbit" },
+    { "id": "squirrel", "name": "Squirrel" }
+  ],
+  "conceptVideo": null
+}

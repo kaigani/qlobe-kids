@@ -1,0 +1,30 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "id": "puppet-patience-theater-hub-krea2",
+  "kind": "image",
+  "asset": "games/puppet-patience-theater/assets/source/krea/hub-tile-preview.jpg",
+  "source": "games/puppet-patience-theater/assets/source/krea/hub-tile-seed-42.png",
+  "steps": [
+    {
+      "workflow": "krea2-turbo-t2i",
+      "prompt": "A premium preschool game hub illustration: an orange wool-felt fox puppet in a green vest and burgundy bow tie sits calmly on a little blue stool while a cream felt rabbit in a purple pinafore takes a turn on a blue felt swing; a chestnut felt squirrel with teal neckerchief cheers beside them. Miniature cranberry velvet puppet theater, warm apricot felt backdrop, honey wooden floor, tiny gold stars, clear friendly faces, tactile wool fibers, visible blanket stitching, cozy handmade stop-motion toy photography, centered readable 6:5 composition; no words, title, UI, border, logo, watermark, extra limbs, extra characters, plastic, vector art, or clutter",
+      "seed": 42,
+      "width": 768,
+      "height": 640,
+      "steps": 8,
+      "cfg": 1
+    }
+  ],
+  "job": "sanitized-local-job-id",
+  "sourceSha256": "088a2f63fb61681375906858ab81f6fd8b60102065abdaf62a2f2ff51ad740dc",
+  "previewSha256": "3affa815cdaf2da22dbfa0b7bb35e9aea5fcbcff7206efa70e9be92e0fb162c5",
+  "qa": {
+    "status": "accepted-after-visual-review",
+    "finalSize": [
+      640,
+      533
+    ]
+  },
+  "createdAt": "2026-09-20T03:09:41.338952+00:00"
+}

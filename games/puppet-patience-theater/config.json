@@ -1,0 +1,117 @@
+{
+  "id": "puppet-patience-theater",
+  "title": "Puppet Patience Theater",
+  "subtitle": "Watch. Breathe. Your turn!",
+  "music": {
+    "track": "../../shared/assets/music/cozy-starlight-lullaby.mp3",
+    "volume": 0.105
+  },
+  "assets": {
+    "stage": "./assets/stage.webp",
+    "title": "./assets/title.webp",
+    "characters": {
+      "fox-wave": "./assets/characters/fox-wave.webp",
+      "fox-breathe": "./assets/characters/fox-breathe.webp",
+      "fox-celebrate": "./assets/characters/fox-celebrate.webp",
+      "fox-march": "./assets/characters/fox-march.webp",
+      "rabbit-sit": "./assets/characters/rabbit-sit.webp",
+      "rabbit-swing": "./assets/characters/rabbit-swing.webp",
+      "squirrel-stand": "./assets/characters/squirrel-stand.webp",
+      "squirrel-cookie": "./assets/characters/squirrel-cookie.webp"
+    },
+    "props": {
+      "swing": "./assets/props/swing.webp",
+      "cookie-tray": "./assets/props/cookie-tray.webp",
+      "parade-drum": "./assets/props/parade-drum.webp"
+    },
+    "stories": {
+      "swing": "./assets/stories/story-swing.webp",
+      "bakery": "./assets/stories/story-bakery.webp",
+      "parade": "./assets/stories/story-parade.webp"
+    },
+    "ui": {
+      "story-card": "./assets/ui/story-card.webp",
+      "button-teal": "./assets/ui/button-teal.webp",
+      "button-green": "./assets/ui/button-green.webp",
+      "button-plum": "./assets/ui/button-plum.webp",
+      "badge-watch": "./assets/ui/badge-watch.webp",
+      "badge-breathe": "./assets/ui/badge-breathe.webp",
+      "badge-turn": "./assets/ui/badge-turn.webp",
+      "breathe-flower": "./assets/ui/breathe-flower.webp",
+      "reward-star": "./assets/ui/reward-star.webp"
+    }
+  },
+  "voice": {
+    "welcome": "Welcome to Puppet Patience Theater! Let's watch, breathe, and take turns together.",
+    "pick-story": "Pick a puppet story.",
+    "swing-watch": "Rabbit is swinging first. Watch her turn.",
+    "swing-breathe": "Fox can wait. Tap the flower for three slow breaths.",
+    "swing-turn": "You waited. Now it's Fox's turn! Tap the swing.",
+    "bakery-watch": "Squirrel gets the first cookie. Fox's cookie is almost ready.",
+    "bakery-breathe": "Let's help Fox wait with four slow breaths.",
+    "bakery-turn": "The cookie is ready. Tap the tray for Fox's turn.",
+    "parade-watch": "Rabbit leads the parade first. Fox waits in line.",
+    "parade-breathe": "Take five slow breaths while Fox waits.",
+    "parade-turn": "Fox is next! Tap the drum to lead the parade.",
+    "breath": "In... and out.",
+    "early": "Almost your turn. One more calm breath.",
+    "success": "You watched, waited, and took your turn. That is patient play!",
+    "another": "Choose another puppet story."
+  },
+  "stories": [
+    {
+      "id": "swing",
+      "title": "Swing Turn",
+      "shortTitle": "Swing",
+      "skill": "Wait while a friend finishes",
+      "breaths": 3,
+      "medallion": "swing",
+      "friend": "rabbit-swing",
+      "friendAlt": "Rabbit enjoying her turn on the felt swing",
+      "foxWatch": "fox-wave",
+      "foxTurn": "fox-celebrate",
+      "prop": "swing",
+      "watchKey": "swing-watch",
+      "breatheKey": "swing-breathe",
+      "turnKey": "swing-turn",
+      "watchCaption": "Rabbit swings first",
+      "turnCaption": "Tap the swing for Fox"
+    },
+    {
+      "id": "bakery",
+      "title": "Cookie Turn",
+      "shortTitle": "Cookie",
+      "skill": "Wait for something good",
+      "breaths": 4,
+      "medallion": "bakery",
+      "friend": "squirrel-cookie",
+      "friendAlt": "Squirrel holding the bakery's first felt cookie",
+      "foxWatch": "fox-wave",
+      "foxTurn": "fox-celebrate",
+      "prop": "cookie-tray",
+      "watchKey": "bakery-watch",
+      "breatheKey": "bakery-breathe",
+      "turnKey": "bakery-turn",
+      "watchCaption": "Squirrel's cookie is first",
+      "turnCaption": "Tap the tray for Fox"
+    },
+    {
+      "id": "parade",
+      "title": "Parade Turn",
+      "shortTitle": "Parade",
+      "skill": "Wait in line for a special role",
+      "breaths": 5,
+      "medallion": "parade",
+      "friend": "rabbit-sit",
+      "friendAlt": "Rabbit leading the felt parade first",
+      "foxWatch": "fox-wave",
+      "foxTurn": "fox-march",
+      "prop": "parade-drum",
+      "watchKey": "parade-watch",
+      "breatheKey": "parade-breathe",
+      "turnKey": "parade-turn",
+      "watchCaption": "Rabbit leads first",
+      "turnCaption": "Tap the drum for Fox"
+    }
+  ]
+}

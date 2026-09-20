@@ -1,0 +1,16 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "workflow": "qwen-image-layered",
+  "seed": 42,
+  "selectedOutput": "layer_2",
+  "source": "games/puppet-patience-theater/assets/source/layered/characters-flat-bg.png",
+  "prompt": "Bottom layer: only the entire background with no puppets or foreground objects.\nTop layer: all exactly eight complete felt puppet assets together in their original grid positions, isolated on genuine transparency. Preserve every face, pose, color, stitch, fine fur edge, prop, spacing, scale, and the whole sheet layout exactly. Do not redraw, crop, rearrange, merge, add, remove, relight, or reinterpret.",
+  "qa": {
+    "status": "accepted-after-alpha-edge-review",
+    "width": 1024,
+    "height": 680,
+    "transparentPct": 61.7,
+    "opaquePct": 33.819
+  }
+}

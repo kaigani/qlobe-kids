@@ -1,0 +1,112 @@
+{
+  "source": "story-medallions-source.png",
+  "sourceSha256": "5716b641790eeb89a7d24c7e08784336777156dd5e374d36464fc3f9d1df3e7c",
+  "sourceSize": [
+    2172,
+    724
+  ],
+  "detection": "alpha",
+  "sampledBackgroundRgb": null,
+  "padding": 12,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "story-swing",
+      "file": "story-swing.png",
+      "componentArea": 369194,
+      "foregroundBbox": [
+        15,
+        16,
+        708,
+        693
+      ],
+      "cropBbox": [
+        3,
+        4,
+        720,
+        705
+      ],
+      "cropXywh": [
+        3,
+        4,
+        717,
+        701
+      ],
+      "normalizedCropBbox": [
+        0.001381,
+        0.005525,
+        0.331492,
+        0.973757
+      ]
+    },
+    {
+      "index": 2,
+      "name": "story-bakery",
+      "file": "story-bakery.png",
+      "componentArea": 374226,
+      "foregroundBbox": [
+        737,
+        13,
+        1434,
+        694
+      ],
+      "cropBbox": [
+        725,
+        1,
+        1446,
+        706
+      ],
+      "cropXywh": [
+        725,
+        1,
+        721,
+        705
+      ],
+      "normalizedCropBbox": [
+        0.333794,
+        0.001381,
+        0.665746,
+        0.975138
+      ]
+    },
+    {
+      "index": 3,
+      "name": "story-parade",
+      "file": "story-parade.png",
+      "componentArea": 373052,
+      "foregroundBbox": [
+        1462,
+        11,
+        2159,
+        689
+      ],
+      "cropBbox": [
+        1450,
+        0,
+        2171,
+        701
+      ],
+      "cropXywh": [
+        1450,
+        0,
+        721,
+        701
+      ],
+      "normalizedCropBbox": [
+        0.667587,
+        0.0,
+        0.99954,
+        0.968232
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 6,
+    "minArea": 1600,
+    "order": "reading"
+  }
+}

@@ -3683,7 +3683,7 @@
         "min": 5,
         "max": 6
       },
-      "status": "beta",
+      "status": "archived",
       "accent": "#58a945",
       "modes": [
         {
@@ -3697,7 +3697,56 @@
           "skill": "sustained self-control and intentional choice"
         }
       ],
-      "summary": "Wait ten seconds before grabbing the prize."
+      "summary": "Archived timer-and-emoji prototype, superseded by Puppet Patience Theater."
+    },
+    {
+      "id": "puppet-patience-theater",
+      "title": "Puppet Patience Theater",
+      "category": "social-emotional",
+      "path": "games/puppet-patience-theater/",
+      "icon": "assets/hub/tiles/puppet-patience-theater.jpg",
+      "age": {
+        "min": 3,
+        "max": 7
+      },
+      "status": "live",
+      "liveDate": "2026-09-19",
+      "accent": "#8f2443",
+      "uses": [
+        "shared/js/audio-unlock.js",
+        "shared/js/bgm.js",
+        "shared/js/celebrate.js",
+        "shared/js/debug-harness.js",
+        "shared/js/hud.js",
+        "shared/js/idle-nudge.js",
+        "shared/js/narrator.js",
+        "shared/js/preload.js",
+        "shared/js/rng.js",
+        "shared/js/screens.js",
+        "shared/js/sfx.js",
+        "shared/js/tap.js",
+        "shared/js/timers.js",
+        "shared/js/voice-clips.js",
+        "shared/assets/music/cozy-starlight-lullaby.mp3"
+      ],
+      "modes": [
+        {
+          "id": "swing",
+          "title": "Swing Turn",
+          "skill": "wait while a friend finishes"
+        },
+        {
+          "id": "bakery",
+          "title": "Cookie Turn",
+          "skill": "wait for something good"
+        },
+        {
+          "id": "parade",
+          "title": "Parade Turn",
+          "skill": "wait in line for a special role"
+        }
+      ],
+      "summary": "Help Fox watch, breathe, and wait for a joyful turn in three cozy felt-puppet stories."
     },
     {
       "id": "problem-solving-puppets",

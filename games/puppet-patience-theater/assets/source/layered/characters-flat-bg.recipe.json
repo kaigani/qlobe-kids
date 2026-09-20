@@ -1,0 +1,11 @@
+{
+  "format": "qlobe-recipe",
+  "formatVersion": 1,
+  "workflow": "qwen-image-edit",
+  "seed": 42,
+  "source": "games/puppet-patience-theater/assets/source/gpt-image-2/characters-source.png",
+  "prompt": "Change only the background. Replace the entire brown gradient background with one perfectly uniform flat dark charcoal color (#232126), edge to edge, with no gradient, glow, spotlight, floor, shadow, halo, texture, border, or grid. Preserve all exactly eight puppets, their full silhouettes, faces, poses, clothing, props, fur fibers, colors, scale, spacing, and exact 4-by-2 positions unchanged. Do not redraw, move, crop, merge, add, or remove any puppet detail.",
+  "qa": {
+    "status": "accepted-after-visual-identity-review"
+  }
+}

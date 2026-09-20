@@ -1,0 +1,262 @@
+{
+  "source": "characters-cut.png",
+  "sourceSha256": "1db71c46a60bb2b057fc27a6bebce91fd0141ceb856f466d4c16d918e75b7718",
+  "sourceSize": [
+    1024,
+    680
+  ],
+  "detection": "alpha",
+  "sampledBackgroundRgb": null,
+  "padding": 12,
+  "bboxFormat": "[x_min, y_min, x_max_exclusive, y_max_exclusive]",
+  "assets": [
+    {
+      "index": 1,
+      "name": "fox-wave",
+      "file": "fox-wave.png",
+      "componentArea": 34512,
+      "foregroundBbox": [
+        23,
+        13,
+        229,
+        309
+      ],
+      "cropBbox": [
+        11,
+        1,
+        241,
+        321
+      ],
+      "cropXywh": [
+        11,
+        1,
+        230,
+        320
+      ],
+      "normalizedCropBbox": [
+        0.010742,
+        0.001471,
+        0.235352,
+        0.472059
+      ]
+    },
+    {
+      "index": 2,
+      "name": "fox-breathe",
+      "file": "fox-breathe.png",
+      "componentArea": 28099,
+      "foregroundBbox": [
+        316,
+        62,
+        486,
+        307
+      ],
+      "cropBbox": [
+        304,
+        50,
+        498,
+        319
+      ],
+      "cropXywh": [
+        304,
+        50,
+        194,
+        269
+      ],
+      "normalizedCropBbox": [
+        0.296875,
+        0.073529,
+        0.486328,
+        0.469118
+      ]
+    },
+    {
+      "index": 3,
+      "name": "fox-celebrate",
+      "file": "fox-celebrate.png",
+      "componentArea": 34430,
+      "foregroundBbox": [
+        540,
+        21,
+        746,
+        308
+      ],
+      "cropBbox": [
+        528,
+        9,
+        758,
+        320
+      ],
+      "cropXywh": [
+        528,
+        9,
+        230,
+        311
+      ],
+      "normalizedCropBbox": [
+        0.515625,
+        0.013235,
+        0.740234,
+        0.470588
+      ]
+    },
+    {
+      "index": 4,
+      "name": "fox-march",
+      "file": "fox-march.png",
+      "componentArea": 34251,
+      "foregroundBbox": [
+        805,
+        14,
+        1017,
+        306
+      ],
+      "cropBbox": [
+        793,
+        2,
+        1024,
+        318
+      ],
+      "cropXywh": [
+        793,
+        2,
+        231,
+        316
+      ],
+      "normalizedCropBbox": [
+        0.774414,
+        0.002941,
+        1.0,
+        0.467647
+      ]
+    },
+    {
+      "index": 5,
+      "name": "rabbit-sit",
+      "file": "rabbit-sit.png",
+      "componentArea": 30798,
+      "foregroundBbox": [
+        52,
+        351,
+        204,
+        651
+      ],
+      "cropBbox": [
+        40,
+        339,
+        216,
+        663
+      ],
+      "cropXywh": [
+        40,
+        339,
+        176,
+        324
+      ],
+      "normalizedCropBbox": [
+        0.039062,
+        0.498529,
+        0.210938,
+        0.975
+      ]
+    },
+    {
+      "index": 6,
+      "name": "rabbit-swing",
+      "file": "rabbit-swing.png",
+      "componentArea": 35152,
+      "foregroundBbox": [
+        300,
+        330,
+        468,
+        647
+      ],
+      "cropBbox": [
+        288,
+        318,
+        480,
+        659
+      ],
+      "cropXywh": [
+        288,
+        318,
+        192,
+        341
+      ],
+      "normalizedCropBbox": [
+        0.28125,
+        0.467647,
+        0.46875,
+        0.969118
+      ]
+    },
+    {
+      "index": 7,
+      "name": "squirrel-stand",
+      "file": "squirrel-stand.png",
+      "componentArea": 36417,
+      "foregroundBbox": [
+        551,
+        376,
+        756,
+        649
+      ],
+      "cropBbox": [
+        539,
+        364,
+        768,
+        661
+      ],
+      "cropXywh": [
+        539,
+        364,
+        229,
+        297
+      ],
+      "normalizedCropBbox": [
+        0.526367,
+        0.535294,
+        0.75,
+        0.972059
+      ]
+    },
+    {
+      "index": 8,
+      "name": "squirrel-cookie",
+      "file": "squirrel-cookie.png",
+      "componentArea": 37743,
+      "foregroundBbox": [
+        798,
+        376,
+        1024,
+        650
+      ],
+      "cropBbox": [
+        786,
+        364,
+        1024,
+        662
+      ],
+      "cropXywh": [
+        786,
+        364,
+        238,
+        298
+      ],
+      "normalizedCropBbox": [
+        0.767578,
+        0.535294,
+        1.0,
+        0.973529
+      ]
+    }
+  ],
+  "parameters": {
+    "distanceThreshold": 30,
+    "chromaThreshold": 18,
+    "alphaThreshold": 8,
+    "closeRadius": 6,
+    "minArea": 1600,
+    "order": "reading"
+  }
+}

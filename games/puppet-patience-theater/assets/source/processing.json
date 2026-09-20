@@ -1,0 +1,265 @@
+{
+  "format": "puppet-patience-processing-v1",
+  "requestedModel": "gpt-image-2",
+  "gptImage2Sources": {
+    "characters-source.png": "70a9dc750d4a5d3e03b402e1890052127a81fc8cb7b7c1d059e9fc9d5252237b",
+    "props-ui-source.png": "b36a879175bf07402569fd75b818dee3ad64addb6c362f2b4fd1f8f6639f0f00",
+    "stage-source.png": "5e166a9da0404901ce89d8038a7f7ff1a9be280c489f4f92fa28821018c3c4e8",
+    "story-medallions-source.png": "5716b641790eeb89a7d24c7e08784336777156dd5e374d36464fc3f9d1df3e7c",
+    "title-source.png": "b7b87c659e481628e858c8065f4316961ccdc2772b4e8b7a0a11ca398f4fa295"
+  },
+  "layeredWorkflow": "qwen-image-layered",
+  "cutter": "tools/cut-asset-sheet.py",
+  "outputs": {
+    "assets/stage.webp": {
+      "source": "assets/source/gpt-image-2/stage-source.png",
+      "sourceSha256": "5e166a9da0404901ce89d8038a7f7ff1a9be280c489f4f92fa28821018c3c4e8",
+      "dimensions": [
+        1440,
+        1080
+      ],
+      "bytes": 304990,
+      "quality": 86
+    },
+    "assets/characters/fox-wave.webp": {
+      "source": "assets/source/crops/characters/fox-wave.png",
+      "sourceSha256": "aa8d3a7542a82e46eefe510996a66ab3e1c1192ba1381e4f7e1de1e06d5f459e",
+      "dimensions": [
+        230,
+        320
+      ],
+      "bytes": 73478,
+      "qaMagenta": "assets/source/qa/characters/fox-wave-magenta.png"
+    },
+    "assets/characters/fox-breathe.webp": {
+      "source": "assets/source/crops/characters/fox-breathe.png",
+      "sourceSha256": "e424df8c9cd481428351e20224e0b2bb3ddbddfa8216ea38702d6c493b76bf18",
+      "dimensions": [
+        194,
+        269
+      ],
+      "bytes": 56980,
+      "qaMagenta": "assets/source/qa/characters/fox-breathe-magenta.png"
+    },
+    "assets/characters/fox-celebrate.webp": {
+      "source": "assets/source/crops/characters/fox-celebrate.png",
+      "sourceSha256": "47c780f5e318cb17464ba6d382b0c22c641e4bb62ee8824899cd989eec40cd87",
+      "dimensions": [
+        230,
+        311
+      ],
+      "bytes": 74138,
+      "qaMagenta": "assets/source/qa/characters/fox-celebrate-magenta.png"
+    },
+    "assets/characters/fox-march.webp": {
+      "source": "assets/source/crops/characters/fox-march.png",
+      "sourceSha256": "f0c236a56719b6afe896809d8db17611b462556f54acbb6b46b5f57c84e9c954",
+      "dimensions": [
+        231,
+        316
+      ],
+      "bytes": 74374,
+      "qaMagenta": "assets/source/qa/characters/fox-march-magenta.png"
+    },
+    "assets/characters/rabbit-sit.webp": {
+      "source": "assets/source/crops/characters/rabbit-sit.png",
+      "sourceSha256": "22338e9ed121eb384f678b83efc41a841851df605246205e395fbd105a933bae",
+      "dimensions": [
+        176,
+        324
+      ],
+      "bytes": 60094,
+      "qaMagenta": "assets/source/qa/characters/rabbit-sit-magenta.png"
+    },
+    "assets/characters/rabbit-swing.webp": {
+      "source": "assets/source/crops/characters/rabbit-swing.png",
+      "sourceSha256": "66f30785a10eb46c9afe7706f35d21e572928209dced7020a3542c8d9e71bd7e",
+      "dimensions": [
+        192,
+        341
+      ],
+      "bytes": 72872,
+      "qaMagenta": "assets/source/qa/characters/rabbit-swing-magenta.png"
+    },
+    "assets/characters/squirrel-stand.webp": {
+      "source": "assets/source/crops/characters/squirrel-stand.png",
+      "sourceSha256": "de38e34d66bef629556b3c28ff000fa121f1aaa5109204818116cd4cd7d684f2",
+      "dimensions": [
+        229,
+        297
+      ],
+      "bytes": 71310,
+      "qaMagenta": "assets/source/qa/characters/squirrel-stand-magenta.png"
+    },
+    "assets/characters/squirrel-cookie.webp": {
+      "source": "assets/source/crops/characters/squirrel-cookie.png",
+      "sourceSha256": "c477648774b3a27de065ff7419f86ec7fef6d5c0ade8281f7a453cff816b9aa6",
+      "dimensions": [
+        238,
+        298
+      ],
+      "bytes": 74404,
+      "qaMagenta": "assets/source/qa/characters/squirrel-cookie-magenta.png"
+    },
+    "assets/props/swing.webp": {
+      "source": "assets/source/crops/props-ui/swing.png",
+      "sourceSha256": "dd46a3b982d6530603bc7107352562aa090ff01a43916698e1c00af6688271ae",
+      "dimensions": [
+        358,
+        399
+      ],
+      "bytes": 119450,
+      "qaMagenta": "assets/source/qa/props-ui/swing-magenta.png"
+    },
+    "assets/props/cookie-tray.webp": {
+      "source": "assets/source/crops/props-ui/cookie-tray.png",
+      "sourceSha256": "14c8f923d4d001ff8ca22a4f5cee38de40d7327f48c8f7a5f1cd2704c5767f98",
+      "dimensions": [
+        341,
+        325
+      ],
+      "bytes": 139672,
+      "qaMagenta": "assets/source/qa/props-ui/cookie-tray-magenta.png"
+    },
+    "assets/props/parade-drum.webp": {
+      "source": "assets/source/crops/props-ui/parade-drum.png",
+      "sourceSha256": "9e821cc352a4b360766e7ae6590d5bb5ad1a6629b40e4a658cd447708399bacb",
+      "dimensions": [
+        336,
+        356
+      ],
+      "bytes": 133288,
+      "qaMagenta": "assets/source/qa/props-ui/parade-drum-magenta.png"
+    },
+    "assets/ui/breathe-flower.webp": {
+      "source": "assets/source/crops/props-ui/breathe-flower.png",
+      "sourceSha256": "6cc6656035d5e6649e5696ddbeda75b2afa735ec58bc38cf4e932e928ae9a94b",
+      "dimensions": [
+        279,
+        431
+      ],
+      "bytes": 122352,
+      "qaMagenta": "assets/source/qa/props-ui/breathe-flower-magenta.png"
+    },
+    "assets/ui/story-card.webp": {
+      "source": "assets/source/crops/props-ui/story-card.png",
+      "sourceSha256": "fc771e02ff979681776d030c9b45c3217a475891012c37b1e18605bc1dea913e",
+      "dimensions": [
+        376,
+        201
+      ],
+      "bytes": 97448,
+      "qaMagenta": "assets/source/qa/props-ui/story-card-magenta.png"
+    },
+    "assets/ui/button-teal.webp": {
+      "source": "assets/source/crops/props-ui/button-teal.png",
+      "sourceSha256": "ea8e1c5cf80992f462716bc788ca6249be4dba7fdbe4a0f61d89a0b1f4d06374",
+      "dimensions": [
+        347,
+        183
+      ],
+      "bytes": 84818,
+      "qaMagenta": "assets/source/qa/props-ui/button-teal-magenta.png"
+    },
+    "assets/ui/button-green.webp": {
+      "source": "assets/source/crops/props-ui/button-green.png",
+      "sourceSha256": "fb0b4fe3702602deb2ff12e676e305da249b214b20f7ef0bba192406b7fec29a",
+      "dimensions": [
+        356,
+        187
+      ],
+      "bytes": 85666,
+      "qaMagenta": "assets/source/qa/props-ui/button-green-magenta.png"
+    },
+    "assets/ui/button-plum.webp": {
+      "source": "assets/source/crops/props-ui/button-plum.png",
+      "sourceSha256": "e7c1ec8523962a676c14b261c94800f96ec3c8e07ce5802a0f2901944f4c164f",
+      "dimensions": [
+        349,
+        187
+      ],
+      "bytes": 80116,
+      "qaMagenta": "assets/source/qa/props-ui/button-plum-magenta.png"
+    },
+    "assets/ui/badge-watch.webp": {
+      "source": "assets/source/crops/props-ui/badge-watch.png",
+      "sourceSha256": "9d0f58e01650a721713fd52abfceed72c72dbcfab1b3129f400cad8028813c8a",
+      "dimensions": [
+        260,
+        254
+      ],
+      "bytes": 79114,
+      "qaMagenta": "assets/source/qa/props-ui/badge-watch-magenta.png"
+    },
+    "assets/ui/badge-breathe.webp": {
+      "source": "assets/source/crops/props-ui/badge-breathe.png",
+      "sourceSha256": "6d7a7c49edb597008a33b3223175a61ab3cfb1c880d2aa69493ca482df964682",
+      "dimensions": [
+        260,
+        258
+      ],
+      "bytes": 79026,
+      "qaMagenta": "assets/source/qa/props-ui/badge-breathe-magenta.png"
+    },
+    "assets/ui/badge-turn.webp": {
+      "source": "assets/source/crops/props-ui/badge-turn.png",
+      "sourceSha256": "53f78143b1ba59cdb2e37fde48d8553c3b32b9c74d84506164d9f97ba88e1cb3",
+      "dimensions": [
+        260,
+        255
+      ],
+      "bytes": 77224,
+      "qaMagenta": "assets/source/qa/props-ui/badge-turn-magenta.png"
+    },
+    "assets/ui/reward-star.webp": {
+      "source": "assets/source/crops/props-ui/reward-star.png",
+      "sourceSha256": "601423a226c15c8c7f33d645b4cd1a7b350a0912d95e371c1ec4e556b83cfbcb",
+      "dimensions": [
+        260,
+        249
+      ],
+      "bytes": 64582,
+      "qaMagenta": "assets/source/qa/props-ui/reward-star-magenta.png"
+    },
+    "assets/stories/story-swing.webp": {
+      "source": "assets/source/crops/stories/story-swing.png",
+      "sourceSha256": "834b2993e3760fecbe3abdca5e8097704444a4cb213cc70fd687e8d62d082581",
+      "dimensions": [
+        520,
+        508
+      ],
+      "bytes": 75752,
+      "qaMagenta": "assets/source/qa/stories/story-swing-magenta.png"
+    },
+    "assets/stories/story-bakery.webp": {
+      "source": "assets/source/crops/stories/story-bakery.png",
+      "sourceSha256": "08ccfda447b92e4467f7bf5c76f7a3a12f2b5092219837ba6ba09175080c45ce",
+      "dimensions": [
+        520,
+        508
+      ],
+      "bytes": 76534,
+      "qaMagenta": "assets/source/qa/stories/story-bakery-magenta.png"
+    },
+    "assets/stories/story-parade.webp": {
+      "source": "assets/source/crops/stories/story-parade.png",
+      "sourceSha256": "91952f6ae2ac8ad765aee3c5194e1b0ca1bd1bcdb2afc1be435d70d887e0d434",
+      "dimensions": [
+        520,
+        506
+      ],
+      "bytes": 75250,
+      "qaMagenta": "assets/source/qa/stories/story-parade-magenta.png"
+    },
+    "assets/title.webp": {
+      "source": "assets/source/crops/title/title.png",
+      "sourceSha256": "a3f8696e38566570358ecf8b7170ecc3f54741f421af487c6653c9ddbdf66619",
+      "dimensions": [
+        980,
+        335
+      ],
+      "bytes": 96296,
+      "qaMagenta": "assets/source/qa/title/title-magenta.png"
+    }
+  }
+}
